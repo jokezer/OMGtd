@@ -23,7 +23,7 @@ Gtd::Application.configure do
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false
 
-  # Disable request forgery protection in test environment.
+  # Disable requests forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
 
   # Tell Action Mailer not to deliver emails to the real world.

@@ -1,11 +1,17 @@
 Gtd::Application.routes.draw do
-  get "static_pages/home"
-  get "static_pages/about"
+  get "todos/all"
+  get "todos/new"
+  get "todos/edit"
+  match "sign_in", to: 'users#sign_in', via: 'get'
+  match "sign_up", to: 'users#sign_up', via: 'get'
+  get "users/edit"
+  get "users/all"
+  match '/about', to: 'static_pages#about', via: 'get'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root "static_pages#home"
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
