@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140220134139) do
+ActiveRecord::Schema.define(version: 20140223061438) do
 
   create_table "todos", force: true do |t|
     t.string   "title",      null: false
@@ -30,12 +30,27 @@ ActiveRecord::Schema.define(version: 20140220134139) do
   add_index "todos", ["user_id", "type_id"], name: "index_todos_on_user_id_and_type_id"
   add_index "todos", ["user_id"], name: "index_todos_on_user_id"
 
+  create_table "types", force: true do |t|
+    t.string "label"
+  end
+
   create_table "users", force: true do |t|
-    t.string   "name",            null: false
-    t.string   "email",           null: false
-    t.string   "password_digest"
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
   end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
 end

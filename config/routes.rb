@@ -1,9 +1,8 @@
 Gtd::Application.routes.draw do
+  devise_for :users, :path => '', :path_names => {:sign_in => 'login', :sign_out => 'logout'}
   get "todos/all"
   get "todos/new"
   get "todos/edit"
-  match "sign_in", to: 'users#sign_in', via: 'get'
-  match "sign_up", to: 'users#sign_up', via: 'get'
   get "users/edit"
   get "users/all"
   match '/about', to: 'static_pages#about', via: 'get'
