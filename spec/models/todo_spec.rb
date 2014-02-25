@@ -7,6 +7,7 @@ describe Todo do
 
   it { should respond_to(:title) }
   it { should respond_to(:content) }
+  it { should respond_to(:status) }
   it { should respond_to(:user) }
   #it { should respond_to(:type) }
   #it { should respond_to(:context) }
@@ -21,11 +22,11 @@ describe Todo do
 
   describe 'should be invalid' do
     it 'without title' do
-      todo = @user.todos.new(content: 'Content of invalid todo')
+      todo = @user.todos.new(application: 'Content of invalid todo')
       expect(todo).not_to be_valid
     end
     it 'without user on their own' do
-      todo = Todo.new(content: 'Content of invalid todo')
+      todo = Todo.new(application: 'Content of invalid todo')
       expect(todo).not_to be_valid
     end
   end

@@ -1,16 +1,14 @@
 Gtd::Application.routes.draw do
   devise_for :users, :path => '', :path_names => {:sign_in => 'login', :sign_out => 'logout'}
-  get "todos/all"
-  get "todos/new"
-  get "todos/edit"
-  get "users/edit"
-  get "users/all"
+  resources :todos
+  get '/todos/status/:status', to: 'todos#status'
+
   match '/about', to: 'static_pages#about', via: 'get'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root "static_pages#home"
+  root "todos#index"
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

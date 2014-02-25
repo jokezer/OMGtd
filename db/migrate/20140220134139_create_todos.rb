@@ -2,9 +2,9 @@ class CreateTodos < ActiveRecord::Migration
   def change
     create_table :todos do |t|
       t.string :title, :null => false
-      t.string :content
+      t.string :application
       t.integer :user_id, :null => false
-      t.integer :type_id
+      t.string :status, :length => 30
       t.integer :context_id
       t.integer :project_id
       t.datetime :expire
@@ -13,7 +13,6 @@ class CreateTodos < ActiveRecord::Migration
 
     end
     add_index :todos, :user_id
-    add_index :todos, [:user_id, :type_id]
     add_index :todos, [:user_id, :context_id]
     add_index :todos, [:user_id, :project_id]
   end

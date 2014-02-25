@@ -1,2 +1,10 @@
-<h1>Todos#new</h1>
-<p>Find me in app/views/todos/new.html.erb</p>
+<%= bootstrap_form_for(@todo, style: :horizontal, left: "col-lg-1", right: "col-lg-6") do |f| %>
+
+    <%= f.text_field :title %>
+    <%= f.select :status, Todo::ACTIVE_STATUSES, :selected => params[:from_status] %>
+    <%= f.text_area :content, hide_label: :true, placeholder: "Todo description..." %>
+
+    <%= f.form_group do %>
+        <%= f.submit "Create todo", class: "btn btn-primary" %>
+    <% end %>
+<% end %>

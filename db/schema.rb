@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20140223061438) do
     t.string   "title",      null: false
     t.string   "content"
     t.integer  "user_id",    null: false
-    t.integer  "type_id"
+    t.string   "status"
     t.integer  "context_id"
     t.integer  "project_id"
     t.datetime "expire"
@@ -27,12 +27,7 @@ ActiveRecord::Schema.define(version: 20140223061438) do
 
   add_index "todos", ["user_id", "context_id"], name: "index_todos_on_user_id_and_context_id"
   add_index "todos", ["user_id", "project_id"], name: "index_todos_on_user_id_and_project_id"
-  add_index "todos", ["user_id", "type_id"], name: "index_todos_on_user_id_and_type_id"
   add_index "todos", ["user_id"], name: "index_todos_on_user_id"
-
-  create_table "types", force: true do |t|
-    t.string "label"
-  end
 
   create_table "users", force: true do |t|
     t.string   "name"

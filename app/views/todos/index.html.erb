@@ -1,0 +1,7 @@
+<div class="col-lg-9">
+  <%= content_tag(:h3, 'User todos:') %>
+  <%= link_to('Create new', new_todo_path(:from_status => params[:status]),
+              :title => "Create new todo", :class => 'btn btn-success') %>
+  <%= render @todos %>
+  <%= will_paginate @todos, renderer: BootstrapPagination::Rails %>
+</div>

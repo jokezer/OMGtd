@@ -1,0 +1,12 @@
+<% menu_hash = count_by_status %>
+<ul class="nav nav-pills nav-stacked">
+  <% menu_hash[:active].each do |menu_item| %>
+      <%= make_sidebar_menu_item menu_item %>
+  <% end %>
+</ul>
+hidden todos
+<ul class="nav nav-pills nav-stacked">
+  <% menu_hash[:hidden].each do |menu_item| %>
+      <%= make_sidebar_menu_item menu_item %>
+  <% end %>
+</ul>
