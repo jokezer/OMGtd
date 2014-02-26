@@ -2,9 +2,9 @@ class CreateTodos < ActiveRecord::Migration
   def change
     create_table :todos do |t|
       t.string :title, :null => false
-      t.string :application
+      t.string :content
       t.integer :user_id, :null => false
-      t.string :status, :length => 30
+      t.integer :status
       t.integer :context_id
       t.integer :project_id
       t.datetime :expire

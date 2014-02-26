@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20140223061438) do
     t.string   "title",      null: false
     t.string   "content"
     t.integer  "user_id",    null: false
-    t.string   "status"
+    t.integer  "status"
     t.integer  "context_id"
     t.integer  "project_id"
     t.datetime "expire"

@@ -2,37 +2,45 @@ require 'spec_helper'
 
 describe Todo do
   before(:all) do
-    @user = User.create(name: "Example User", email: "correct@email.com")
+    @user = FactoryGirl.create(:user)
   end
+  after(:all) do
+    @user.destroy
+  end
+  let(:todo) {FactoryGirl.create(:todo, user: @user)}
 
   it { should respond_to(:title) }
   it { should respond_to(:content) }
   it { should respond_to(:status) }
   it { should respond_to(:user) }
-  #it { should respond_to(:type) }
   #it { should respond_to(:context) }
   #it { should respond_to(:project) }
 
-  describe 'should be valid' do
-    it 'with correct data' do
-      #todo = @user.todos.new(title: 'Title', content: 'Content of invalid todo')
-      #expect(todo).to be_valid
+  context 'with correct data' do
+    specify do
+      expect(todo).to be_valid
     end
   end
 
-  describe 'should be invalid' do
+  context 'with incorrect data' do
     it 'without title' do
-      todo = @user.todos.new(application: 'Content of invalid todo')
+      todo.title = nil
+      expect(todo).not_to be_valid
+    end
+    it 'without status' do
+      todo.status = nil
+      expect(todo).not_to be_valid
+    end
+    it 'with incorrect status' do
+      todo.status = 10
       expect(todo).not_to be_valid
     end
     it 'without user on their own' do
-      todo = Todo.new(application: 'Content of invalid todo')
+      todo = Todo.new(title: 'Content of invalid todo', status:1)
       expect(todo).not_to be_valid
     end
-  end
-
-
-  after(:all) do
-    @user.destroy
+    it 'correct' do
+      expect(todo).to be_valid
+    end
   end
 end

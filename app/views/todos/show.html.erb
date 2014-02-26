@@ -1,3 +1,3 @@
 <%= content_tag(:h2, @todo.title) %>
 <%= content_tag(:p, @todo.content) %>
-<%= link_to(@todo.status, todos_path + '/status/' + @todo.status) %>
+<%= link_to(@todo.status, todos_path + '/status/' + @todo.status.to_s) %>

@@ -17,11 +17,11 @@ module ApplicationHelper
     output = {}
     output[:active] = []
     output[:hidden] = []
-    Todo::ALLOWED_STATUSES.each do |stat|
-      group = (Todo::HIDDEN_STATUSES.include? stat) ? :hidden : :active
+    Todo::STATUSES.each do |key, stat|
+      group = (Todo::STATUS_GROUP[:hidden].include? key) ? :hidden : :active
       stat = stat.to_s
-      counts[stat] = 0 unless counts[stat]
-      output[group] << {label: stat, quantity: counts[stat]}
+      counts[key] = 0 unless counts[key]
+      output[group] << {status:key.to_s, label: stat, quantity: counts[key]}
     end
     output
   end

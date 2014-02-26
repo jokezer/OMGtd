@@ -7,9 +7,11 @@ class TodosController < ApplicationController
   end
 
   def status
-    @todos = current_user.todos
-    .where("status = ?", params[:status])
+    @todos = current_user.todos.by_status(params[:status])
     .paginate(:page => params[:page])
+
+    #.where("status = ?", params[:status])
+
     render :index
   end
 
@@ -26,7 +28,7 @@ class TodosController < ApplicationController
     @todo = current_user.todos.build(todo_params)
     if @todo.save
       flash[:success] = "Todo created!"
-      redirect_to todos_path + '/status/' + params[:todo][:status]
+      redirect_to todos_path + '/status/' + Todo::STATUSES[params[:todo][:status].to_i].to_s #todo refactor it
     else
       @feed_items = []
       render new_todo_path
