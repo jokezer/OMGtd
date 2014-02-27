@@ -1,17 +1,13 @@
 class Todo < ActiveRecord::Base
 
+  # todo move status to separate active model (and controller)
+  # show method in status controller will calculate which statuses to show
+  # via current_user variable and params hash
+
   STATUSES = {1 => :inbox, 2 => :next, 3 => :scheduled, 4 => :someday, 5 => :waiting, 6 => :completed, 7 => :trash}
   STATUS_GROUP = {}
   STATUS_GROUP[:active] = [1,2,3,4,5]
   STATUS_GROUP[:hidden] = [6,7]
-  # it is possible to use .invert here
-  #ALLOWED_STATUSES = [:inbox, :next, :scheduled, :someday, :waiting, :completed, :trash]
-  #ACTIVE_STATUSES = [:inbox, :next, :scheduled, :someday, :waiting]
-  #HIDDEN_STATUSES = [:completed, :trash]
-
-  #scope :active, where(:status => Account::STATUS[:active])
-  #scope :suspended, where(:status => Account::STATUS[:suspended])
-  #scope :closed, where(:status => Account::STATUS[:closed])
 
   default_scope { order('updated_at DESC') }
 
@@ -42,6 +38,10 @@ class Todo < ActiveRecord::Base
 
   def self.invert_statuses
     STATUSES.invert
+  end
+
+  def self.status_label_id(label)
+    invert_statuses[label.to_sym]
   end
 
 end

@@ -9,14 +9,15 @@ class TodosController < ApplicationController
   def status
     @todos = current_user.todos.by_status(params[:status])
     .paginate(:page => params[:page])
-
-    #.where("status = ?", params[:status])
-
     render :index
   end
 
   def show
-    @todo = current_user.todos.find(params[:id])
+    @todo = current_user.todos.find_by_id(params[:id])
+    unless @todo
+      redirect_to root_path
+      return
+    end
   end
 
 
@@ -28,11 +29,34 @@ class TodosController < ApplicationController
     @todo = current_user.todos.build(todo_params)
     if @todo.save
       flash[:success] = "Todo created!"
-      redirect_to todos_path + '/status/' + Todo::STATUSES[params[:todo][:status].to_i].to_s #todo refactor it
+      redirect_to todos_path + '/status/' + Todo::STATUSES[@todo[:status]].to_s #todo refactor it
     else
       @feed_items = []
       render new_todo_path
     end
+  end
+
+  def update
+    @todo = current_user.todos.find_by_id(params[:id])
+    unless @todo
+      redirect_to root_path
+      #render status: 401
+      return
+    end
+    if @todo.update_attributes(todo_params)
+      flash[:success] = "Todo updated!"
+      redirect_to todos_path + '/status/' + Todo::STATUSES[@todo[:status]].to_s #todo refactor it
+    else
+      render 'show'
+    end
+  end
+
+  def destroy
+    @todo = current_user.todos.find_by_id(params[:id])
+    if @todo
+      @todo.destroy if [:trash, :completed].include? @todo.status_label
+    end
+    redirect_to root_url
   end
 
   private
@@ -42,3 +66,18 @@ class TodosController < ApplicationController
   end
 
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

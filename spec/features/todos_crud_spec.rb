@@ -6,6 +6,7 @@ feature "User login and logout" do
   after(:all) do
     @user.destroy
   end
+  let (:todo) { FactoryGirl.create(:todo, user: @user) }
   scenario 'Check form' do
     sign_in_capybara(@user)
     visit todos_path
@@ -24,11 +25,106 @@ feature "User login and logout" do
     page.should have_content('Test todo from feature test')
   end
 
-  scenario 'Edit todo' do
+  scenario 'Change status' do
     sign_in_capybara(@user)
-    todo = FactoryGirl.create(:todo, user: @user)
     visit todo_path(todo)
     page.should have_content('Factory girl todo')
-
+    select('completed', :from => 'Status')
+    expect { click_on 'Change status' }.to change(@user.todos.by_status(:completed), :count).by(1)
   end
+
+  scenario 'Edit todo' do
+    sign_in_capybara(@user)
+    visit todo_path(todo)
+    fill_in 'Title', :with => 'Changed title from feature test'
+    fill_in 'Content', :with => 'Changed content from feature test'
+    click_on 'Save changes'
+    visit todo_path(todo)
+    expect(page).to have_selector("input[type=text][value='Changed title from feature test']")
+    expect(page).to have_selector('textarea', text: 'Changed content from feature test')
+  end
+
+  scenario 'Delete button presence' do
+    sign_in_capybara(@user)
+    trash_todo = FactoryGirl.create(:todo, user: @user, status: Todo.status_label_id(:trash))
+    completed_todo = FactoryGirl.create(:todo, user: @user, status: Todo.status_label_id(:completed))
+    visit todo_path(trash_todo)
+    expect(page).to have_link("Delete todo")
+    visit todo_path(completed_todo)
+    expect(page).to have_link("Delete todo")
+    visit todo_path(todo) #inbox as default
+    expect(page).not_to have_link("Delete todo")
+  end
+
+  scenario 'Delete todo' do
+    sign_in_capybara(@user)
+    trash_todo = FactoryGirl.create(:todo, user: @user, status: Todo.status_label_id(:trash))
+    visit todo_path(trash_todo)
+    click_on 'Delete todo'
+    #expect(page).to have_content("You sure?")
+  end
+
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,13 +1,13 @@
 FactoryGirl.define do
   factory :user do
-    sequence(:email) { |n| "person_#{n}@example.com"}
+    email "person_#{User.count+1}@example.com"
     password "foobar88"
     password_confirmation "foobar88"
   end
 
   factory :todo do
     title 'Factory girl todo'
-    status '2'
+    status '1' #inbox by default
     user
   end
 end

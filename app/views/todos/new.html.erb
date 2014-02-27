@@ -1,7 +1,7 @@
 <%= bootstrap_form_for(@todo, style: :horizontal, left: "col-lg-1", right: "col-lg-6") do |f| %>
 
     <%= f.text_field :title %>
-    <%= f.select :status, Todo::STATUSES.invert, :selected => params[:from_status] %>
+    <%= f.select :status, Todo.filter_statuses_by(:active).invert, :selected => params[:from_status] %>
     <%= f.text_area :content, hide_label: :true, placeholder: "Todo description..." %>
 
     <%= f.form_group do %>
