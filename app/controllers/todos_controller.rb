@@ -23,7 +23,7 @@ class TodosController < ApplicationController
     @todo = current_user.todos.build(todo_params)
     if @todo.save
       flash[:success] = "Todo created!"
-      redirect_to todos_path + '/status/' + Todo::STATUSES[@todo[:status]].to_s #todo refactor it
+      redirect_to todos_path + '/status/' + TodoStatus::STATUSES[@todo[:status]].to_s #todo refactor it
     else
       @feed_items = []
       render new_todo_path
@@ -39,7 +39,7 @@ class TodosController < ApplicationController
     end
     if @todo.update_attributes(todo_params)
       flash[:success] = "Todo updated!"
-      redirect_to todos_path + '/status/' + Todo::STATUSES[@todo[:status]].to_s #todo refactor it
+      redirect_to todos_path + '/status/' + TodoStatus::STATUSES[@todo[:status]].to_s #todo refactor it
     else
       render 'show'
     end

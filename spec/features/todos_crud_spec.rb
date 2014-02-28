@@ -46,8 +46,8 @@ feature "User login and logout" do
 
   scenario 'Delete button presence' do
     sign_in_capybara(@user)
-    trash_todo = FactoryGirl.create(:todo, user: @user, status: Todo.status_label_id(:trash))
-    completed_todo = FactoryGirl.create(:todo, user: @user, status: Todo.status_label_id(:completed))
+    trash_todo = FactoryGirl.create(:todo, user: @user, status: TodoStatus.status_label_id(:trash))
+    completed_todo = FactoryGirl.create(:todo, user: @user, status: TodoStatus.status_label_id(:completed))
     visit todo_path(trash_todo)
     expect(page).to have_link("Delete todo")
     visit todo_path(completed_todo)
@@ -58,14 +58,13 @@ feature "User login and logout" do
 
   scenario 'Delete todo' do
     sign_in_capybara(@user)
-    trash_todo = FactoryGirl.create(:todo, user: @user, status: Todo.status_label_id(:trash))
+    trash_todo = FactoryGirl.create(:todo, user: @user, status: TodoStatus.status_label_id(:trash))
     visit todo_path(trash_todo)
     click_on 'Delete todo'
     #expect(page).to have_content("You sure?")
   end
 
 end
-
 
 
 

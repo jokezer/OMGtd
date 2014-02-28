@@ -14,7 +14,7 @@
 <%= bootstrap_form_for(@todo, style: :inline) do |f| %>
     <%= link_to(@todo.status_label, todos_path + '/status/' + @todo.status.to_s) %>
     <%= content_tag(:span, 'move to') %>
-    <%= f.select :status, Todo::STATUSES.except(@todo.status).invert %>
+    <%= f.select :status, TodoStatus::STATUSES.except(@todo.status).invert %>
     <%= f.submit "Change status", class: "btn btn-primary" %>
 <% end %>
 

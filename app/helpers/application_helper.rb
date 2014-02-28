@@ -17,8 +17,8 @@ module ApplicationHelper
     output = {}
     output[:active] = []
     output[:hidden] = []
-    Todo::STATUSES.each do |key, stat|
-      group = (Todo::STATUS_GROUP[:hidden].include? key) ? :hidden : :active
+    TodoStatus::STATUSES.each do |key, stat|
+      group = (TodoStatus::STATUS_GROUP[:hidden].include? key) ? :hidden : :active
       stat = stat.to_s
       counts[key] = 0 unless counts[key]
       output[group] << {status:key.to_s, label: stat, quantity: counts[key]}

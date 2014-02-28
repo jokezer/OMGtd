@@ -80,7 +80,7 @@ describe TodosController do
     render_views
     before do
       @todo = FactoryGirl.create(:todo, user: @user)
-      @todo_to_destroy = FactoryGirl.create(:todo, user: @user, status: Todo.status_label_id(:trash))
+      @todo_to_destroy = FactoryGirl.create(:todo, user: @user, status: TodoStatus.status_label_id(:trash))
     end
     context 'if status inbox' do
       subject { lambda { xhr :delete, :destroy, :id => @todo.id } }
@@ -101,7 +101,7 @@ describe TodosController do
   describe "User scope" do
     before do
       @another_user = FactoryGirl.create(:user, email: 'another_user@email.tu')
-      @todo = FactoryGirl.create(:todo, user: @another_user, status: Todo.status_label_id(:trash))
+      @todo = FactoryGirl.create(:todo, user: @another_user, status: TodoStatus.status_label_id(:trash))
     end
     context 'one user try to delete another users todo' do
       subject { lambda { xhr :delete, :destroy, :id => @todo.id } }
