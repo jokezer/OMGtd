@@ -5,6 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-user = User.create(email:'test@user.com', name:'Test User', password:'12345678', password_confirmation:'12345678')
-user.todos.create([{title:'First todo', status: 1}, {title:'Second todo', status: 2}, {title:'Third todo', status: 2},
-             {title:'Forth todo', status: 2},{title:'Fifth todo', status: 2}])
+User.create(email:'test@user.com', name:'Test User', password:'12345678', password_confirmation:'12345678')
+user = User.first
+user.todos.create([{title:'First todo', status_id: 1}, {title:'Second todo', status_id: 2}, {title:'Third todo', status_id: 2},
+             {title:'Forth todo', status_id: 2},{title:'Fifth todo', status_id: 2}])

@@ -11,7 +11,7 @@ describe Todo do
 
   it { should respond_to(:title) }
   it { should respond_to(:content) }
-  it { should respond_to(:status) }
+  it { should respond_to(:status_id) }
   it { should respond_to(:user) }
   #it { should respond_to(:context) }
   #it { should respond_to(:project) }
@@ -28,15 +28,15 @@ describe Todo do
       expect(todo).not_to be_valid
     end
     it 'without status' do
-      todo.status = nil
+      todo.status_id = nil
       expect(todo).not_to be_valid
     end
     it 'with incorrect status' do
-      todo.status = 10
+      todo.status_id = 0
       expect(todo).not_to be_valid
     end
     it 'without user on their own' do
-      todo = Todo.new(title: 'Content of invalid todo', status: 1)
+      todo = Todo.new(title: 'Content of invalid todo', status_id: 1)
       expect(todo).not_to be_valid
     end
     it 'correct' do

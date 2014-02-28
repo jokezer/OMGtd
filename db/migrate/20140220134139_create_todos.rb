@@ -4,7 +4,8 @@ class CreateTodos < ActiveRecord::Migration
       t.string :title, :null => false
       t.string :content
       t.integer :user_id, :null => false
-      t.integer :status
+      t.integer :status_id
+      t.integer :prior_id
       t.integer :context_id
       t.integer :project_id
       t.datetime :expire

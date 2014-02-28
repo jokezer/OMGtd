@@ -12,7 +12,7 @@ feature "User login and logout" do
     visit todos_path
     click_on 'Create new'
     expect(page).to have_selector("input[type=text][id='todo_title'][name='todo[title]']")
-    expect(page).to have_selector("select[id='todo_status'][name='todo[status]']")
+    expect(page).to have_selector("select[id='todo_status_id'][name='todo[status_id]']")
     expect(page).to have_selector("input[type=submit][value='Create todo']")
     #without data
     expect { click_on 'Create todo' }.not_to change(Todo, :count)
@@ -46,8 +46,8 @@ feature "User login and logout" do
 
   scenario 'Delete button presence' do
     sign_in_capybara(@user)
-    trash_todo = FactoryGirl.create(:todo, user: @user, status: TodoStatus.status_label_id(:trash))
-    completed_todo = FactoryGirl.create(:todo, user: @user, status: TodoStatus.status_label_id(:completed))
+    trash_todo = FactoryGirl.create(:todo, user: @user, status_id: TodoStatus.label_id(:trash))
+    completed_todo = FactoryGirl.create(:todo, user: @user, status_id: TodoStatus.label_id(:completed))
     visit todo_path(trash_todo)
     expect(page).to have_link("Delete todo")
     visit todo_path(completed_todo)
@@ -58,7 +58,7 @@ feature "User login and logout" do
 
   scenario 'Delete todo' do
     sign_in_capybara(@user)
-    trash_todo = FactoryGirl.create(:todo, user: @user, status: TodoStatus.status_label_id(:trash))
+    trash_todo = FactoryGirl.create(:todo, user: @user, status_id: TodoStatus.label_id(:trash))
     visit todo_path(trash_todo)
     click_on 'Delete todo'
     #expect(page).to have_content("You sure?")

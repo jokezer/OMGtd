@@ -1,20 +1,26 @@
 class TodoStatus #< ActiveRecord::Base #todo change to active model
   #has_many :todos
-  STATUSES = {1 => :inbox, 2 => :next, 3 => :scheduled, 4 => :someday, 5 => :waiting, 6 => :completed, 7 => :trash}
-  STATUS_GROUP = {}
-  STATUS_GROUP[:active] = [1,2,3,4,5]
-  STATUS_GROUP[:hidden] = [6,7]
+  STATUSES = {1 => :inbox,
+              2 => :next,
+              3 => :scheduled,
+              4 => :someday,
+              5 => :waiting,
+              6 => :completed,
+              7 => :trash}
+  GROUP = {}
+  GROUP[:active] = [1,2,3,4,5]
+  GROUP[:hidden] = [6,7]
 
-  def self.filter_statuses_by(group)
-    STATUSES.select { |key,_| STATUS_GROUP[group].include? key } if STATUS_GROUP[group]
+  def self.filter_by(group)
+    STATUSES.select { |key,_| GROUP[group].include? key } if GROUP[group]
   end
 
-  def self.invert_statuses
+  def self.invert
     STATUSES.invert
   end
 
-  def self.status_label_id(label)
-    invert_statuses[label.to_sym]
+  def self.label_id(label)
+    invert[label.to_sym]
   end
 
 end
