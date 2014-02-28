@@ -21,12 +21,12 @@ class Todo < ActiveRecord::Base
 
   self.per_page = 4
 
-  def count_by_type
-    user.todos.group(:status).count
-  end
-
-  def get_main_page
-  end
+  #def count_by_type
+  #  user.todos.group(:status).count
+  #end
+  
+  #def get_main_page
+  #end
 
   def status_label
     STATUSES[self.status]

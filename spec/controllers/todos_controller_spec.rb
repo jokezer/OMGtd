@@ -10,7 +10,6 @@ describe TodosController do
 
   describe "GET index" do
     it "returns http success" do
-      #get 'index'
       xhr :get, :index
       response.should be_success
     end

@@ -1,0 +1,9 @@
+class StatusController < ApplicationController
+  before_filter :authenticate_user!
+  layout "loggedin"
+  def show
+    @todos = current_user.todos.by_status(params[:status])
+    .paginate(:page => params[:page])
+    render 'todos/index'
+  end
+end

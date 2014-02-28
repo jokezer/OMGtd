@@ -1,13 +1,17 @@
 Gtd::Application.routes.draw do
   devise_for :users, :path => '', :path_names => {:sign_in => 'login', :sign_out => 'logout'}
-  resources :todos
-  get '/todos/status/:status', to: 'todos#status'
+
+  concern :status do
+    collection do
+      resources :status, only: [:show], param: :status
+    end
+  end
+
+  resources :todos, concerns: :status
+  #get '/todos/status/:status', to: 'todos#status'
 
   match '/about', to: 'static_pages#about', via: 'get'
 
-  concern :status do #todo: use it in todos, projects, contexts
-    resources :statuses, only: [:show]
-  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

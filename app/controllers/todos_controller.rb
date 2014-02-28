@@ -6,12 +6,6 @@ class TodosController < ApplicationController
     @todos = current_user.todos.paginate(:page => params[:page])
   end
 
-  def status
-    @todos = current_user.todos.by_status(params[:status])
-    .paginate(:page => params[:page])
-    render :index
-  end
-
   def show
     @todo = current_user.todos.find_by_id(params[:id])
     unless @todo
