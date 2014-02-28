@@ -11,8 +11,11 @@ describe Todo do
 
   it { should respond_to(:title) }
   it { should respond_to(:content) }
-  it { should respond_to(:status_id) }
   it { should respond_to(:user) }
+  it { should respond_to(:status_id) }
+  it { should respond_to(:status) }
+  it { should respond_to(:prior_id) }
+  it { should respond_to(:prior) }
   #it { should respond_to(:context) }
   #it { should respond_to(:project) }
 

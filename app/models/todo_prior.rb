@@ -10,6 +10,7 @@ class TodoPrior #< ActiveRecord::Base #todo change to active model
     STATUSES.invert
   end
 
+
   def self.label_id(label)
     invert[label.to_sym]
   end

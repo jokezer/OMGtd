@@ -2,7 +2,7 @@ class Todo < ActiveRecord::Base
 
   default_scope { order('updated_at DESC') }
 
-  scope :by_status, ->(label) { where(:status_id => TodoStatus.invert[label.to_sym])}
+  scope :by_status, ->(label) { where(:status_id => TodoStatus.invert[label.to_sym]) }
 
   belongs_to :user
   validates :user, presence: true
@@ -11,7 +11,11 @@ class Todo < ActiveRecord::Base
 
   self.per_page = 4
 
-  def status_label # todo change to 'status'
+  def status
     TodoStatus::STATUSES[self.status_id]
+  end
+
+  def prior
+    TodoPrior::PRIORS[self.prior_id]
   end
 end

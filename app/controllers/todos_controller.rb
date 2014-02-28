@@ -48,7 +48,7 @@ class TodosController < ApplicationController
   def destroy
     @todo = current_user.todos.find_by_id(params[:id])
     if @todo
-      @todo.destroy if [:trash, :completed].include? @todo.status_label
+      @todo.destroy if [:trash, :completed].include? @todo.status
     end
     redirect_to root_url
   end
@@ -56,7 +56,7 @@ class TodosController < ApplicationController
   private
 
   def todo_params
-    params.require(:todo).permit(:title, :status_id, :content)
+    params.require(:todo).permit(:title, :status_id, :prior_id, :content)
   end
 
 end

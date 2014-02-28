@@ -1,23 +1,27 @@
+<!--to do info-->
 <%= content_tag(:h2, @todo.title) %>
 <%= content_tag(:p, @todo.content) %>
-
+<!--main form-->
 <%= bootstrap_form_for(@todo, style: :horizontal, left: "col-lg-1", right: "col-lg-6") do |f| %>
-
     <%= f.text_field :title %>
     <%= f.text_area :content, hide_label: :true, placeholder: "Todo description..." %>
-
     <%= f.form_group do %>
         <%= f.submit "Save changes", class: "btn btn-primary" %>
     <% end %>
 <% end %>
-
+<!--status form-->
 <%= bootstrap_form_for(@todo, style: :inline) do |f| %>
-    <%= link_to(@todo.status_label, todos_path + '/status/' + @todo.status_id.to_s) %>
+    <%= link_to(@todo.status, todos_path + '/status/' + @todo.status_id.to_s) %>
     <%= content_tag(:span, 'move to') %>
     <%= f.select :status_id, TodoStatus::STATUSES.except(@todo.status_id).invert %>
     <%= f.submit "Change status", class: "btn btn-primary" %>
 <% end %>
-
-<% if [:trash, :completed].include? @todo.status_label %>
+<!--prior form-->
+<%= bootstrap_form_for(@todo, style: :inline) do |f| %>
+    <%= f.select :prior_id, TodoPrior::PRIORS.invert %>
+    <%= f.submit "Change prior", class: "btn btn-primary" %>
+<% end %>
+<!--delete form-->
+<% if [:trash, :completed].include? @todo.status %>
     <%= render 'delete_form' %>
 <% end %>

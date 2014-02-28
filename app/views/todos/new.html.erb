@@ -2,6 +2,7 @@
 
     <%= f.text_field :title %>
     <%= f.select :status_id, TodoStatus.filter_by(:active).invert, :selected => params[:from_status] %>
+    <%= f.select :prior_id, TodoPrior::PRIORS.invert %>
     <%= f.text_area :content, hide_label: :true, placeholder: "Todo description..." %>
 
     <%= f.form_group do %>

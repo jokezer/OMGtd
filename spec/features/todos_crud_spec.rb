@@ -13,6 +13,7 @@ feature "User login and logout" do
     click_on 'Create new'
     expect(page).to have_selector("input[type=text][id='todo_title'][name='todo[title]']")
     expect(page).to have_selector("select[id='todo_status_id'][name='todo[status_id]']")
+    expect(page).to have_selector("select[id='todo_prior_id'][name='todo[prior_id]']")
     expect(page).to have_selector("input[type=submit][value='Create todo']")
     #without data
     expect { click_on 'Create todo' }.not_to change(Todo, :count)
@@ -31,6 +32,15 @@ feature "User login and logout" do
     page.should have_content('Factory girl todo')
     select('completed', :from => 'Status')
     expect { click_on 'Change status' }.to change(@user.todos.by_status(:completed), :count).by(1)
+  end
+  scenario 'Change prior' do
+    sign_in_capybara(@user)
+    visit todo_path(todo)
+    page.should have_content('Factory girl todo')
+    select('high', :from => 'Prior')
+    click_on 'Change prior'
+    page.should have_content('User todos:')
+    todo.reload.prior.should == :high
   end
 
   scenario 'Edit todo' do
