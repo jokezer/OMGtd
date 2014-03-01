@@ -3,6 +3,7 @@ class StatusController < ApplicationController
   layout "loggedin"
   def show
     @todos = current_user.todos.by_status(params[:status])
+    .order('updated_at DESC') #default does not work in postgresql
     .paginate(:page => params[:page])
     render 'todos/index'
   end

@@ -1,6 +1,6 @@
 class Todo < ActiveRecord::Base
 
-  default_scope { order('updated_at DESC') }
+  # default_scope { order('updated_at DESC') } #todo dont work in postgresql
 
   scope :by_status, ->(label) { where(:status_id => TodoStatus.invert[label.to_sym]) }
 
@@ -9,7 +9,7 @@ class Todo < ActiveRecord::Base
   validates :title, presence: true
   validates :status_id, presence: true, :inclusion => {:in => TodoStatus::STATUSES.keys}
 
-  self.per_page = 4
+  self.per_page = 5
 
   def status
     TodoStatus::STATUSES[self.status_id]

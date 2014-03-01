@@ -3,7 +3,9 @@ class TodosController < ApplicationController
   layout "loggedin"
 
   def index
-    @todos = current_user.todos.paginate(:page => params[:page])
+    @todos = current_user.todos
+    .order('updated_at DESC') #default does not work in postgresql
+    .paginate(:page => params[:page])
   end
 
   def show
