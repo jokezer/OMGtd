@@ -22,7 +22,6 @@ feature "User login and logout" do
     fill_in 'Title', :with => 'Test todo from feature test'
     select('next', :from => 'Status')
     expect { click_on 'Create todo' }.to change(@user.todos, :count).by(1)
-    page.should have_content('User todos:')
     page.should have_content('Test todo from feature test')
   end
 
@@ -39,7 +38,6 @@ feature "User login and logout" do
     page.should have_content('Factory girl todo')
     select('high', :from => 'Prior')
     click_on 'Change prior'
-    page.should have_content('User todos:')
     todo.reload.prior.should == :high
   end
 

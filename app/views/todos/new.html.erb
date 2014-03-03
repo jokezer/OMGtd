@@ -8,4 +8,5 @@
     <%= f.form_group do %>
         <%= f.submit "Create todo", class: "btn btn-primary" %>
     <% end %>
+    <%= datetime_select(:todo, :expire, :default => 24.hours.from_now, :minute_step => 10) %>
 <% end %>

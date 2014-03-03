@@ -1,8 +1,10 @@
 <!--to do info-->
 <%= content_tag(:h2, @todo.title) %>
 <%= content_tag(:p, @todo.content) %>
+<!--timestamps-->
 <%= content_tag(:small, 'Created at ' + @todo.created_at.to_s) %>
 <%= content_tag(:small, 'Updated at ' + @todo.updated_at.to_s) %>
+<%= content_tag(:small, 'Expires on ' + @todo.expire.to_s) %>
 <!--main form-->
 <%= bootstrap_form_for(@todo, style: :horizontal, left: "col-lg-1", right: "col-lg-6") do |f| %>
     <%= f.text_field :title %>

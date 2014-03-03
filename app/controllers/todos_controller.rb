@@ -4,7 +4,7 @@ class TodosController < ApplicationController
 
   def index
     @todos = current_user.todos
-    .order('updated_at DESC') #default does not work in postgresql
+    .order('updated_at DESC') #default scope does not work in postgresql
     .paginate(:page => params[:page])
   end
 
@@ -58,7 +58,7 @@ class TodosController < ApplicationController
   private
 
   def todo_params
-    params.require(:todo).permit(:title, :status_id, :prior_id, :content)
+    params.require(:todo).permit(:title, :status_id, :prior_id, :content, :expire)
   end
 
 end
