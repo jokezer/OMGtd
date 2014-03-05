@@ -30,14 +30,14 @@ feature "User login and logout" do
     visit todo_path(todo)
     page.should have_content('Factory girl todo')
     select('completed', :from => 'Status')
-    expect { click_on 'Change status' }.to change(@user.todos.by_status(:completed), :count).by(1)
+    expect { click_on 'Save changes' }.to change(@user.todos.by_status(:completed), :count).by(1)
   end
   scenario 'Change prior' do
     sign_in_capybara(@user)
     visit todo_path(todo)
     page.should have_content('Factory girl todo')
     select('high', :from => 'Prior')
-    click_on 'Change prior'
+    click_on 'Save changes'
     todo.reload.prior.should == :high
   end
 
