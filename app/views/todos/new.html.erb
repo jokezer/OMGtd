@@ -1,18 +1,1 @@
-<%= bootstrap_form_for(@todo, style: :horizontal, left: "col-lg-1", right: "col-lg-6") do |f| %>
-
-    <%= f.text_field :title %>
-    <%= f.select :status_id, TodoStatus.filter_by(:active).invert,
-                 :selected => params[:from_status] %>
-    <%= f.select :prior_id, TodoPrior::COLLECTION.invert %>
-    <%= f.text_area :content, hide_label: :true, placeholder: "Todo description..." %>
-
-    <%= f.form_group :todo, label: { text: "Deadline" } do %>
-        <%= check_box("puppy", "gooddog", {}, "yes", "no") %>
-        <%= datetime_select(:todo, :expire, :default => 24.hours.from_now,
-                            :minute_step => 10, :class => 'col-lg-6') %>
-    <% end %>
-
-    <%= f.form_group do %>
-        <%= f.submit "Create todo", class: "btn btn-primary" %>
-    <% end %>
-<% end %>
+<%= render 'new_form', button_title: 'Create todo' %>

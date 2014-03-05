@@ -6,11 +6,13 @@ class Todo < ActiveRecord::Base
   scope :today, -> {
     where('expire < ?', DateTime.now.end_of_day)
     .where(:status_id => TodoStatus::GROUP[:active])
-    .order('updated_at DESC') }
+    .order('updated_at DESC')
+  }
   scope :tomorrow, -> {
     where('expire BETWEEN ? AND ?', DateTime.now.tomorrow.beginning_of_day, DateTime.now.tomorrow.end_of_day)
     .where(:status_id => TodoStatus::GROUP[:active])
-    .order('updated_at DESC') }
+    .order('updated_at DESC')
+  }
   scope :later_or_no_deadline, -> { where("expire > ? or expire is NULL", DateTime.now.end_of_day) }
 
   belongs_to :user
@@ -26,5 +28,8 @@ class Todo < ActiveRecord::Base
 
   def prior
     TodoPrior::COLLECTION[self.prior_id]
+  end
+
+  def deadline
   end
 end

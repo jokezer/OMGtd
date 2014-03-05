@@ -20,6 +20,15 @@ describe Todo do
     end
   end
 
+  context 'check order' do
+    specify do
+      FactoryGirl.create(:todo, user: user, title: 'First created todo')
+      FactoryGirl.create(:todo, user: user, title: 'Last created todo')
+      #user.todos.first.should == 'Last created todo'
+      pending 'Fix default order in postgresql'
+    end
+  end
+
   context 'with incorrect data' do
     it 'without title' do
       todo.title = nil
@@ -73,7 +82,7 @@ describe Todo do
                          expire: DateTime.now.tomorrow)
       user.todos.tomorrow.first.title.should == 'Tomorrow todo'
       user.todos.tomorrow.count.should == 1
-      end
+    end
     it 'later or with no deadline' do
       FactoryGirl.create(:todo, status_id: TodoStatus.label_id(:scheduled),
                          title: 'Later todo',

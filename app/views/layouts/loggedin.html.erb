@@ -3,6 +3,9 @@
   <%= render 'menu/todo_sidebar' %>
 </div>
 <div class="col-lg-9">
+  <% flash.each do |key, value| %>
+      <%= content_tag(:div, value, class: "alert alert-#{key}") %>
+  <% end %>
   <%= yield %>
 </div>
 <% end %>

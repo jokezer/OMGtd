@@ -22,6 +22,7 @@ feature "User login and logout" do
     fill_in 'Title', :with => 'Test todo from feature test'
     select('next', :from => 'Status')
     expect { click_on 'Create todo' }.to change(@user.todos, :count).by(1)
+    page.should have_content('Todo created!')
     page.should have_content('Test todo from feature test')
   end
 
@@ -47,6 +48,7 @@ feature "User login and logout" do
     fill_in 'Title', :with => 'Changed title from feature test'
     fill_in 'Content', :with => 'Changed content from feature test'
     click_on 'Save changes'
+    expect(page).to have_content('Todo updated!')
     visit todo_path(todo)
     expect(page).to have_selector("input[type=text][value='Changed title from feature test']")
     expect(page).to have_selector('textarea', text: 'Changed content from feature test')
@@ -72,66 +74,8 @@ feature "User login and logout" do
     #expect(page).to have_content("You sure?")
   end
 
+  scenario 'Set deadline' do
+    pending 'Deadline should be nil if not checkbox selected'
+  end
+
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

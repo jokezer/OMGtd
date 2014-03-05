@@ -1,4 +1,8 @@
-<%= content_tag(:div, class:'thumbnail') do %>
+<%= content_tag(:div, class: 'thumbnail') do %>
+    <% if todo.expire %>
+        <%= content_tag(:small, 'Expires ' + todo.expire.to_formatted_s(:long),
+                        :class => 'pull-right') %>
+    <% end %>
     <%= content_tag(:h5, todo.title) %>
     <%= content_tag(:small, todo.content) %>
     <%= content_tag(:p, todo.prior, :class => ('pull-right')) %>

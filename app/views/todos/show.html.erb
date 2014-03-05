@@ -5,19 +5,7 @@
 <%= content_tag(:small, 'Created at ' + @todo.created_at.to_formatted_s(:long)) %>
 <%= content_tag(:small, 'Updated at ' + @todo.updated_at.to_formatted_s(:long)) %>
 <!--main form-->
-<%= bootstrap_form_for(@todo, style: :horizontal, left: "col-lg-1", right: "col-lg-6") do |f| %>
-    <%= f.text_field :title %>
-    <%= f.text_area :content, hide_label: :true, placeholder: "Todo description..." %>
-    <%= f.select :status_id, TodoStatus::COLLECTION.invert %>
-    <%= f.select :prior_id, TodoPrior::COLLECTION.invert %>
-    <%= f.form_group :todo, label: {text: "Deadline"} do %>
-        <%= check_box("puppy", "gooddog", {}, "yes", "no") %>
-        <%= datetime_select(:todo, :expire, :default => 24.hours.from_now, :minute_step => 10) %>
-    <% end %>
-    <%= f.form_group do %>
-        <%= f.submit "Save changes", class: "btn btn-primary" %>
-    <% end %>
-<% end %>
+<%= render 'new_form', button_title: 'Save changes' %>
 <!--delete form-->
 <% if [:trash, :completed].include? @todo.status %>
     <%= render 'delete_form' %>
