@@ -3,6 +3,9 @@ class TodosController < ApplicationController
   layout "loggedin"
 
   def index
+    @today = current_user.todos.today
+    @tomorrow = current_user.todos.tomorrow
+    @next = current_user.todos.by_status(:next).later_or_no_deadline
     @todos = current_user.todos
     .order('updated_at DESC') #default scope does not work in postgresql
     .paginate(:page => params[:page])
@@ -25,7 +28,7 @@ class TodosController < ApplicationController
     @todo = current_user.todos.build(todo_params)
     if @todo.save
       flash[:success] = "Todo created!"
-      redirect_to todos_path + '/status/' + TodoStatus::STATUSES[@todo[:status_id]].to_s #todo refactor it
+      redirect_to todos_path + '/status/' + TodoStatus.label(@todo[:status_id]).to_s
     else
       @feed_items = []
       render new_todo_path
@@ -36,12 +39,11 @@ class TodosController < ApplicationController
     @todo = current_user.todos.find_by_id(params[:id])
     unless @todo
       redirect_to root_path
-      #render status: 401
       return
     end
     if @todo.update_attributes(todo_params)
       flash[:success] = "Todo updated!"
-      redirect_to todos_path + '/status/' + TodoStatus::STATUSES[@todo[:status_id]].to_s #todo refactor it
+      redirect_to todos_path + '/status/' + TodoStatus.label(@todo[:status_id]).to_s
     else
       render 'show'
     end

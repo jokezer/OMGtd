@@ -1,6 +1,14 @@
 <div class="col-lg-9">
-  <%= link_to('Create new', new_todo_path(:from_status => params[:status]),
-              :title => "Create new todo", :class => 'btn btn-success') %>
-  <%= render @todos %>
-  <%= will_paginate @todos, renderer: BootstrapPagination::Rails %>
+  <% if @today %>
+      <%= content_tag(:h4, 'Today actions:') %>
+      <%= render @today %>
+  <% end %>
+  <% if @next %>
+      <%= content_tag(:h4, 'Next actions:') %>
+      <%= render @today %>
+  <% end %>
+  <% if @tomorrow %>
+      <%= content_tag(:h4, 'Tomorrow actions:') %>
+      <%= render @today %>
+  <% end %>
 </div>

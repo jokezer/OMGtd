@@ -7,8 +7,8 @@ FactoryGirl.define do
 
   factory :todo do
     title 'Factory girl todo'
-    status_id '1' #inbox by default
-    prior_id '1' #low by default
+    status_id TodoStatus.label_id :inbox
+    prior_id TodoPrior.label_id :low
     user
   end
 end

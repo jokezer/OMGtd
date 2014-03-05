@@ -1,6 +1,6 @@
 class TodoStatus #< ActiveRecord::Base #todo change to active model
   #has_many :todos
-  STATUSES = {1 => :inbox,
+  COLLECTION = {1 => :inbox,
               2 => :next,
               3 => :scheduled,
               4 => :someday,
@@ -12,11 +12,15 @@ class TodoStatus #< ActiveRecord::Base #todo change to active model
   GROUP[:hidden] = [6,7]
 
   def self.filter_by(group)
-    STATUSES.select { |key,_| GROUP[group].include? key } if GROUP[group]
+    COLLECTION.select { |key,_| GROUP[group].include? key } if GROUP[group]
   end
 
   def self.invert
-    STATUSES.invert
+    COLLECTION.invert
+  end
+
+  def self.label(id)
+    COLLECTION[id.to_i]
   end
 
   def self.label_id(label)

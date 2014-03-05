@@ -5,6 +5,5 @@ class StatusController < ApplicationController
     @todos = current_user.todos.by_status(params[:status])
     .order('updated_at DESC') #default scope does not work in postgresql
     .paginate(:page => params[:page])
-    render 'todos/index'
   end
 end
