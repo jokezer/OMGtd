@@ -12,6 +12,9 @@ gem 'devise'
 gem 'sqlite3'
 gem 'pg'
 
+# Use HAML
+gem 'haml'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 

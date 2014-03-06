@@ -14,6 +14,7 @@ feature "User login and logout" do
     expect(page).to have_selector("input[type=text][id='todo_title'][name='todo[title]']")
     expect(page).to have_selector("select[id='todo_status_id'][name='todo[status_id]']")
     expect(page).to have_selector("select[id='todo_prior_id'][name='todo[prior_id]']")
+    expect(page).to have_selector("select[id='todo_context_id'][name='todo[context_id]']")
     expect(page).to have_selector("input[type=submit][value='Create todo']")
     #without data
     expect { click_on 'Create todo' }.not_to change(Todo, :count)
@@ -29,14 +30,19 @@ feature "User login and logout" do
   scenario 'Change status' do
     sign_in_capybara(@user)
     visit todo_path(todo)
-    page.should have_content('Factory girl todo')
     select('completed', :from => 'Status')
     expect { click_on 'Save changes' }.to change(@user.todos.by_status(:completed), :count).by(1)
+  end
+  scenario 'Change context' do
+    sign_in_capybara(@user)
+    visit todo_path(todo)
+    select('@Errands', :from => 'Context')
+    expect { click_on 'Save changes' }.to change(@user.contexts.find_by_name('@Errands').todos, :count).by(1)
+    todo.reload.context.name.should == '@Errands'
   end
   scenario 'Change prior' do
     sign_in_capybara(@user)
     visit todo_path(todo)
-    page.should have_content('Factory girl todo')
     select('high', :from => 'Prior')
     click_on 'Save changes'
     todo.reload.prior.should == :high

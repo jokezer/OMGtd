@@ -16,6 +16,8 @@ class Todo < ActiveRecord::Base
   scope :later_or_no_deadline, -> { where("expire > ? or expire is NULL", DateTime.now.end_of_day) }
 
   belongs_to :user
+  belongs_to :context
+
   validates :user, presence: true
   validates :title, presence: true
   validates :status_id, presence: true, :inclusion => {:in => TodoStatus::COLLECTION.keys}

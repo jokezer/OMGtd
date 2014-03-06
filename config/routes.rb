@@ -8,6 +8,10 @@ Gtd::Application.routes.draw do
   end
 
   resources :todos, concerns: :status
+
+  resources :contexts do
+    resources :todos
+  end
   #get '/todos/status/:status', to: 'todos#status'
 
   match '/about', to: 'static_pages#about', via: 'get'
