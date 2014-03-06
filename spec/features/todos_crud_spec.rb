@@ -27,7 +27,7 @@ feature "User login and logout" do
     page.should have_content('Test todo from feature test')
   end
 
-  scenario 'Change status' do
+  scenario 'Change statuses' do
     sign_in_capybara(@user)
     visit todo_path(todo)
     select('completed', :from => 'Status')

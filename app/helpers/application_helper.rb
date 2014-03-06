@@ -12,7 +12,7 @@ module ApplicationHelper
       group = (TodoStatus::GROUP[:hidden].include? key) ? :hidden : :active
       stat = stat.to_s
       counts[key] = 0 unless counts[key]
-      output[group] << {status: key.to_s, label: stat, quantity: counts[key]}
+      output[group] << {id: key.to_s, label: stat, todo_count: counts[key]}
     end
     output
   end

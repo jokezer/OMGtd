@@ -35,11 +35,11 @@ describe Todo do
       todo.title = nil
       expect(todo).not_to be_valid
     end
-    it 'without status' do
+    it 'without statuses' do
       todo.status_id = nil
       expect(todo).not_to be_valid
     end
-    it 'with incorrect status' do
+    it 'with incorrect statuses' do
       todo.status_id = 0
       expect(todo).not_to be_valid
     end

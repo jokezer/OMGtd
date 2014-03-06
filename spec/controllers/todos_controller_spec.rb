@@ -34,7 +34,7 @@ describe TodosController do
       it do
         should change(@user.todos, :count).by(1)
         response.status.should == 302
-        response.should redirect_to('http://test.host/todos/status/inbox')
+        response.should redirect_to('http://test.host/todos/statuses/inbox')
       end
     end
 
@@ -59,16 +59,16 @@ describe TodosController do
       @todo_update = FactoryGirl.create(:todo, user: @user)
     end
     context 'when try to create todo with correct data' do
-      subject { lambda { xhr :post, :update, :id => @todo_update.id, :todo => {'title' => 'rspec updated status', 'status_id' => 1} } }
+      subject { lambda { xhr :post, :update, :id => @todo_update.id, :todo => {'title' => 'rspec updated statuses', 'status_id' => 1} } }
       it do
         should_not change(@user.todos, :count)
         response.status.should == 302
-        response.should redirect_to('http://test.host/todos/status/inbox')
-        @user.todos.order("updated_at").last.title.should == 'rspec updated status'
+        response.should redirect_to('http://test.host/todos/statuses/inbox')
+        @user.todos.order("updated_at").last.title.should == 'rspec updated statuses'
       end
     end
     context 'when try to create todo with incorrect data' do
-      subject { lambda { xhr :post, :update, :id => @todo_update.id, :todo => {'title' => '', 'status' => 1} } }
+      subject { lambda { xhr :post, :update, :id => @todo_update.id, :todo => {'title' => '', 'statuses' => 1} } }
       it do
         should_not change(@user.todos, :count)
         response.should render_template(:show)
@@ -82,14 +82,14 @@ describe TodosController do
       @todo = FactoryGirl.create(:todo, user: @user)
       @todo_to_destroy = FactoryGirl.create(:todo, user: @user, status_id: TodoStatus.label_id(:trash))
     end
-    context 'if status inbox' do
+    context 'if statuses inbox' do
       subject { lambda { xhr :delete, :destroy, :id => @todo.id } }
       it do
         should_not change(@user.todos, :count)
         response.should redirect_to(root_path)
       end
     end
-    context 'if status trash' do
+    context 'if statuses trash' do
       subject { lambda { xhr :delete, :destroy, :id => @todo_to_destroy.id } }
       it do
         should change(@user.todos, :count).by(-1)

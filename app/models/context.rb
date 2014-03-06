@@ -16,9 +16,13 @@ class Context < ActiveRecord::Base
   end
 
   def self.make_group
-    self.find(:all, :select => 'contexts.*, count(todos.id) as todo_count',
-                 :joins => 'left outer join todos on todos.context_id = contexts.id',
-                 :group => 'contexts.id'
-    )
+    self.select('contexts.id, contexts.name as label, count(todos.id) as todo_count')
+    .joins('left outer join todos on todos.context_id = contexts.id')
+    .group('contexts.id')
+    .to_a.map{|a|a.serializable_hash.symbolize_keys}
+  end
+
+  def self.by_name(name)
+    self.where('lower(name) = ?', name.downcase).take
   end
 end

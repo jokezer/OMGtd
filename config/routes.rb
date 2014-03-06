@@ -1,18 +1,20 @@
 Gtd::Application.routes.draw do
   devise_for :users, :path => '', :path_names => {:sign_in => 'login', :sign_out => 'logout'}
 
-  concern :status do
+  concern :statuses do
     collection do
-      resources :status, only: [:show], param: :status
+      resources :statuses, only: [:show], param: :statuses
+    end
+  end
+  concern :context do
+    collection do
+      resources :contexts, only: [:index,:show], param: :context
     end
   end
 
-  resources :todos, concerns: :status
+  resources :todos, concerns: [:statuses, :context]
 
-  resources :contexts do
-    resources :todos
-  end
-  #get '/todos/status/:status', to: 'todos#status'
+  #get '/todos/statuses/:statuses', to: 'todos#statuses'
 
   match '/about', to: 'static_pages#about', via: 'get'
 
