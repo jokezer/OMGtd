@@ -37,8 +37,8 @@ feature "User login and logout" do
     sign_in_capybara(@user)
     visit todo_path(todo)
     select('@Errands', :from => 'Context')
-    expect { click_on 'Save changes' }.to change(@user.contexts.find_by_name('@Errands').todos, :count).by(1)
-    todo.reload.context.name.should == '@Errands'
+    expect { click_on 'Save changes' }.to change(@user.contexts.find_by_name('Errands').todos, :count).by(1)
+    todo.reload.context.name.should == 'Errands'
   end
   scenario 'Change prior' do
     sign_in_capybara(@user)

@@ -65,7 +65,7 @@ describe ContextsController do
         should_not change(@user.contexts, :count)
         response.status.should == 302
         response.should redirect_to("#{contexts_path}/")
-        @user.contexts.first.name.should == '@Correct'
+        @user.contexts.first.name.should == 'Correct'
       end
     end
     context 'when try to create todo with incorrect data' do

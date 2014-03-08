@@ -3,6 +3,7 @@ class Context < ActiveRecord::Base
   has_many :todos
   validates :user, presence: true
   validates :name, presence: true, :uniqueness => {:scope => :user_id} #case sensitive false
+  #after_find {|a|a.label = '@'+a.name}
   #todo add max length and exclusion for word "new"
   #todo make inclusion todos
 
@@ -17,7 +18,7 @@ class Context < ActiveRecord::Base
   end
 
   def self.make_group
-    self.select('contexts.name as label, count(todos.id) as todo_count')
+    self.select('contexts.name, contexts.name as label, count(todos.id) as todo_count')
     .joins('left outer join todos on todos.context_id = contexts.id')
     .group('contexts.id')
     .to_a.map {|a|a.serializable_hash.symbolize_keys}
@@ -25,6 +26,12 @@ class Context < ActiveRecord::Base
 
   def self.by_name(name)
     self.where('lower(name) = ?', name.downcase).take
+  end
+
+  #def label=(value)
+  #end
+  def label
+    "@#{self.name}"
   end
 
 end
