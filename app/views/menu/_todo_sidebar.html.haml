@@ -3,7 +3,7 @@
 = link_to('Create new', new_todo_path(:from_status => params[:statuses]),
             :title => "Create new todo", :class => 'btn btn-success')
 = render 'menu/badge', menu_hash: menu_hash[:active], type: :statuses
-hidden todos
-= render 'menu/badge', menu_hash: menu_hash[:hidden], type: :statuses
 contexts
 = render 'menu/badge', menu_hash: context_hash, type: :context
+hidden todos
+= render 'menu/badge', menu_hash: menu_hash[:hidden], type: :statuses

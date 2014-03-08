@@ -8,7 +8,7 @@ Gtd::Application.routes.draw do
   end
   concern :context do
     collection do
-      resources :contexts, only: [:index,:show], param: :context
+      resources :contexts
     end
   end
 

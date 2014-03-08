@@ -31,12 +31,9 @@ class TodosController < ApplicationController
 
   def update
     @todo = current_user.todos.find_by_id(params[:id])
-    unless @todo
-      redirect_to root_path
-      return
-    end
+    redirect_to root_path and return unless @todo
     if @todo.update_attributes(todo_params)
-      flash[:success] = "Todo updated!"
+      flash[:success] = 'Todo updated!'
       redirect_to "#{todos_path}/statuses/#{TodoStatus.label(@todo[:status_id]).to_s}"
     else
       render 'show'
@@ -48,7 +45,7 @@ class TodosController < ApplicationController
     redirect_to root_url and return unless @todo
     if [:trash, :completed].include? @todo.status
       @todo.destroy
-      flash[:success] = "Todo deleted!"
+      flash[:success] = 'Todo deleted!'
     end
     redirect_to root_url
   end

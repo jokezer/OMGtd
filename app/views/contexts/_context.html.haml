@@ -1,2 +1,5 @@
 %h3= context.name
-= link_to "show", context_path(context)
+= link_to 'show', "/todos/contexts/#{context.name.downcase}"
+= link_to 'edit', edit_context_path(context)
+= link_to 'delete', context, method: :delete,
+data: { confirm: 'You sure?' }

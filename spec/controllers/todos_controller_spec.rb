@@ -59,7 +59,10 @@ describe TodosController do
       @todo_update = FactoryGirl.create(:todo, user: @user)
     end
     context 'when try to create todo with correct data' do
-      subject { lambda { xhr :post, :update, :id => @todo_update.id, :todo => {'title' => 'rspec updated statuses', 'status_id' => 1} } }
+      subject { lambda { xhr :post, :update,
+                             :id => @todo_update.id,
+                             :todo => {'title' => 'rspec updated statuses',
+                                       'status_id' => 1} } }
       it do
         should_not change(@user.todos, :count)
         response.status.should == 302
@@ -68,7 +71,9 @@ describe TodosController do
       end
     end
     context 'when try to create todo with incorrect data' do
-      subject { lambda { xhr :post, :update, :id => @todo_update.id, :todo => {'title' => '', 'statuses' => 1} } }
+      subject { lambda { xhr :post, :update,
+                             :id => @todo_update.id,
+                             :todo => {'title' => '', 'statuses' => 1} } }
       it do
         should_not change(@user.todos, :count)
         response.should render_template(:show)

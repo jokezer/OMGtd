@@ -2,9 +2,9 @@
   = f.text_field :title
   = f.text_area :content, hide_label: :true, placeholder: "Todo description..."
   = f.select :status_id, TodoStatus::COLLECTION.invert
-  = f.select :prior_id, TodoPrior::COLLECTION.invert
+  = f.select :prior_id, TodoPrior::COLLECTION.invert, :prompt => "Prior..."
   - array = current_user.contexts.map { |context| [context.name, context.id] }
-  = f.select :context_id, array
+  = f.select :context_id, array, :prompt => "Context..."
   = f.form_group(:todo, label: {text: "Deadline"}) do
     = check_box(:todo2, :deadline, {})
     = datetime_select(:todo, :expire, :default => 24.hours.from_now, :minute_step => 10)

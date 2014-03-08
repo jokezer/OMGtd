@@ -1,0 +1,7 @@
+= form_for(@context, style: :horizontal, left: "col-lg-1", right: "col-lg-6") do |f|
+  .form-group
+    .input-group
+      %span.input-group-addon @
+      = f.text_field :name, class:'form-control'
+
+  = f.submit 'Save', class: 'btn btn-primary'
