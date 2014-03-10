@@ -8,10 +8,11 @@ Gtd::Application.routes.draw do
   end
   concern :context do
     collection do
-      resources :contexts
+      resources :contexts, param: :context, only: [:show]
     end
   end
 
+  resources :contexts, param: :label, only: [:new, :create, :edit, :update, :destroy, :index]
   resources :todos, concerns: [:statuses, :context]
 
   #get '/todos/statuses/:statuses', to: 'todos#statuses'

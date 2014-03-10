@@ -22,32 +22,32 @@ class ContextsController < ApplicationController
   end
 
   def show
-    context = current_user.contexts.by_name(params[:id])
+    context = current_user.contexts.by_label(params[:context])
     redirect_to root_path and return unless context #todo make it :before function?
     @todos = context.todos.paginate(:page => params[:page])
     render 'statuses/show'
   end
 
   def edit
-    @context = current_user.contexts.find(params[:id])
+    @context = current_user.contexts.by_label(params[:label])
     redirect_to root_path and return unless @context #todo make it :before function?
   end
 
   def update
-    @context = current_user.contexts.find(params[:id])
-    redirect_to "/todos/contexts/" and return unless @context
+    @context = current_user.contexts.find(params[:label])
+    redirect_to '/todos/contexts/' and return unless @context
     if @context.update_attributes(context_params)
-      flash[:success] = "Context updated!"
-      redirect_to '/todos/contexts/'
+      flash[:success] = 'Context updated!'
+      redirect_to contexts_path
     else
       render 'edit'
     end
   end
 
   def destroy
-    @context = current_user.contexts.find(params[:id])
+    @context = current_user.contexts.find(params[:label])
     @context.destroy
-    flash[:success] = "Context deleted!"
+    flash[:success] = 'Context deleted!'
     redirect_to contexts_path
   end
 
