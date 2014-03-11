@@ -1,12 +1,12 @@
-= bootstrap_form_for(@todo, style: :horizontal, left: "col-lg-1", right: "col-lg-6") do |f|
+= bootstrap_form_for(@todo, style: :horizontal, left: 'col-lg-1', right: 'col-lg-6') do |f|
   = f.text_field :title
-  = f.text_area :content, hide_label: :true, placeholder: "Todo description..."
-  = f.select :status_id, TodoStatus::COLLECTION.invert
-  = f.select :prior_id, TodoPrior::COLLECTION.invert, :prompt => "Prior..."
+  = f.text_area :content, hide_label: :true, placeholder: 'Todo description...'
+  = f.select :status_id, TodoStatus::COLLECTION.invert#, :selected => TodoStatus.label_id(params[:from_status]) #todo if new
+  = f.select :prior_id, TodoPrior::COLLECTION.invert, :prompt => 'Prior...'
   - array = current_user.contexts.map { |context| [context.label, context.id] }
-  = f.select :context_id, array, :prompt => "Context..."
-  = f.form_group(:todo, label: {text: "Deadline"}) do
-    = check_box(:todo2, :deadline, {})
+  = f.select :context_id, array, :prompt => 'Context...'
+  = f.form_group(:todo, label: {text: 'Deadline'}) do
+    = check_box(:todo, :is_deadline)
     = datetime_select(:todo, :expire, :default => 24.hours.from_now, :minute_step => 10)
   = f.form_group do
-    = f.submit button_title, class: "btn btn-primary"
+    = f.submit button_title, class: 'btn btn-primary'

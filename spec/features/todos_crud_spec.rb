@@ -58,6 +58,7 @@ feature "User login and logout" do
     visit todo_path(todo)
     expect(page).to have_selector("input[type=text][value='Changed title from feature test']")
     expect(page).to have_selector('textarea', text: 'Changed content from feature test')
+    todo.reload.expire.should == nil
   end
 
   scenario 'Delete button presence' do
@@ -81,7 +82,12 @@ feature "User login and logout" do
   end
 
   scenario 'Set deadline' do
-    pending 'Deadline should be nil if not checkbox selected'
+    sign_in_capybara(@user)
+    visit todo_path(todo)
+    find(:css, "#todo_is_deadline[value='1']").set(true)
+    fill_in 'Title', :with => 'With deadline'
+    click_on 'Save changes'
+    todo.reload.expire.should_not == nil
   end
 
 end

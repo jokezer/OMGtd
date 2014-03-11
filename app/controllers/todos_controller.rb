@@ -1,6 +1,6 @@
 class TodosController < ApplicationController
   before_filter :authenticate_user!
-  layout "loggedin"
+  layout 'loggedin'
 
   def index
     @today = current_user.todos.today
@@ -21,7 +21,7 @@ class TodosController < ApplicationController
   def create
     @todo = current_user.todos.build(todo_params)
     if @todo.save
-      flash[:success] = "Todo created!"
+      flash[:success] = 'Todo created!'
       redirect_to "#{todos_path}/statuses/#{TodoStatus.label(@todo[:status_id]).to_s}"
     else
       @feed_items = []
@@ -36,7 +36,7 @@ class TodosController < ApplicationController
       flash[:success] = 'Todo updated!'
       redirect_to "#{todos_path}/statuses/#{TodoStatus.label(@todo[:status_id]).to_s}"
     else
-      render 'show'
+      render :show
     end
   end
 
@@ -53,7 +53,8 @@ class TodosController < ApplicationController
   private
 
   def todo_params
-    params.require(:todo).permit(:title, :status_id, :prior_id, :content, :expire, :context_id)
+    params.require(:todo).permit(:title, :status_id, :prior_id,
+                                 :content, :expire, :context_id, :is_deadline)
   end
 
 end

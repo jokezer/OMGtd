@@ -110,4 +110,8 @@ describe Todo do
     end
   end
 
+  describe 'scheduled todo have to have deadline' do
+    pending 'make deadline obligatory for scheduled todo'
+  end
+
 end

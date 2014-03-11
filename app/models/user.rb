@@ -4,9 +4,10 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  #todo optimize db requests
   has_many :todos, :dependent => :delete_all
-  #todo user have to include all his contexts on initialize time
   has_many :contexts, :dependent => :delete_all
+  has_many :projects, :dependent => :delete_all
 
   after_create do |user|
     user.contexts.create_defaults

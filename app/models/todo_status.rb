@@ -24,7 +24,7 @@ class TodoStatus #< ActiveRecord::Base #todo change to active model
   end
 
   def self.label_id(label)
-    invert[label.to_sym]
+    invert[label.to_sym] if label
   end
 
 end
