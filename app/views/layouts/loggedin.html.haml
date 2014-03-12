@@ -1,11 +1,11 @@
 - content_for :application do
-  %div.col-lg-3
+  .col-lg-3
     = render 'menu/todo_sidebar'
-  %div.col-lg-9
-    - flash.each do |key, value|
-      %div{:class => "col-lg-9 alert alert-#{key}"}
-        =value
-
-    = yield
-
-= render template: "layouts/application"
+  .col-lg-6
+    .row
+      - flash.each do |key, value|
+        %div{:class => "col-lg-9 alert alert-#{key}"}
+          =value
+    .row
+      = yield
+= render template: 'layouts/application'

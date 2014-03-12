@@ -19,10 +19,11 @@ class Todo < ActiveRecord::Base
     .order('updated_at DESC')
   }
   scope :later_or_no_deadline, -> { where("expire > ? or expire is NULL",
-                                          DateTime.now.end_of_day) }
+                                          DateTime.now.tomorrow.end_of_day) }
 
   belongs_to :user
   belongs_to :context
+  belongs_to :project
 
   validates :user, presence: true
   validates :title, presence: true

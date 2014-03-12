@@ -10,10 +10,18 @@ FactoryGirl.define do
     status_id TodoStatus.label_id :inbox
     prior_id TodoPrior.label_id :low
     user
+    project
   end
 
   factory :context do
     name '@Home'
+    user
+  end
+
+  factory :project do
+    title 'Factory girl project'
+    content 'Factory girl projects content'
+    prior_id TodoPrior.label_id :low
     user
   end
 

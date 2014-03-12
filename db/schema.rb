@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20140310080437) do
 
   create_table "projects", force: true do |t|
     t.string   "title",      null: false
+    t.string   "name"
     t.string   "content"
     t.integer  "user_id",    null: false
     t.integer  "prior_id"

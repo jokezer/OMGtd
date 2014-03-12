@@ -43,12 +43,12 @@ describe ContextsController do
 
   describe '#show' do
     it 'with correct context' do
-      xhr :get, :show, :context => @user.contexts.first.label
+      xhr :get, :show, :label => @user.contexts.first.label
       response.should be_success
-      response.should render_template('statuses/show')
+      response.should render_template('todos/list')
     end
     it 'with incorrect context' do
-      xhr :get, :show, :context => 'incorrect context'
+      xhr :get, :show, :label => 'incorrect_context'
       response.should redirect_to(root_path)
     end
   end

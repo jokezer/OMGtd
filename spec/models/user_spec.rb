@@ -6,6 +6,7 @@ describe User do
   it { should respond_to(:email) }
   it { should respond_to(:todos) }
   it { should respond_to(:contexts) }
+  it { should respond_to(:projects) }
 
   describe 'should be valid' do
     it 'with correct data' do

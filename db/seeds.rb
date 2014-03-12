@@ -13,3 +13,4 @@ user.todos.create([{title: 'First todo', status_id: 1},
                    {title: 'Third todo', status_id: 2},
                    {title: 'Forth todo', status_id: 2},
                    {title: 'Fifth todo', status_id: 2}])
+user.projects.create(title:'Test project', content:'content of test project')

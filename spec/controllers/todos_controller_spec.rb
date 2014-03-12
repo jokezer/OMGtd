@@ -47,7 +47,7 @@ describe TodosController do
     end
   end
 
-  describe '#show' do
+  describe '#get' do
     it 'new todo pass should render new template' do
       xhr :get, :show, :id => todo.id
       response.should be_success
@@ -76,7 +76,7 @@ describe TodosController do
                              :todo => {'title' => '', 'statuses' => 1} } }
       it do
         should_not change(@user.todos, :count)
-        response.should render_template(:show)
+        response.should render_template(:new)
       end
     end
   end
@@ -118,14 +118,14 @@ describe TodosController do
     context 'one user try to see another users todo' do
       it do
         xhr :get, :show, :id => @todo.id
-        response.should_not render_template('show')
+        response.should_not render_template(:list)
         response.should redirect_to(root_path)
       end
     end
     context 'one user try to update another users todo' do
       it do
         xhr :post, :update, :id => @todo.id
-        response.should_not render_template('show')
+        response.should_not render_template('list')
         response.should redirect_to(root_path)
       end
     end

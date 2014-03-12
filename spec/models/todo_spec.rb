@@ -13,7 +13,7 @@ describe Todo do
   it { should respond_to(:prior) }
   it { should respond_to(:expire) }
   it { should respond_to(:context) }
-  #it { should respond_to(:project) }
+  it { should respond_to(:project) }
 
   context 'with correct data' do
     specify do

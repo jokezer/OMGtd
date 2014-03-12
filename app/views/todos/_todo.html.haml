@@ -6,4 +6,10 @@
   %p.pull-right= todo.prior
   %p
     %small= todo.status
-    = link_to('show', todo, :title => "View todo: #{todo.title}")
+    =link_to('show', todo, :title => "View todo: #{todo.title}")
+    -if todo.project
+      =link_to project_path todo.project.name do
+        %small= todo.project.label
+    -if todo.context
+      =link_to "/todos/contexts/#{todo.context.label}" do
+        %small= todo.context.label

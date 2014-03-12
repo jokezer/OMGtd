@@ -1,10 +1,9 @@
-.col-lg-9
-  - if @today
-    %h4 Today actions:
-    =render @today
-  - if @next
-    %h4 Next actions:
-    =render @today
-  - if @tomorrow
-    %h4 Tomorrow actions:
-    =render @today
+- unless @today.blank?
+  %h4 Today actions:
+  =render @today
+- unless @next.blank?
+  %h4 Next actions:
+  =render @next
+- unless @tomorrow.blank?
+  %h4 Tomorrow actions:
+  =render @tomorrow

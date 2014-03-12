@@ -1,3 +1,4 @@
+#todo context and project models has many common things that would be better to put in module
 class Context < ActiveRecord::Base
   belongs_to :user
   has_many :todos, :dependent => :nullify

@@ -1,0 +1,17 @@
+= bootstrap_form_for(@project, style: :horizontal, left: "col-lg-2",
+right: "col-lg-8") do |f|
+  = f.text_field :title
+  -#todo make it in helper
+  .form-group
+    %label.col-lg-2.control-label Name
+    .col-lg-8
+      .input-group
+        %span.input-group-addon #
+        = text_field_tag 'project[name]', @project.name, class:'form-control'
+  = f.text_area :content, hide_label: :true, placeholder: 'Todo description...'
+  = f.form_group do
+    = f.submit 'Save', class: 'btn btn-primary'
+    = link_to 'Finish', '#', class: 'btn btn-success'
+    = link_to 'Delete', '#', class: 'btn'
+
+= render @project.todos

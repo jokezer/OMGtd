@@ -20,23 +20,24 @@ class TodosController < ApplicationController
 
   def create
     @todo = current_user.todos.build(todo_params)
-    if @todo.save
-      flash[:success] = 'Todo created!'
-      redirect_to "#{todos_path}/statuses/#{TodoStatus.label(@todo[:status_id]).to_s}"
+    render(new_todo_path) and return unless @todo.save
+    if params[:make_project]
+      current_user.projects.make_from_todo(@todo)
+      todo_success('Project created!')
     else
-      @feed_items = []
-      render new_todo_path
+      todo_success('Todo created!')
     end
   end
 
   def update
     @todo = current_user.todos.find_by_id(params[:id])
     redirect_to root_path and return unless @todo
-    if @todo.update_attributes(todo_params)
-      flash[:success] = 'Todo updated!'
-      redirect_to "#{todos_path}/statuses/#{TodoStatus.label(@todo[:status_id]).to_s}"
+    render(new_todo_path) and return unless @todo.update_attributes(todo_params)
+    if params[:make_project]
+      current_user.projects.make_from_todo(@todo)
+      todo_success('Project created!')
     else
-      render :show
+      todo_success('Todo updated!')
     end
   end
 
@@ -52,9 +53,14 @@ class TodosController < ApplicationController
 
   private
 
+  def todo_success(label)
+    flash[:success] = label
+    redirect_to "#{todos_path}/statuses/#{TodoStatus.label(@todo[:status_id]).to_s}"
+  end
+
   def todo_params
-    params.require(:todo).permit(:title, :status_id, :prior_id,
-                                 :content, :expire, :context_id, :is_deadline)
+    params.require(:todo).permit(:title, :status_id, :prior_id, :project_id,
+                                 :content, :expire, :context_id, :is_deadline, :commit)
   end
 
 end

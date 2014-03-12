@@ -1,6 +1,6 @@
 class ContextsController < ApplicationController
   before_filter :authenticate_user!
-  layout "loggedin"
+  layout 'loggedin'
 
   def index
     @contexts = current_user.contexts
@@ -8,7 +8,7 @@ class ContextsController < ApplicationController
 
   def new
     @context = current_user.contexts.new
-    render 'edit'
+    render :edit
   end
 
   def create
@@ -17,15 +17,15 @@ class ContextsController < ApplicationController
       flash[:success] = 'Context created!'
       redirect_to contexts_path
     else
-      render 'edit'
+      render :edit
     end
   end
 
   def show
-    context = current_user.contexts.by_label(params[:context])
+    context = current_user.contexts.by_label(params[:label])
     redirect_to root_path and return unless context #todo make it :before function?
     @todos = context.todos.paginate(:page => params[:page])
-    render 'statuses/show'
+    render 'todos/list'
   end
 
   def edit
@@ -40,7 +40,7 @@ class ContextsController < ApplicationController
       flash[:success] = 'Context updated!'
       redirect_to contexts_path
     else
-      render 'edit'
+      render :edit
     end
   end
 
