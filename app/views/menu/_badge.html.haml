@@ -1,6 +1,7 @@
 %ul.nav.nav-pills.nav-stacked
   - menu_hash.each do |menu_item|
-    %li{:class => ("active" if params[type]==menu_item[:label])}
-      = link_to "/todos/#{type.to_s.pluralize}/#{menu_item[:label]}", :class => 'button white' do
+    %li{:class => ('active' if params[:label]==menu_item[:label])}
+      = link_to "/todos/#{type.to_s.pluralize}/#{menu_item[:label]}",
+       :class => 'button white' do
         %span= menu_item[:label]
         %span.badge.pull-right= menu_item[:todo_count]

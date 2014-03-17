@@ -25,13 +25,13 @@ describe Context do
   describe 'New created user should have 5 default contexts' do
     specify do
       user = FactoryGirl.create(:user)
-      user.contexts.count.should == 5
+      expect(user.contexts.count).to eq(5)
     end
     it 'works only if user does not have any contexts' do
       user = FactoryGirl.create(:user)
       user.contexts.create_defaults
       user.contexts.create_defaults
-      user.contexts.count.should == 5 #not 10
+      expect(user.contexts.count).to eq(5) #not 10
     end
   end
 
@@ -39,16 +39,16 @@ describe Context do
     specify do
       context = user.contexts.first
       FactoryGirl.create_list(:todo, 3, user: user, context: context)
-      context.todos.count.should == 3
+      expect(context.todos.count).to eq(3)
       expect { context.destroy }.to change(user.contexts, :count).by(-1)
-      user.todos.count.should == 3
-      user.todos.last.context_id.should == nil
+      expect(user.todos.count).to eq(3)
+      expect(user.todos.last.context_id).to be_nil
     end
   end
 
   describe 'found by_name test' do
     it 'should be case insensitive' do
-      user.contexts.by_name('home').id.should == user.contexts.by_name('HoMe').id
+      expect(user.contexts.by_name('home').id).to eq(user.contexts.by_name('HoMe').id)
     end
   end
 
@@ -56,33 +56,33 @@ describe Context do
     specify do
       user = FactoryGirl.create(:user)
       context = FactoryGirl.create(:context, user: user, name: 'same')
-      context.should be_valid #first time @same context is valid
-      user.contexts.new(name: 'same').should_not be_valid
-      user.contexts.new(name: 'SAME').should_not be_valid
+      expect(context).to be_valid #first time @same context is valid
+      expect(user.contexts.new(name: 'same')).to_not be_valid
+      expect(user.contexts.new(name: 'SAME')).to_not be_valid
       user2 = FactoryGirl.create(:user)
       context = FactoryGirl.create(:context, user: user2, name: 'same')
-      context.should be_valid #uniqness works only in user scope
+      expect(context).to be_valid #uniqness works only in user scope
     end
   end
 
   describe 'check label' do
     specify do
       context = FactoryGirl.create(:context, user: user, name: 'label')
-      context.label.should == '@label'
+      expect(context.label).to eq('@label')
     end
   end
 
   describe 'spaces to underscore' do
     specify do
       context = FactoryGirl.create(:context, user: user, name: 'with few words')
-      context.reload.label.should == '@with_few_words'
+      expect(context.reload.label).to eq('@with_few_words')
     end
   end
 
   describe 'check max length of todo' do
     specify do
       context = user.contexts.new(name: 'very very long context name')
-      context.should_not be_valid
+      expect(context).to_not be_valid
     end
   end
 end

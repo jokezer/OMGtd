@@ -10,15 +10,15 @@ describe ContextsController do
   describe 'GET index' do
     it 'returns http success' do
       xhr :get, :index
-      response.should be_success
+      expect(response).to be_success
     end
   end
 
   describe 'new' do
     it 'new todo pass should render new template' do
       xhr :get, :new
-      response.should be_success
-      response.should render_template(:edit)
+      expect(response).to be_success
+      expect(response).to render_template(:edit)
     end
   end
 
@@ -28,15 +28,15 @@ describe ContextsController do
       subject { lambda { xhr :post, :create, :context => {:name => 'context'} } }
       it do
         should change(@user.contexts, :count).by(1)
-        response.status.should == 302
-        response.should redirect_to(contexts_path)
+        expect(response.status).to eq(302)
+        expect(response).to redirect_to(contexts_path)
       end
     end
     context 'when try to create todo with incorrect data' do
       subject { lambda { xhr :post, :create, :context => {:name => ''} } }
       it do
         should_not change(@user.todos, :count)
-        response.should render_template(:edit)
+        expect(response).to render_template(:edit)
       end
     end
   end
@@ -44,12 +44,12 @@ describe ContextsController do
   describe '#show' do
     it 'with correct context' do
       xhr :get, :show, :label => @user.contexts.first.label
-      response.should be_success
-      response.should render_template('todos/list')
+      expect(response).to be_success
+      expect(response).to render_template('todos/list')
     end
     it 'with incorrect context' do
       xhr :get, :show, :label => 'incorrect_context'
-      response.should redirect_to(root_path)
+      expect(response).to redirect_to(root_path)
     end
   end
 
@@ -63,9 +63,9 @@ describe ContextsController do
                              :context => {:name => 'Correct'} } }
       it do
         should_not change(@user.contexts, :count)
-        response.status.should == 302
-        response.should redirect_to(contexts_path)
-        @user.contexts.first.name.should == 'Correct'
+        expect(response.status).to eq(302)
+        expect(response).to redirect_to(contexts_path)
+        expect(@user.contexts.first.name).to eq('Correct')
       end
     end
     context 'when try to create todo with incorrect data' do
@@ -74,7 +74,7 @@ describe ContextsController do
                              :context => {:name => ''} } }
       it do
         should_not change(@user.contexts, :count)
-        response.should render_template(:edit)
+        expect(response).to render_template(:edit)
       end
     end
   end
@@ -88,7 +88,7 @@ describe ContextsController do
       subject { lambda { xhr :delete, :destroy, :label => @context_to_destroy.id } }
       it do
         should change(@user.contexts, :count).by(-1)
-        response.should redirect_to(contexts_path)
+        expect(response).to redirect_to(contexts_path)
       end
     end
   end

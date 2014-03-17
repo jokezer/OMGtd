@@ -9,9 +9,16 @@ right: "col-lg-8") do |f|
         %span.input-group-addon #
         = text_field_tag 'project[name]', @project.name, class:'form-control'
   = f.text_area :content, hide_label: :true, placeholder: 'Todo description...'
+  = f.select :prior_id, TodoPrior::COLLECTION.invert, :prompt => 'Prior...'
   = f.form_group do
-    = f.submit 'Save', class: 'btn btn-primary'
+    = f.submit 'Update', class: 'btn btn-primary'
     = link_to 'Finish', '#', class: 'btn btn-success'
-    = link_to 'Delete', '#', class: 'btn'
-
+    = link_to 'Delete', @project, method: :delete, class: 'btn',
+    data: { confirm: "You sure? #{@project.todos_count} todos will be deleted!"}
+%h4 Projects todos
+= link_to new_todo_path(:from_project => @project.id),
+            title: 'Create new todo', class: '' do
+  %small
+    %span.glyphicon.glyphicon-plus
+    Create new
 = render @project.todos

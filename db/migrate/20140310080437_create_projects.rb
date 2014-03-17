@@ -9,6 +9,6 @@ class CreateProjects < ActiveRecord::Migration
       t.datetime :expire
       t.timestamps
     end
-    add_index :contexts, :user_id
+    add_index :projects, :user_id
   end
 end

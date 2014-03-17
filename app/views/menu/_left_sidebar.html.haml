@@ -1,0 +1,33 @@
+= link_to url_for(:back), class: '' do
+  %small
+    %span.glyphicon.glyphicon-backward
+    Back
+= link_to new_todo_path(:from_status => params[:statuses]),
+            :title => "Create new todo", :class => '' do
+  %small
+    %span.glyphicon.glyphicon-plus
+    Create new
+%ul.nav.nav-pills.nav-stacked
+  = render 'menu/item', item: {label:'inbox', link: '/todos/filter/kind/inbox',
+  todos_count: current_user.todos.with_state(:new).count}
+  = render 'menu/item', item: {label:'today', link: '/todos/filter/calendar/today',
+  todos_count: current_user.todos.today.count}
+  = render 'menu/item', item: {label:'next', link: '/todos/filter/kind/next',
+  todos_count: current_user.todos.with_kind(:next).count}
+  = render 'menu/item', item: {label:'tomorrow', link: '/todos/filter/calendar/tomorrow',
+  todos_count: current_user.todos.tomorrow.count}
+  = render 'menu/item', item: {label:'scheduled', link: '/todos/filter/kind/scheduled',
+  todos_count: current_user.todos.with_kind(:scheduled).count}
+  = render 'menu/item', item: {label:'cycled', link: '/todos/filter/kind/cycled',
+  todos_count: current_user.todos.with_kind(:cycled).count}
+  = render 'menu/item', item: {label:'waiting', link: '/todos/filter/kind/waiting',
+  todos_count: current_user.todos.with_kind(:waiting).count}
+  = render 'menu/item', item: {label:'someday', link: '/todos/filter/kind/someday',
+  todos_count: current_user.todos.with_kind(:someday).count}
+
+Hidden
+%ul.nav.nav-pills.nav-stacked
+  = render 'menu/item', item: {label:'trash', link: '/todos/filter/state/trash',
+   todos_count: current_user.todos.with_state(:trash).count}
+  = render 'menu/item', item: {label:'completed', link: '/todos/filter/state/completed',
+   todos_count: current_user.todos.with_state(:completed).count}

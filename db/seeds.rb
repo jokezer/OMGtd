@@ -8,9 +8,9 @@
 User.create(email: 'test@user.com', name: 'Test User', password: '12345678',
                   password_confirmation: '12345678')
 user = User.find_by_email('test@user.com')
-user.todos.create([{title: 'First todo', status_id: 1},
-                   {title: 'Second todo', status_id: 2},
-                   {title: 'Third todo', status_id: 2},
-                   {title: 'Forth todo', status_id: 2},
-                   {title: 'Fifth todo', status_id: 2}])
+user.todos.create([{title: 'First todo'},
+                   {title: 'Second todo'},
+                   {title: 'Third todo', kind:'next'},
+                   {title: 'Forth todo', kind:'next'},
+                   {title: 'Fifth todo', kind:'waiting'}])
 user.projects.create(title:'Test project', content:'content of test project')

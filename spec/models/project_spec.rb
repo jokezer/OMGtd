@@ -17,8 +17,8 @@ describe Project do
   describe 'create valid project' do
     specify do
       project = user.projects.create(title: 'Test project', content: 'Text of test todo')
-      project.name.should == 'Test_project'
-      project.label.should == '#Test_project'
+      expect(project.name).to eq('Test_project')
+      expect(project.label).to eq('#Test_project')
     end
   end
 
@@ -27,8 +27,22 @@ describe Project do
       count = user.todos.count
       todo = FactoryGirl.create(:todo, title: 'Project from title', user: user)
       expect { user.projects.make_from_todo todo }.to change(user.projects, :count).by(1)
-      user.projects.last.label.should == '#Project_from_title'
-      user.todos.count.should == count
+      expect(user.projects.last.label).to eq('#Project_from_title')
+      expect(user.todos.count).to eq(count)
+    end
+  end
+  describe 'name and label' do
+    it 'when name insert' do
+      project = FactoryGirl.create(:project, title: 'When name insert',
+                                   name: 'with name', user: user)
+      expect(project.title).to eq('When name insert')
+      expect(project.name).to eq('with_name')
+    end
+    it 'when name is blank' do
+      project = FactoryGirl.create(:project, title: 'When name insert',
+                                   name: '', user: user)
+      expect(project.title).to eq('When name insert')
+      expect(project.name).to eq('When_name_insert')
     end
   end
 

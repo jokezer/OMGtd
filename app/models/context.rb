@@ -10,6 +10,12 @@ class Context < ActiveRecord::Base
 
   before_save {|c|c.name.tr!(' ','_')}
 
+  def prefix
+    '@'
+  end
+
+  include ContextProject
+
   def self.create_defaults
     if self.count == 0
       self.create([{name: 'Home'},
@@ -18,25 +24,6 @@ class Context < ActiveRecord::Base
                    {name: 'Phone'},
                    {name: 'Computer'}])
     end
-  end
-
-  def self.make_group
-    self.select('contexts.name, contexts.name as label, count(todos.id) as todo_count')
-    .joins('left outer join todos on todos.context_id = contexts.id')
-    .group('contexts.id')
-    .to_a.map { |a| a.serializable_hash.symbolize_keys }
-  end
-
-  def self.by_name(name)
-    self.where('lower(name) = ?', name.downcase).take
-  end
-
-  def self.by_label(label)
-    self.where('lower(name) = ?', label[1..-1].downcase).take
-  end
-
-  def label
-    "@#{self.name}"
   end
 
 end

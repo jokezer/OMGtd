@@ -7,5 +7,5 @@
 <!--main form-->
 = render 'new_form', button_title: 'Save changes'
 -#delete form
-- if [:trash, :completed].include? @todo.status
+- if [:trash, :completed].include? @todo.state
   = render 'delete_form'

@@ -1,7 +1,7 @@
 = bootstrap_form_for(@todo, style: :horizontal, left: 'col-lg-2', right: 'col-lg-8') do |f|
   = f.text_field :title
   = f.text_area :content, hide_label: :true, placeholder: 'Todo description...'
-  = f.select :status_id, TodoStatus::COLLECTION.invert#, :selected => TodoStatus.label_id(params[:from_status]) #todo if new
+  = f.select :kind, get_kinds
   = f.select :prior_id, TodoPrior::COLLECTION.invert, :prompt => 'Prior...'
   - array = current_user.contexts.map { |context| [context.label, context.id] }
   -if array.empty?
@@ -9,13 +9,19 @@
       There is no contexts
       = link_to('Create contexts', contexts_path)
   -else
-    = f.select :context_id, array, :prompt => 'Context...'
+    = f.select :context_id, array, prompt: 'Context...'
   - array = current_user.projects.map { |project| [project.label, project.id] } #todo get to model, check if empty
-  = f.select :project_id, array, :prompt => 'Project...' if array.any?
+  = f.select :project_id, array, prompt: 'Project...', selected: params[:from_project] if array.any?
   = f.form_group(:todo, label: {text: 'Deadline'}) do
     = check_box(:todo, :is_deadline, {checked: @todo.expire ? true : false})
     = datetime_select(:todo, :expire, :default => 24.hours.from_now, :minute_step => 10)
+    = @todo.errors[:is_deadline]
   = f.form_group do
     = f.submit button_title, class: 'btn btn-primary'
     - unless @todo.project
-      = f.submit button_title, value:'Make project', name:'make_project', class: 'btn btn-link pull-right'
+      = f.submit button_title, value:'Make project', name:'make_project', class: 'btn btn-link pull-right',
+        data: { confirm: 'Are you sure want to make project from this todo?'}
+    - if @todo.can_delete?
+      = link_to 'Delete', @project, method: :delete, class: 'btn',
+        data: { confirm: 'Are you sure want to delete this todo?'}
+  =debug(@todo)

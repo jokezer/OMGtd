@@ -36,11 +36,14 @@ ActiveRecord::Schema.define(version: 20140310080437) do
     t.datetime "updated_at"
   end
 
+  add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
+
   create_table "todos", force: true do |t|
     t.string   "title",      null: false
     t.string   "content"
     t.integer  "user_id",    null: false
-    t.integer  "status_id"
+    t.string   "state",      null: false
+    t.string   "kind"
     t.integer  "prior_id"
     t.integer  "context_id"
     t.integer  "project_id"
@@ -49,6 +52,8 @@ ActiveRecord::Schema.define(version: 20140310080437) do
     t.datetime "updated_at"
   end
 
+  add_index "todos", ["kind"], name: "index_todos_on_kind", using: :btree
+  add_index "todos", ["state"], name: "index_todos_on_state", using: :btree
   add_index "todos", ["user_id", "context_id"], name: "index_todos_on_user_id_and_context_id", using: :btree
   add_index "todos", ["user_id", "project_id"], name: "index_todos_on_user_id_and_project_id", using: :btree
   add_index "todos", ["user_id"], name: "index_todos_on_user_id", using: :btree

@@ -1,11 +1,6 @@
 Gtd::Application.routes.draw do
   devise_for :users, :path => '', :path_names => {:sign_in => 'login', :sign_out => 'logout'}
 
-  concern :statuses do
-    collection do
-      resources :statuses, param: :label, only: [:show]
-    end
-  end
   concern :context do
     collection do
       resources :contexts, param: :label, only: [:show]
@@ -14,7 +9,9 @@ Gtd::Application.routes.draw do
 
   resources :contexts, param: :label, only: [:new, :create, :edit, :update, :destroy, :index]
   resources :projects, param: :label, only: [:show, :update, :destroy, :index]
-  resources :todos, concerns: [:statuses, :context]
+  resources :todos, concerns: [:context]
+
+  match '/todos/filter/:type/:label', to: 'todos#filter', via: 'get'
 
   #get '/todos/statuses/:statuses', to: 'todos#statuses'
 

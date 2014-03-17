@@ -45,8 +45,8 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 
 group :development, :test do
-  gem "rspec-rails", "~> 2.14.1"
-  gem 'capybara'
+  gem 'rspec-rails', '~> 3.0.0.beta'
+  gem "capybara", "~> 2.2.1"
   gem 'factory_girl_rails'
 end
 
@@ -57,6 +57,10 @@ end
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
+
+#Finite machine state
+gem 'state_machine'
+gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing
 
 # Use unicorn as the app server
 # gem 'unicorn'

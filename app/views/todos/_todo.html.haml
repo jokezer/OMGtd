@@ -1,12 +1,12 @@
 .thumbnail
   -if todo.expire
     %small.pull-right= "Expires #{todo.expire.to_formatted_s(:long)}"
-  %h5= todo.title
+  =link_to todo, :title => "View todo: #{todo.title}" do
+    %h5= todo.title
   %small= todo.content
   %p.pull-right= todo.prior
   %p
-    %small= todo.status
-    =link_to('show', todo, :title => "View todo: #{todo.title}")
+    %small= todo.kind
     -if todo.project
       =link_to project_path todo.project.name do
         %small= todo.project.label

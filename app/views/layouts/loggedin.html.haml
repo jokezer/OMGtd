@@ -1,11 +1,12 @@
 - content_for :application do
   .col-lg-3
-    = render 'menu/todo_sidebar'
+    = render 'menu/left_sidebar'
   .col-lg-6
-    .row
-      - flash.each do |key, value|
-        %div{:class => "col-lg-9 alert alert-#{key}"}
-          =value
-    .row
-      = yield
+    - flash.each do |key, value|
+      %div{class:"alert alert-#{key} alert-dismissable pull-right"}
+        %button.close{type:'button', :'data-dismiss'=>"alert", :'aria-hidden'=>'true'} &times
+        =value
+    = yield
+  .col-lg-3
+    = render 'menu/right_sidebar'
 = render template: 'layouts/application'

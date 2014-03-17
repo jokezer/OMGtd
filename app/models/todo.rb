@@ -1,21 +1,21 @@
 class Todo < ActiveRecord::Base
 
-  #default_scope { order('updated_at DESC') } #todo dont work in postgresql
-  #validates_presence_of :state, :granted_at, :if => Proc.new { |o| o.type != 1 } #todo deadline obligatory if scheduled
+  #default_scope { order('updated_at DESC') } #_todo dont work in postgresql
+
   attr_accessor :is_deadline
+  include TodoStates
+  include TodoTypes
+  before_validation {self.expire = nil if self.is_deadline=='0'}
 
-  before_save {self.expire = nil if self.is_deadline=='0'}
-
-  scope :by_status, ->(label) { where(:status_id => TodoStatus.invert[label.to_sym]) }
   scope :today, -> {
     where('expire < ?', DateTime.now.end_of_day)
-    .where(:status_id => TodoStatus::GROUP[:active])
+    .where('state = ?', 'active')
     .order('updated_at DESC')
   }
   scope :tomorrow, -> {
     where('expire BETWEEN ? AND ?', DateTime.now.tomorrow.beginning_of_day,
           DateTime.now.tomorrow.end_of_day)
-    .where(:status_id => TodoStatus::GROUP[:active])
+    .where('state = ?', 'active')
     .order('updated_at DESC')
   }
   scope :later_or_no_deadline, -> { where("expire > ? or expire is NULL",
@@ -27,13 +27,8 @@ class Todo < ActiveRecord::Base
 
   validates :user, presence: true
   validates :title, presence: true
-  validates :status_id, presence: true,
-            :inclusion => {:in => TodoStatus::COLLECTION.keys}
-  self.per_page = 5
 
-  def status
-    TodoStatus::COLLECTION[self.status_id]
-  end
+  self.per_page = 5
 
   def prior
     TodoPrior::COLLECTION[self.prior_id]
