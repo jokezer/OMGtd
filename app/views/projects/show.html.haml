@@ -16,9 +16,4 @@ right: "col-lg-8") do |f|
     = link_to 'Delete', @project, method: :delete, class: 'btn',
     data: { confirm: "You sure? #{@project.todos_count} todos will be deleted!"}
 %h4 Projects todos
-= link_to new_todo_path(:from_project => @project.id),
-            title: 'Create new todo', class: '' do
-  %small
-    %span.glyphicon.glyphicon-plus
-    Create new
 = render @project.todos

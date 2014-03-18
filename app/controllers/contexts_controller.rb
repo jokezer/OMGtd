@@ -22,9 +22,9 @@ class ContextsController < ApplicationController
   end
 
   def show
-    context = current_user.contexts.by_label(params[:label])
-    redirect_to root_path and return unless context #todo make it :before function?
-    @todos = context.todos.paginate(:page => params[:page])
+    @context = current_user.contexts.by_label(params[:label])
+    redirect_to root_path and return unless @context #todo make it :before function?
+    @todos = @context.todos.paginate(:page => params[:page])
     render 'todos/list'
   end
 

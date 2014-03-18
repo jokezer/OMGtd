@@ -40,7 +40,6 @@ describe ContextsController do
       end
     end
   end
-
   describe '#show' do
     it 'with correct context' do
       xhr :get, :show, :label => @user.contexts.first.label

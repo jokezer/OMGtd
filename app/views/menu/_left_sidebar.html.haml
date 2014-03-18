@@ -2,11 +2,7 @@
   %small
     %span.glyphicon.glyphicon-backward
     Back
-= link_to new_todo_path(:from_status => params[:statuses]),
-            :title => "Create new todo", :class => '' do
-  %small
-    %span.glyphicon.glyphicon-plus
-    Create new
+= render 'menu/new_todo_link'
 %ul.nav.nav-pills.nav-stacked
   = render 'menu/item', item: {label:'inbox', link: '/todos/filter/kind/inbox',
   todos_count: current_user.todos.with_state(:new).count}

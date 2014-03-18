@@ -26,10 +26,6 @@ describe TodosController do
 
   describe "#create" do
     context "when create with correct data" do
-      before do
-        #Todoexpect().to_receive(:build)
-        #.with({'title' => 'New Title'})
-      end
       subject { lambda { xhr :post, :create, :todo => todo_params } }
       it do
         should change(@user.todos, :count).by(1)
@@ -38,14 +34,25 @@ describe TodosController do
       end
     end
     context 'when try to create todo with incorrect data' do
-      subject { lambda { xhr :post, :create, :todo => {title: '', status_id: 0} } }
+      subject { lambda { xhr :post, :create, :todo => {title: ''} } }
       it do
         should_not change(@user.todos, :count)
         expect(response).to render_template(:new)
       end
     end
     context 'create project from todo' do
-      pending 'create project from todo'
+      before do
+        @count = @user.todos.count
+      end
+      subject { lambda { xhr :post, :create,
+                             :todo => {title: 'Project'},
+                             make_project: 'Make project' } }
+      it do
+        should change(@user.projects, :count).by(1)
+        expect(response.status).to eq(302)
+        expect(response).to redirect_to(projects_path)
+        expect(@user.todos.count).to eq @count
+      end
     end
   end
 
@@ -53,7 +60,7 @@ describe TodosController do
     before do
       @todo_update = FactoryGirl.create(:todo, user: @user)
     end
-    context 'when try to create todo with correct data' do
+    context 'when try to update todo with correct data' do
       subject { lambda { xhr :post, :update,
                              :id => @todo_update.id,
                              :todo => {title: 'rspec updated statuses',
@@ -62,16 +69,32 @@ describe TodosController do
         should_not change(@user.todos, :count)
         expect(response.status).to eq(302)
         expect(response).to redirect_to('http://test.host/todos/filter/kind/inbox')
-        expect(@user.todos.order("updated_at").last.title).to eq('rspec updated statuses')
+        expect(@user.todos.order('updated_at').last.title)
+        .to eq('rspec updated statuses')
       end
     end
-    context 'when try to create todo with incorrect data' do
+    context 'when try to update todo with incorrect data' do
       subject { lambda { xhr :post, :update,
                              :id => @todo_update.id,
                              :todo => {title: ''} } }
       it do
         should_not change(@user.todos, :count)
         expect(response).to render_template(:show)
+      end
+    end
+    context 'create project from todo' do
+      before do
+        @count = @user.todos.count
+      end
+      subject { lambda { xhr :post, :update,
+                             :id => @todo_update.id,
+                             :todo => {title: 'Project'},
+                             make_project: 'Make project' } }
+      it do
+        should change(@user.projects, :count).by(1)
+        expect(response.status).to eq(302)
+        expect(response).to redirect_to(projects_path)
+        expect(@user.todos.count).to eq @count-1
       end
     end
   end
@@ -101,7 +124,7 @@ describe TodosController do
   describe "User scope" do
     before do
       @another_user = FactoryGirl.create(:user, email: 'another_user@email.tu')
-      @todo = FactoryGirl.create(:todo, user: @another_user, state:'trash')
+      @todo = FactoryGirl.create(:todo, user: @another_user, state: 'trash')
     end
     context 'one user try to delete another users todo' do
       subject { lambda { xhr :delete, :destroy, :id => @todo.id } }

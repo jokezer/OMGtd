@@ -39,7 +39,7 @@ class TodosController < ApplicationController
     render(new_todo_path) and return unless @todo.save
     if params[:make_project]
       current_user.projects.make_from_todo(@todo)
-      todo_success('Project created!')
+      project_success('Project created!')
     else
       todo_success('Todo created!')
     end
@@ -51,7 +51,7 @@ class TodosController < ApplicationController
     render(:show) and return unless @todo.update_attributes(todo_params)
     if params[:make_project]
       current_user.projects.make_from_todo(@todo)
-      todo_success('Project created!')
+      project_success('Project created!')
     else
       todo_success('Todo updated!')
     end
@@ -72,6 +72,10 @@ class TodosController < ApplicationController
   def todo_success(label)
     flash[:success] = label
     redirect_to "#{todos_path}/filter/kind/#{@todo.kind}"
+  end
+  def project_success(label)
+    flash[:success] = label
+    redirect_to projects_path
   end
 
   def todo_params

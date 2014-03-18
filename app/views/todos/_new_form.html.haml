@@ -1,7 +1,8 @@
 = bootstrap_form_for(@todo, style: :horizontal, left: 'col-lg-2', right: 'col-lg-8') do |f|
   = f.text_field :title
   = f.text_area :content, hide_label: :true, placeholder: 'Todo description...'
-  = f.select :kind, get_kinds
+  = f.select :kind, get_kinds,
+  selected: action_name=='new' ? params[:from_kind] : @todo.kind
   = f.select :prior_id, TodoPrior::COLLECTION.invert, :prompt => 'Prior...'
   - array = current_user.contexts.map { |context| [context.label, context.id] }
   -if array.empty?
@@ -9,9 +10,11 @@
       There is no contexts
       = link_to('Create contexts', contexts_path)
   -else
-    = f.select :context_id, array, prompt: 'Context...'
+    = f.select :context_id, array, prompt: 'Context...',
+     selected: action_name=='new' ? params[:from_context] : @todo.context_id
   - array = current_user.projects.map { |project| [project.label, project.id] } #todo get to model, check if empty
-  = f.select :project_id, array, prompt: 'Project...', selected: params[:from_project] if array.any?
+  = f.select :project_id, array, prompt: 'Project...',
+  selected: (action_name=='new' ? params[:from_project]:@todo.project_id) if array.any?
   = f.form_group(:todo, label: {text: 'Deadline'}) do
     = check_box(:todo, :is_deadline, {checked: @todo.expire ? true : false})
     = datetime_select(:todo, :expire, :default => 24.hours.from_now, :minute_step => 10)
