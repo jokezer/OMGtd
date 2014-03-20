@@ -1,5 +1,5 @@
-#todo context and project models has many common things that would be better to put in module
 class Project < ActiveRecord::Base
+  include ProjectStates
   belongs_to :user
   has_many :todos, :dependent => :delete_all
   validates :user, presence: true
@@ -25,15 +25,12 @@ class Project < ActiveRecord::Base
 
   #todo test if another user try to access current user scope
   def self.make_from_todo(todo)
+    return false if todo.project
     user = todo.user
     todo_params = todo.attributes.slice('title', 'content', 'user_id',
                                         'prior_id', 'expire')
     project = user.projects.build(todo_params)
     todo.destroy if project.save
-  end
-
-  def set_to (attr=:canceled)
-    #self.todos.update_all(:status_id => TodoStatus.label_id(attr))
   end
 
   #to do methods

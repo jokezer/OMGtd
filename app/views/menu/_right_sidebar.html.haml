@@ -1,3 +1,10 @@
 - context_hash = current_user.contexts.make_group
-contexts
-= render 'menu/badge', menu_hash: context_hash, type: :context
+- project_hash = current_user.projects.with_state('active').make_group
+-if context_hash.any?
+  contexts
+  = render 'menu/badge', menu_hash: context_hash, link: '/todos/contexts/',
+   label: :label
+-if project_hash.any?
+  projects
+  = render 'menu/badge', menu_hash: project_hash, link: '/projects/',
+   label: :name

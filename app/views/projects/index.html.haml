@@ -1,2 +1,9 @@
-%h2 Projects
-= render @projects
+-if @projects[:active].any?
+  %h2 Active projects
+  = render @projects[:active]
+-if @projects[:finished].any?
+  %h2 Finished projects
+  = render @projects[:finished]
+-if @projects[:trash].any?
+  %h2 Canceled projects
+  = render @projects[:trash]

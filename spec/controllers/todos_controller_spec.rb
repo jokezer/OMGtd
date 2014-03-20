@@ -25,6 +25,7 @@ describe TodosController do
   end
 
   describe "#create" do
+    it 'fix redirect when create new todo, it redirected to kind/inbox, should to state/new'
     context "when create with correct data" do
       subject { lambda { xhr :post, :create, :todo => todo_params } }
       it do

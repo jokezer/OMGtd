@@ -1,0 +1,40 @@
+module Project::ProjectStates
+  extend ActiveSupport::Concern
+  included do
+    state_machine :state, initial: :active do
+      after_transition :on => :activate, :do => :todos_activate
+      after_transition :on => :cancel, :do => :todos_cancel
+      after_transition :on => :finish, :do => :todos_complete
+      state :active do
+        def can_delete?
+          false
+        end
+      end
+      state :trash, :finished do
+        def can_delete?
+          true
+        end
+      end
+      event :activate do
+        transition [:trash, :finished] => :active
+      end
+      event :cancel do
+        transition :active => :trash
+      end
+      event :finish do
+        transition :active => :finished
+      end
+    end
+  end
+  def todos_activate
+    self.todos.each{|t|t.activate}
+  end
+  def todos_cancel
+    self.todos.each{|t|t.cancel}
+  end
+  def todos_complete
+    self.todos.each{|t|t.complete}
+  end
+  module ClassMethods
+  end
+end

@@ -9,7 +9,6 @@ FactoryGirl.define do
     title 'Factory girl todo'
     prior_id TodoPrior.label_id :low
     user
-    project
   end
 
   factory :context do

@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20140310080437) do
     t.string   "content"
     t.integer  "user_id",    null: false
     t.integer  "prior_id"
+    t.string   "state"
     t.datetime "expire"
     t.datetime "created_at"
     t.datetime "updated_at"

@@ -1,7 +1,5 @@
 class Todo < ActiveRecord::Base
 
-  #default_scope { order('updated_at DESC') } #_todo dont work in postgresql
-
   attr_accessor :is_deadline
   include TodoStates
   include TodoTypes
@@ -9,13 +7,11 @@ class Todo < ActiveRecord::Base
 
   scope :today, -> {
     where('expire < ?', DateTime.now.end_of_day)
-    .where('state = ?', 'active')
     .order('updated_at DESC')
   }
   scope :tomorrow, -> {
     where('expire BETWEEN ? AND ?', DateTime.now.tomorrow.beginning_of_day,
           DateTime.now.tomorrow.end_of_day)
-    .where('state = ?', 'active')
     .order('updated_at DESC')
   }
   scope :later_or_no_deadline, -> { where("expire > ? or expire is NULL",
@@ -27,11 +23,33 @@ class Todo < ActiveRecord::Base
 
   validates :user, presence: true
   validates :title, presence: true
+  validates_associated :context, :user
+  validates_associated :project, :user #belongs_to and belongs_to dont work?
 
   self.per_page = 5
 
   def prior
     TodoPrior::COLLECTION[self.prior_id]
+  end
+
+  def self.filter(type, label)
+    type.to_s
+    label.to_s
+    begin
+      output =
+      if type == 'state'
+        self.with_state(label)
+      elsif type == 'kind'
+        self.with_state(:active).with_kind(label)
+      elsif type == 'calendar'
+        self.with_state(:active).today if label == 'today'
+        self.with_state(:active).tomorrow if label == 'tomorrow'
+      else
+        false
+      end
+    rescue
+      #incorrect state
+    end
   end
 
 end

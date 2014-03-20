@@ -4,12 +4,10 @@ module Todo::TodoStates
   included do
     before_create { |t| t.state = 'active' unless t.inbox? }
     before_update { |t| t.state = 'active' if !t.inbox? and t.new? }
-    before_update { |t| return false if t.state!='new' and t.inbox? }
+    before_update { |t| return false if t.state=='active' and t.inbox? }
     state_machine :state, initial: :new do
       state :new
       state :active
-      state :completed
-      state :trash
       state :trash, :completed do
         def can_delete?
           true
@@ -21,20 +19,22 @@ module Todo::TodoStates
         end
       end
       event :activate do
-        transition all => :active
+        transition all - [:new, :active] => :active
       end
       event :cancel do
-        transition all => :trash
+        transition [:new, :active] => :trash
       end
       event :complete do
-        transition all => :completed
+        transition [:new, :active] => :completed
       end
     end
   end
   module ClassMethods
-    def group_state
+    def count_state
+      output = {}
       self.select('state as label, count(todos.id) as todo_count').group('state')
-      .to_a.map { |a| a.serializable_hash.symbolize_keys }
+      .each{|i| output[i['label']] = i['todo_count'] }
+      output.symbolize_keys
     end
   end
 end
@@ -45,8 +45,6 @@ module TodoTypes
     state_machine :kind, initial: :inbox do
       state :inbox
       state :next
-      state :scheduled
-      state :cycled
       state :someday
       state :waiting
       state :scheduled, :cycled do
@@ -57,9 +55,11 @@ module TodoTypes
     end
   end
   module ClassMethods
-    def group_kind
-      self.select("kind as label, count(todos.id) as todo_count").group("kind")
-      .to_a.map { |a| a.serializable_hash.symbolize_keys }
+    def count_kind
+      output = {}
+      self.select('kind as label, count(todos.id) as todo_count').group('kind')
+      .each{|i| output[i['label']] = i['todo_count'] }
+      output.symbolize_keys
     end
   end
 end

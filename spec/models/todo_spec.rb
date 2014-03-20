@@ -86,25 +86,19 @@ describe Todo do
       expect(user.todos.later_or_no_deadline.first.title).to eq('Later todo')
       expect(user.todos.later_or_no_deadline.count).to eq(1)
     end
-    it 'Canceled and completed actions dont included in today and tomorrow scopes' do
-      FactoryGirl.create(:todo, state: :trash,
-                         user: user,
-                         expire: DateTime.now.tomorrow)
-      FactoryGirl.create(:todo, state: :completed,
-                         user: user,
-                         expire: DateTime.now.tomorrow)
-      FactoryGirl.create(:todo, state: :trash,
-                         user: user,
-                         expire: DateTime.now)
-      FactoryGirl.create(:todo, state: :completed,
-                         user: user,
-                         expire: DateTime.now)
-      expect(user.todos.tomorrow.count).to eq(0)
-      expect(user.todos.today.count).to eq(0)
-    end
   end
 
   describe 'finite state machines test' do
+    it 'have 4 states' do
+      expect(Todo.state_machines[:state].states.count).to eq(4)
+      expect(Todo.state_machines[:state].states.map { |n| n.name })
+      .to include(:new, :active, :trash, :completed)
+    end
+    it 'have 6 kinds' do
+      expect(Todo.state_machines[:kind].states.count).to eq(6)
+      expect(Todo.state_machines[:kind].states.map { |n| n.name })
+      .to include(:inbox, :scheduled, :someday, :next, :cycled, :waiting)
+    end
     it 'initial state check' do
       expect(todo.state).to eq('new')
       expect(todo.kind).to eq('inbox')
@@ -121,12 +115,22 @@ describe Todo do
       todo.cancel
       expect(todo.state).to eq('trash')
       expect(todo.kind).to eq('next')
+      expect(todo.can_complete?).to be_false
+      expect(todo.can_cancel?).to be_false
+      expect(todo.can_activate?).to be_true
+      todo.activate
       todo.complete
       expect(todo.state).to eq('completed')
       expect(todo.kind).to eq('next')
+      expect(todo.can_complete?).to be_false
+      expect(todo.can_cancel?).to be_false
+      expect(todo.can_activate?).to be_true
       todo.activate
       expect(todo.state).to eq('active')
       expect(todo.kind).to eq('next')
+      expect(todo.can_complete?).to be_true
+      expect(todo.can_cancel?).to be_true
+      expect(todo.can_activate?).to be_false
     end
     it 'make state active after update' do
       todo.update_attributes(title: 'Make active')
@@ -145,7 +149,27 @@ describe Todo do
       expect(todo.reload.kind).to eq('next')
       expect(todo.reload.state).to eq('active')
     end
-    it 'catch exception if incorrect state or kind label insert'
+    it 'incorrect filter test' do
+      expect(user.todos.filter(:state, :incorrect)).to be_false
+      expect(user.todos.filter(:incorrect, :incorrect)).to be_false
+    end
+  end
+
+  describe 'user scopes' do
+    it 'context scope' do
+      another_user = FactoryGirl.create(:user, email: 'another@user.tu')
+      another_context = another_user.contexts.first
+      expect(user.id).not_to eq(another_user.id)
+      todoe = user.todos.new(title:'title', context: another_context)
+      expect(todoe).not_to be_valid
+    end
+    it 'project scope' do
+      another_user = FactoryGirl.create(:user, email: 'another@user.tu')
+      another_project = FactoryGirl.create(:project, name: 'Other user project1',
+                                           user: another_user)
+      todoe = user.todos.new(title:'title', project_id: another_project.id)
+      expect(todoe).not_to be_valid
+    end
   end
 
   describe 'special todos features' do

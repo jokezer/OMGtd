@@ -1,4 +1,5 @@
 %h3 #{project.label} (#{project.todos_count})
 -if project.prior
   %small prior #{project.prior}
+%p state #{project.state}
 = link_to 'show', project_path(project.name)

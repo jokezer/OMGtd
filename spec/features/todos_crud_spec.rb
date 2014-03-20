@@ -29,6 +29,7 @@ feature 'Todos CRUD actions' do
     expect(page).to have_content('Test todo from feature test')
   end
   scenario 'Check edit form' do
+    todo.update_attributes(kind: 'next')
     visit todo_path(todo)
     expect(page).not_to have_selector("option[value='inbox']")
     expect(page).to have_selector("option[value='next']")
@@ -36,12 +37,14 @@ feature 'Todos CRUD actions' do
   scenario 'Change kinds' do
     visit todo_path(todo)
     select('next', :from => 'Kind')
-    expect { click_on 'Save changes' }.to change(user.todos.with_kind(:next), :count).by(1)
+    expect { click_on 'Save changes' }
+    .to change(user.todos.with_kind(:next), :count).by(1)
   end
   scenario 'Change context' do
     visit todo_path(todo)
     select('@Errands', :from => 'Context')
-    expect { click_on 'Save changes' }.to change(user.contexts.find_by_name('Errands').todos, :count).by(1)
+    expect { click_on 'Save changes' }
+    .to change(user.contexts.find_by_name('Errands').todos, :count).by(1)
     expect(todo.reload.context.name).to eq('Errands')
   end
   scenario 'Change prior' do
@@ -88,7 +91,8 @@ feature 'Todos CRUD actions' do
     FactoryGirl.create(:project, title: 'Set project', user: user)
     visit todo_path(todo)
     select('#Set_project', :from => 'Project')
-    expect { click_on 'Save changes' }.to change(user.projects.find_by_name('Set_project').todos, :count).by(1)
+    expect { click_on 'Save changes' }
+    .to change(user.projects.find_by_name('Set_project').todos, :count).by(1)
     expect(todo.reload.project.name).to eq('Set_project')
   end
   scenario 'create new todo from kind' do
@@ -128,6 +132,42 @@ feature 'Todos CRUD actions' do
   end
   scenario 'create todo from today, tomorrow paths' do
     pending 'todos should have date inserted'
+  end
+end
+
+feature 'finite machines' do
+  let (:user) { FactoryGirl.create(:user) }
+  let (:todo) { FactoryGirl.create(:todo, user: user) }
+  before do
+    sign_in_capybara(user)
+  end
+  scenario 'Complete todo' do
+    todo = FactoryGirl.create(:todo, user: user, kind: 'next')
+    visit todo_path todo
+    expect(page).not_to have_selector("input[type=submit][value='Activate']")
+    expect{click_on('Complete')}.to change(user.todos.with_state('completed'),
+                                           :count).by(1)
+  end
+  scenario 'Cancel todo' do
+    todo = FactoryGirl.create(:todo, user: user, kind: 'next')
+    visit todo_path todo
+    expect(page).not_to have_selector("input[type=submit][value='Activate']")
+    expect{click_on('Cancel')}.to change(user.todos.with_state('trash'),
+                                         :count).by(1)
+  end
+  scenario 'Activate todo' do
+    todo = FactoryGirl.create(:todo, user: user, kind: 'next')
+    todo.cancel
+    visit todo_path todo
+    expect(page).not_to have_selector("input[type=submit][value='Complete']")
+    expect(page).not_to have_selector("input[type=submit][value='Cancel']")
+    expect{click_on('Activate')}.to change(user.todos.with_state('active'),
+                                           :count).by(1)
+  end
+  scenario 'Complete todo' do
+    todo = FactoryGirl.create(:todo, user: user)
+    visit todo_path todo
+    expect(page).not_to have_selector("input[type=submit][value='Activate']")
   end
 end
 

@@ -6,6 +6,7 @@ class CreateProjects < ActiveRecord::Migration
       t.string :content
       t.integer :user_id, :null => false
       t.integer :prior_id
+      t.string :state
       t.datetime :expire
       t.timestamps
     end

@@ -1,9 +1,9 @@
-- unless @today.blank?
+- if @todos[:today].any?
   %h4 Today actions:
-  =render @today
-- unless @next.blank?
+  =render @todos[:today]
+- if @todos[:next].any?
   %h4 Next actions:
-  =render @next
-- unless @tomorrow.blank?
+  =render @todos[:next]
+- if @todos[:tomorrow].any?
   %h4 Tomorrow actions:
-  =render @tomorrow
+  =render @todos[:tomorrow]

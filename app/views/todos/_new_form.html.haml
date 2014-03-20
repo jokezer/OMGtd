@@ -12,7 +12,7 @@
   -else
     = f.select :context_id, array, prompt: 'Context...',
      selected: action_name=='new' ? params[:from_context] : @todo.context_id
-  - array = current_user.projects.map { |project| [project.label, project.id] } #todo get to model, check if empty
+  - array = current_user.projects.with_state(:active).map{ |project| [project.label, project.id] }
   = f.select :project_id, array, prompt: 'Project...',
   selected: (action_name=='new' ? params[:from_project]:@todo.project_id) if array.any?
   = f.form_group(:todo, label: {text: 'Deadline'}) do
@@ -24,7 +24,16 @@
     - unless @todo.project
       = f.submit button_title, value:'Make project', name:'make_project', class: 'btn btn-link pull-right',
         data: { confirm: 'Are you sure want to make project from this todo?'}
-    - if @todo.can_delete?
-      = link_to 'Delete', @project, method: :delete, class: 'btn',
+    -if @todo.can_activate? and action_name == 'show'
+      = f.submit 'Activate', name: 'activate', class: 'btn btn-primary',
+        data: { confirm: "Are you sure want to activate this todo?"}
+    -if @todo.can_complete? and action_name == 'show'
+      = f.submit 'Complete', name: 'complete', class: 'btn btn-primary',
+        data: { confirm: "Are you sure want to complete this todo?"}
+    -if @todo.can_cancel? and action_name == 'show'
+      = f.submit 'Cancel', name: 'cancel', class: 'btn btn-primary',
+        data: { confirm: "Are you sure want to cancel this todo?"}
+    - if @todo.can_delete? and action_name == 'show'
+      = link_to 'Delete', @todo, method: :delete, class: 'btn',
         data: { confirm: 'Are you sure want to delete this todo?'}
   =debug(@todo)

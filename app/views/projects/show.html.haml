@@ -10,10 +10,20 @@ right: "col-lg-8") do |f|
         = text_field_tag 'project[name]', @project.name, class:'form-control'
   = f.text_area :content, hide_label: :true, placeholder: 'Todo description...'
   = f.select :prior_id, TodoPrior::COLLECTION.invert, :prompt => 'Prior...'
+  %p state #{@project.state}
   = f.form_group do
     = f.submit 'Update', class: 'btn btn-primary'
-    = link_to 'Finish', '#', class: 'btn btn-success'
-    = link_to 'Delete', @project, method: :delete, class: 'btn',
-    data: { confirm: "You sure? #{@project.todos_count} todos will be deleted!"}
+    -if @project.can_finish?
+      = f.submit 'Finish', name: 'finish', class: 'btn btn-primary',
+      data: { confirm: "You sure? #{@project.todos_count} todos will be affected!"}
+    -if @project.can_activate?
+      = f.submit 'Activate', name: 'activate', class: 'btn btn-primary',
+      data: { confirm: "You sure? #{@project.todos_count} todos will be affected!"}
+    -if @project.can_cancel?
+      = f.submit 'Cancel', name: 'cancel', class: 'btn btn-primary',
+      data: { confirm: "You sure? #{@project.todos_count} todos will be affected!"}
+    -if @project.can_delete?
+      = link_to 'Delete', @project, method: :delete, class: 'btn',
+      data: { confirm: "You sure? #{@project.todos_count} todos will be deleted!"}
 %h4 Projects todos
 = render @project.todos
