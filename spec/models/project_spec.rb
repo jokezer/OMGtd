@@ -114,13 +114,5 @@ describe Project do
       expect(@project.state).to eq('active')
       expect(@project.todos.with_state('active').count).to eq(6)
     end
-    it 'should be impossible to add todo to not active project' do
-      pending 'do it'
-      project.finish
-      count = project.todos.count
-      todo = FactoryGirl.create(:todo, user: user, project: project)
-      expect{todo.project}.to be_nil
-      expect(project.todos.count).to eq(count)
-    end
   end
 end

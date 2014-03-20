@@ -3,7 +3,7 @@ class Todo < ActiveRecord::Base
   attr_accessor :is_deadline
   include TodoStates
   include TodoTypes
-  before_validation {self.expire = nil if self.is_deadline=='0'}
+  before_validation { self.expire = nil if self.is_deadline=='0' }
 
   scope :today, -> {
     where('expire < ?', DateTime.now.end_of_day)
@@ -23,8 +23,8 @@ class Todo < ActiveRecord::Base
 
   validates :user, presence: true
   validates :title, presence: true
-  validates_associated :context, :user
-  validates_associated :project, :user #belongs_to and belongs_to dont work?
+  validate :user_project
+  validate :user_context
 
   self.per_page = 5
 
@@ -37,18 +37,32 @@ class Todo < ActiveRecord::Base
     label.to_s
     begin
       output =
-      if type == 'state'
-        self.with_state(label)
-      elsif type == 'kind'
-        self.with_state(:active).with_kind(label)
-      elsif type == 'calendar'
-        self.with_state(:active).today if label == 'today'
-        self.with_state(:active).tomorrow if label == 'tomorrow'
-      else
-        false
-      end
+          if type == 'state'
+            self.with_state(label)
+          elsif type == 'kind'
+            self.with_state(:active).with_kind(label)
+          elsif type == 'calendar'
+            self.with_state(:active).today if label == 'today'
+            self.with_state(:active).tomorrow if label == 'tomorrow'
+          else
+            false
+          end
     rescue
       #incorrect state
+    end
+  end
+
+  private
+
+  def user_project
+    if project.present?
+      errors.add(:project, 'Incorrect project') unless user.id == project.user_id
+    end
+  end
+
+  def user_context
+    if context.present?
+      errors.add(:project, 'Incorrect context') unless user.id == context.user_id
     end
   end
 
