@@ -20,6 +20,7 @@
               %li= link_to "About", about_path
             %ul.nav.navbar-nav.navbar-right
               = render 'shared/sign_in_link'
+            = render 'shared/add_search_form'
       = content_for?(:application) ? yield(:application) : yield
     .col-lg-12
       -if Rails.env.development?

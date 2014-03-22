@@ -1,13 +1,12 @@
 module Todo::TodoStates
-  #filter - .with_state(:state_name)
   extend ActiveSupport::Concern
   included do
-    before_create { |t| t.state = 'active' unless t.inbox? }
-    before_update { |t| t.state = 'active' if !t.inbox? and t.new? }
-    before_update { |t| return false if t.state=='active' and t.inbox? }
-    state_machine :state, initial: :new do
-      state :new
-      state :active
+    before_create { |t| t.state = 'active' if t.kind.present? }
+    before_update { |t| t.state = 'active' if t.kind.present? and t.inbox? }
+    before_update { |t| false if t.state=='active' && t.kind.blank? }
+    state_machine :state, initial: :inbox do
+      state :inbox
+      state :active #validates presence of kind
       state :trash, :completed do
         def can_delete?
           true
@@ -19,20 +18,20 @@ module Todo::TodoStates
         end
       end
       event :activate do
-        transition all - [:new, :active] => :active
+        transition all - [:inbox, :active] => :active
       end
       event :cancel do
-        transition [:new, :active] => :trash
+        transition [:inbox, :active] => :trash
       end
       event :complete do
-        transition [:new, :active] => :completed
+        transition [:inbox, :active] => :completed
       end
     end
   end
   module ClassMethods
     def count_state
       output = {}
-      self.select('state as label, count(todos.id) as todo_count').group('state')
+      select('state as label, count(todos.id) as todo_count').group('state')
       .each{|i| output[i['label']] = i['todo_count'] }
       output.symbolize_keys
     end
@@ -42,8 +41,7 @@ end
 module TodoTypes
   extend ActiveSupport::Concern
   included do
-    state_machine :kind, initial: :inbox do
-      state :inbox
+    state_machine :kind do
       state :next
       state :someday
       state :waiting
@@ -57,9 +55,24 @@ module TodoTypes
   module ClassMethods
     def count_kind
       output = {}
-      self.select('kind as label, count(todos.id) as todo_count').group('kind')
+      select('kind as label, count(todos.id) as todo_count').group('kind')
       .each{|i| output[i['label']] = i['todo_count'] }
       output.symbolize_keys
     end
+  end
+  #where nil changed to "inbox":
+  def get_kinds
+    kinds = Todo.state_machines[:kind].states.map { |n| n.name }
+    .inject({}) do |hsh, sym|
+      if sym
+        hsh[sym]=sym
+      else
+        hsh[:inbox] = '' if inbox?
+      end
+      hsh
+    end
+  end
+  def kind_label
+    kind.blank? ? 'inbox' : kind
   end
 end

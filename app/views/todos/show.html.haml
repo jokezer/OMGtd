@@ -1,11 +1,3 @@
--#to do info
-%h2= @todo.title
-%p= @todo.content
--#timestamps
-%small= "Created at #{@todo.created_at.to_formatted_s(:long)}"
-%small= "Updated at #{@todo.updated_at.to_formatted_s(:long)}"
-<!--main form-->
-= render 'new_form', button_title: 'Save changes'
--#delete form
-- if [:trash, :completed].include? @todo.state
-  = render 'delete_form'
+%h3 Edit todo
+= render 'todos/form/timestamps'
+= render 'todos/form/form'

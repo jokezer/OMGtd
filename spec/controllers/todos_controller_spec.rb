@@ -25,13 +25,12 @@ describe TodosController do
   end
 
   describe "#create" do
-    it 'fix redirect when create new todo, it redirected to kind/inbox, should to state/new'
     context "when create with correct data" do
       subject { lambda { xhr :post, :create, :todo => todo_params } }
       it do
         should change(@user.todos, :count).by(1)
         expect(response.status).to eq(302)
-        expect(response).to redirect_to('/todos/filter/kind/inbox')
+        expect(response).to redirect_to('/todos/filter/state/inbox')
       end
     end
     context 'when try to create todo with incorrect data' do
@@ -65,11 +64,12 @@ describe TodosController do
       subject { lambda { xhr :post, :update,
                              :id => @todo_update.id,
                              :todo => {title: 'rspec updated statuses',
+                                       kind: 'next'
                              } } }
       it do
         should_not change(@user.todos, :count)
         expect(response.status).to eq(302)
-        expect(response).to redirect_to('http://test.host/todos/filter/kind/inbox')
+        expect(response).to redirect_to('http://test.host/todos/filter/kind/next')
         expect(@user.todos.order('updated_at').last.title)
         .to eq('rspec updated statuses')
       end
@@ -157,7 +157,7 @@ describe TodosController do
       FactoryGirl.create_list(:todo, 3, kind: 'next', state: 'trash', user: @user)
     end
     it 'kind with correct label' do
-      xhr :get, :filter, type: 'kind', label: 'inbox'
+      xhr :get, :filter, type: 'state', label: 'inbox'
       expect(response).to render_template('list')
     end
     it 'state with correct label' do

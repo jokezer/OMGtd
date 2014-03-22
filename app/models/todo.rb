@@ -3,7 +3,8 @@ class Todo < ActiveRecord::Base
   attr_accessor :is_deadline
   include TodoStates
   include TodoTypes
-  before_validation { self.expire = nil if self.is_deadline=='0' }
+  include Prior
+  before_validation { self.expire = nil if is_deadline=='0' }
 
   scope :today, -> {
     where('expire < ?', DateTime.now.end_of_day)
@@ -28,22 +29,21 @@ class Todo < ActiveRecord::Base
 
   self.per_page = 5
 
-  def prior
-    TodoPrior::COLLECTION[self.prior_id]
-  end
-
   def self.filter(type, label)
     type.to_s
     label.to_s
     begin
       output =
           if type == 'state'
-            self.with_state(label)
+            with_state(label)
           elsif type == 'kind'
-            self.with_state(:active).with_kind(label)
+            with_state(:active).with_kind(label)
           elsif type == 'calendar'
-            self.with_state(:active).today if label == 'today'
-            self.with_state(:active).tomorrow if label == 'tomorrow'
+            if label == 'tomorrow'
+              with_state(:active).tomorrow
+            elsif label == 'today'
+              with_state(:active).today
+            end
           else
             false
           end

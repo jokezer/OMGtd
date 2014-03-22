@@ -27,13 +27,13 @@ module Project::ProjectStates
     end
   end
   def todos_activate
-    self.todos.each{|t|t.activate}
+    todos.each{|t|t.activate}
   end
   def todos_cancel
-    self.todos.each{|t|t.cancel}
+    todos.each{|t|t.cancel}
   end
   def todos_complete
-    self.todos.each{|t|t.complete}
+    todos.each{|t|t.complete}
   end
   module ClassMethods
   end

@@ -6,13 +6,18 @@ feature 'Project CRUD actions' do
   before do
     sign_in_capybara(user)
   end
-  scenario 'active project edit form' do
+  scenario 'active project without todos' do
     visit project_path project.name
-    expect(page).to have_content('Projects todos')
+    expect(page).not_to have_content('Projects todos')
     expect(page).to have_selector("input[type=text][id='project_title'][name='project[title]']")
     find_field('Title').value.should eq(project.title)
-    find_field('Prior').value.should eq(project.prior_id.to_s)
+    find_field('Prior').value.should eq(project.prior)
     expect(page).not_to have_link('Delete')
+  end
+  scenario 'active project with todos' do
+    todo
+    visit project_path project.name
+    expect(page).to have_content('Projects todos')
   end
   scenario 'trash and finished project edit form' do
     project.cancel

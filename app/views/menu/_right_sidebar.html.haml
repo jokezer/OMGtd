@@ -1,10 +1,10 @@
-- context_hash = current_user.contexts.make_group
-- project_hash = current_user.projects.with_state('active').make_group
+- project_hash = sidebar_projects
+- context_hash = sidebar_contexts
 -if context_hash.any?
   contexts
-  = render 'menu/badge', menu_hash: context_hash, link: '/todos/contexts/',
+  = render 'menu/badge', menu_hash: sidebar_contexts, link: '/todos/contexts/',
    label: :label
 -if project_hash.any?
   projects
-  = render 'menu/badge', menu_hash: project_hash, link: '/projects/',
+  = render 'menu/badge', menu_hash: sidebar_projects, link: '/projects/',
    label: :name

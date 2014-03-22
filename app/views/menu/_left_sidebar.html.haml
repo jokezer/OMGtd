@@ -3,16 +3,16 @@
     %span.glyphicon.glyphicon-backward
     Back
 = render 'menu/new_todo_link'
--counts = count_todos
+-counts = sidebar_count_todos
 %ul.nav.nav-pills.nav-stacked
-  = render 'menu/item', item: {label:'inbox', link: 'state/new',
-  todos_count: counts[:state][:new]}
+  = render 'menu/item', item: {label:'inbox', link: 'state/inbox',
+  todos_count: counts[:state][:inbox]}
   = render 'menu/item', item: {label:'today', link: 'calendar/today',
-  todos_count: current_user.todos.today.count}
+  todos_count: counts[:calendar][:today]}
   = render 'menu/item', item: {label:'next', link: 'kind/next',
   todos_count: counts[:kind][:next]}
   = render 'menu/item', item: {label:'tomorrow', link: 'calendar/tomorrow',
-  todos_count: current_user.todos.tomorrow.count}
+  todos_count: counts[:calendar][:tomorrow]}
   = render 'menu/item', item: {label:'scheduled', link: 'kind/scheduled',
   todos_count: counts[:kind][:scheduled]}
   = render 'menu/item', item: {label:'cycled', link: 'kind/cycled',

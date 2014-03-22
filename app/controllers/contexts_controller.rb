@@ -1,5 +1,6 @@
 class ContextsController < ApplicationController
   before_filter :authenticate_user!
+  before_filter :get_context, only: [:update, :destroy]
   layout 'loggedin'
 
   def index
@@ -34,8 +35,6 @@ class ContextsController < ApplicationController
   end
 
   def update
-    @context = current_user.contexts.find(params[:label])
-    redirect_to '/todos/contexts/' and return unless @context
     if @context.update_attributes(context_params)
       flash[:success] = 'Context updated!'
       redirect_to contexts_path
@@ -45,7 +44,6 @@ class ContextsController < ApplicationController
   end
 
   def destroy
-    @context = current_user.contexts.find(params[:label])
     @context.destroy
     flash[:success] = 'Context deleted!'
     redirect_to contexts_path
@@ -55,6 +53,11 @@ class ContextsController < ApplicationController
 
   def context_params
     params.require(:context).permit(:name)
+  end
+
+  def get_context
+    @context = current_user.contexts.find(params[:label])
+    redirect_to '/todos/contexts/' and return unless @context
   end
 
 end

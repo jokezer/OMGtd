@@ -28,9 +28,9 @@ ActiveRecord::Schema.define(version: 20140310080437) do
   create_table "projects", force: true do |t|
     t.string   "title",      null: false
     t.string   "name"
-    t.string   "content"
+    t.text     "content"
     t.integer  "user_id",    null: false
-    t.integer  "prior_id"
+    t.string   "prior"
     t.string   "state"
     t.datetime "expire"
     t.datetime "created_at"
@@ -41,11 +41,11 @@ ActiveRecord::Schema.define(version: 20140310080437) do
 
   create_table "todos", force: true do |t|
     t.string   "title",      null: false
-    t.string   "content"
+    t.text     "content"
     t.integer  "user_id",    null: false
     t.string   "state",      null: false
     t.string   "kind"
-    t.integer  "prior_id"
+    t.string   "prior"
     t.integer  "context_id"
     t.integer  "project_id"
     t.datetime "expire"

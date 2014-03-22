@@ -7,7 +7,6 @@ FactoryGirl.define do
 
   factory :todo do
     title 'Factory girl todo'
-    prior_id TodoPrior.label_id :low
     user
   end
 
@@ -19,7 +18,6 @@ FactoryGirl.define do
   factory :project do
     title 'Factory girl project'
     content 'Factory girl projects content'
-    prior_id TodoPrior.label_id :low
     user
   end
 

@@ -9,7 +9,7 @@ right: "col-lg-8") do |f|
         %span.input-group-addon #
         = text_field_tag 'project[name]', @project.name, class:'form-control'
   = f.text_area :content, hide_label: :true, placeholder: 'Todo description...'
-  = f.select :prior_id, TodoPrior::COLLECTION.invert, :prompt => 'Prior...'
+  = f.select :prior, get_priors
   %p state #{@project.state}
   = f.form_group do
     = f.submit 'Update', class: 'btn btn-primary'
@@ -25,5 +25,14 @@ right: "col-lg-8") do |f|
     -if @project.can_delete?
       = link_to 'Delete', @project, method: :delete, class: 'btn',
       data: { confirm: "You sure? #{@project.todos_count} todos will be deleted!"}
-%h4 Projects todos
-= render @project.todos
+-if @project.todos.any?
+  %h3 Projects todos
+-if @project.todos.today.any?
+  %h4 Today todos
+  = render @project.todos.today
+-if @project.todos.with_kind(:next).later_or_no_deadline.any?
+  %h4 Next todos
+  = render @project.todos.with_kind(:next).later_or_no_deadline
+-if @project.todos.tomorrow.any?
+  %h4 Tomorrow todos
+  = render @project.todos.tomorrow

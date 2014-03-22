@@ -1,5 +1,7 @@
 class Project < ActiveRecord::Base
   include ProjectStates
+  include Prior
+
   belongs_to :user
   has_many :todos, :dependent => :delete_all
   validates :user, presence: true
@@ -20,7 +22,7 @@ class Project < ActiveRecord::Base
 
   #todo it has n+1 problem
   def todos_count
-    self.todos.count
+    todos.count
   end
 
   #todo test if another user try to access current user scope
@@ -31,11 +33,6 @@ class Project < ActiveRecord::Base
                                         'prior_id', 'expire')
     project = user.projects.build(todo_params)
     todo.destroy if project.save
-  end
-
-  #to do methods
-  def prior
-    TodoPrior::COLLECTION[self.prior_id]
   end
 
 end

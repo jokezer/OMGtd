@@ -6,7 +6,7 @@
   %small= todo.content
   %p.pull-right= todo.prior
   %p
-    %small= todo.kind
+    %small= todo.kind_label
     -if todo.project
       =link_to project_path todo.project.name do
         %small= todo.project.label

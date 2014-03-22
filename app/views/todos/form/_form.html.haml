@@ -1,0 +1,43 @@
+= bootstrap_form_for(@todo, style: :horizontal, left: 'col-lg-2',
+  right: 'col-lg-8') do |f|
+  = f.text_field :title
+  = f.text_area :content, hide_label: :true, placeholder: 'Todo description...'
+  = f.select :kind, @todo.get_kinds,
+  selected: action_name=='new' ? params[:from_kind] : @todo.kind
+  = f.select :prior, get_priors
+  -contexts = get_contexts
+  -if contexts.empty?
+    = f.form_group do
+      There is no contexts
+      = link_to('Create contexts', contexts_path)
+  -else
+    = f.select :context_id, contexts, :include_blank => true,
+     selected: action_name=='new' ? params[:from_context] : @todo.context_id
+  - projects = get_projects
+  -if projects.any?
+    = f.select :project_id, projects, :include_blank => true,
+    selected: (action_name=='new' ? params[:from_project]:@todo.project_id)
+  =f.form_group(:todo, label: {text: 'Deadline'}) do
+    = check_box(:todo, :is_deadline, {checked: @todo.expire ? true : false})
+    = datetime_select(:todo, :expire, :default => 24.hours.from_now,
+     :minute_step => 10)
+    = @todo.errors[:is_deadline] if @todo.errors[:is_deadline].any?
+  = f.form_group do
+    = f.submit action_name=='show' ? 'Save changes':'Create todo',
+     class: 'btn btn-primary'
+    - unless @todo.project
+      = f.submit 'Make project', name:'make_project', class: 'btn btn-link pull-right',
+        data: { confirm: 'Are you sure want to make project from this todo?'}
+    -if action_name == 'show'
+      -if @todo.can_activate?
+        = f.submit 'Activate', name: 'activate', class: 'btn btn-primary',
+          data: { confirm: "Are you sure want to activate this todo?"}
+      -if @todo.can_complete?
+        = f.submit 'Complete', name: 'complete', class: 'btn btn-primary',
+          data: { confirm: "Are you sure want to complete this todo?"}
+      -if @todo.can_cancel?
+        = f.submit 'Cancel', name: 'cancel', class: 'btn btn-primary',
+          data: { confirm: "Are you sure want to cancel this todo?"}
+      - if @todo.can_delete?
+        = link_to 'Delete', @todo, method: :delete, class: 'btn',
+          data: { confirm: 'Are you sure want to delete this todo?'}

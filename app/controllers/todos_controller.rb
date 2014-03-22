@@ -52,7 +52,15 @@ class TodosController < ApplicationController
 
   def todo_success(label)
     flash[:success] = label
-    redirect_to "#{todos_path}/filter/kind/#{@todo.kind}"
+    redirect_to redirect_address
+  end
+
+  def redirect_address
+    if @todo.active?
+      "/todos/filter/kind/#{@todo.kind}"
+    else
+      "/todos/filter/state/#{@todo.state}"
+    end
   end
 
   def create_project
@@ -62,7 +70,7 @@ class TodosController < ApplicationController
   end
 
   def todo_params
-    params.require(:todo).permit(:title, :kind, :prior_id, :project_id,
+    params.require(:todo).permit(:title, :kind, :prior, :project_id,
                                  :content, :expire, :context_id, :is_deadline)
   end
 

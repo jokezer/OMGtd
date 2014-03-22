@@ -3,9 +3,9 @@ class CreateProjects < ActiveRecord::Migration
     create_table :projects do |t|
       t.string :title, :null => false
       t.string :name
-      t.string :content
+      t.text :content
       t.integer :user_id, :null => false
-      t.integer :prior_id
+      t.string :prior
       t.string :state
       t.datetime :expire
       t.timestamps

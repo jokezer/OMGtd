@@ -9,7 +9,6 @@ describe Todo do
   it { should respond_to(:user) }
   it { should respond_to(:state) }
   it { should respond_to(:kind) }
-  it { should respond_to(:prior_id) }
   it { should respond_to(:prior) }
   it { should respond_to(:expire) }
   it { should respond_to(:context) }
@@ -92,18 +91,18 @@ describe Todo do
     it 'have 4 states' do
       expect(Todo.state_machines[:state].states.count).to eq(4)
       expect(Todo.state_machines[:state].states.map { |n| n.name })
-      .to include(:new, :active, :trash, :completed)
+      .to include(:inbox, :active, :trash, :completed)
     end
     it 'have 6 kinds' do
       expect(Todo.state_machines[:kind].states.count).to eq(6)
       expect(Todo.state_machines[:kind].states.map { |n| n.name })
-      .to include(:inbox, :scheduled, :someday, :next, :cycled, :waiting)
+      .to include(nil, :scheduled, :someday, :next, :cycled, :waiting)
     end
     it 'initial state check' do
-      expect(todo.state).to eq('new')
-      expect(todo.kind).to eq('inbox')
-      expect(todo.state_name).to eq(:new)
-      expect(todo.kind_name).to eq(:inbox)
+      expect(todo.state).to eq('inbox')
+      expect(todo.kind).to eq(nil)
+      expect(todo.state_name).to eq(:inbox)
+      expect(todo.kind_name).to eq(nil)
     end
     it 'with predefined kind it should have state active' do
       active_todo = FactoryGirl.create(:todo, user: user, kind: 'next')
@@ -134,7 +133,7 @@ describe Todo do
     end
     it 'make state active after update' do
       todo.update_attributes(title: 'Make active')
-      expect(todo.state).to eq('new')
+      expect(todo.state).to eq('inbox')
       todo.update_attributes(kind: 'next')
       expect(todo.state).to eq('active')
     end
