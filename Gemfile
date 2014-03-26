@@ -64,6 +64,9 @@ gem 'bcrypt'
 gem 'state_machine'
 #gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing
 
+#heroku
+gem 'rails_12factor', group: :production
+
 # Use unicorn as the app server
 # gem 'unicorn'
 
