@@ -1,10 +1,4 @@
-- project_hash = sidebar_projects
-- context_hash = sidebar_contexts
--if context_hash.any?
-  contexts
-  = render 'menu/badge', menu_hash: sidebar_contexts, link: '/todos/contexts/',
-   label: :label
--if project_hash.any?
-  projects
-  = render 'menu/badge', menu_hash: sidebar_projects, link: '/projects/',
-   label: :name
+=make_badge(sidebar_contexts, group_label:'Context',
+  link: lambda{|i|"/todos/contexts/#{i[:name]}"})
+=make_badge(sidebar_projects, group_label:'Projects',
+  link: lambda{|i|"/projects/#{i[:name]}"})

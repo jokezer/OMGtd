@@ -12,7 +12,7 @@ describe ProjectsController do
       expect(response).to be_success
     end
     it 'new todo pass should render new template' do
-      xhr :get, :show, :label => project.name
+      xhr :get, :show, :name => project.name
       expect(response).to be_success
       expect(response).to render_template(:show)
     end
@@ -23,7 +23,7 @@ describe ProjectsController do
     end
     context 'update the project' do
       subject { lambda { xhr :post, :update,
-                             label: @project.id,
+                             name: @project.id,
                              :project => {title: 'rspec title'} } }
       it do
         should_not change(@user.projects, :count)
@@ -33,7 +33,7 @@ describe ProjectsController do
     end
     context 'finish' do
       subject { lambda { xhr :post, :update,
-                             label: @project.id,
+                             name: @project.id,
                              finish: true,
                              :project => {title: 'finished title'} } }
       it do
@@ -44,7 +44,7 @@ describe ProjectsController do
     end
     context 'cancel' do
       subject { lambda { xhr :post, :update,
-                             label: @project.id,
+                             name: @project.id,
                              cancel: true,
                              :project => {title: 'canceled title'} } }
       it do
@@ -58,7 +58,7 @@ describe ProjectsController do
         @project.finish
       end
       subject { lambda { xhr :post, :update,
-                             label: @project.id,
+                             name: @project.id,
                              activate: true,
                              :project => {title: 'activated title'} } }
       it do
@@ -72,7 +72,7 @@ describe ProjectsController do
         @project.finish
       end
       subject { lambda { xhr :post, :update,
-                             label: @project.id,
+                             name: @project.id,
                              cancel: true,
                              :project => {title: 'wrong title'} } }
       it do
@@ -87,7 +87,7 @@ describe ProjectsController do
       @project_to_destroy = project
     end
     context 'if statuses trash' do
-      subject { lambda { xhr :delete, :destroy, :label => @project_to_destroy.id } }
+      subject { lambda { xhr :delete, :destroy, :name => @project_to_destroy.id } }
       it do
         should change(@user.projects, :count).by(-1)
         expect(response).to redirect_to(projects_path)

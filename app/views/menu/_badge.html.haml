@@ -1,9 +1,9 @@
--link_prepend||=''
+=group_label
 %ul.nav.nav-pills.nav-stacked
-  - menu_hash.each do |menu_item|
-    %li{:class => ('active' if params[:label]==menu_item[:label])}
-      -#= link_to "/#{link}/#{menu_item[:name] : menu_item[:label]}",
-      = link_to link + menu_item[label],
-       :class => 'button white' do
-        %span= menu_item[:label]
-        %span.badge.pull-right= menu_item[:todo_count]
+  - collection.each do |item|
+    %li{:class => [('droppable' unless item[:disabled]), ('active' if params[:name]==name.call(item))],
+        group: item[:group], group_value: name.call(item)}
+      = link_to link.call(item),
+        :class => 'button white' do
+        %span= label.call(item)
+        %span.badge.pull-right= counts.call(item)||0

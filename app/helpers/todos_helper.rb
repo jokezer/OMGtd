@@ -8,4 +8,5 @@ module TodosHelper
     current_user.projects.with_state(:active)
     .map { |project| [project.label, project.id] }
   end
+
 end

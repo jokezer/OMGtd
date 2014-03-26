@@ -10,7 +10,7 @@ describe Project do
   it { should respond_to(:title) }
   it { should respond_to(:content) }
   it { should respond_to(:prior) }
-  it { should respond_to(:expire) }
+  it { should respond_to(:due) }
   it { should respond_to(:name) }
   it { should respond_to(:label) }
   it { should respond_to(:state) }

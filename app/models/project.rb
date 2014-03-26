@@ -30,7 +30,7 @@ class Project < ActiveRecord::Base
     return false if todo.project
     user = todo.user
     todo_params = todo.attributes.slice('title', 'content', 'user_id',
-                                        'prior_id', 'expire')
+                                        'prior_id', 'due')
     project = user.projects.build(todo_params)
     todo.destroy if project.save
   end

@@ -1,15 +1,29 @@
-.thumbnail
-  -if todo.expire
-    %small.pull-right= "Expires #{todo.expire.to_formatted_s(:long)}"
-  =link_to todo, :title => "View todo: #{todo.title}" do
-    %h5= todo.title
-  %small= todo.content
-  %p.pull-right= todo.prior
-  %p
-    %small= todo.kind_label
-    -if todo.project
-      =link_to project_path todo.project.name do
-        %small= todo.project.label
-    -if todo.context
-      =link_to "/todos/contexts/#{todo.context.label}" do
-        %small= todo.context.label
+.panel.panel-default.draggable{context: (todo.context.name if todo.context),
+                               project: (todo.project.name if todo.project),
+                               kind: (todo.kind if todo.kind),
+                               state: (todo.state),
+                               calendar: todo.get_schedule_label,
+                               id: todo.id,
+                               due: (todo.due.strftime("%Y/%m/%d") if todo.due)}
+  .panel-heading
+    -if todo.due
+      %small.pull-right
+        %span.glyphicon.glyphicon-time
+        due  #{todo.due.to_formatted_s(:long)}
+    =link_to todo, :title => "View todo: #{todo.title}" do
+      %h5.panel-title= todo.title
+  -if todo.content.present?
+    .panel-body
+      %small= todo.content
+  .panel-body
+    %span.pull-right
+      %small= todo.prior
+    %span
+      %small= todo.kind_label
+      -if todo.project
+        =link_to project_path todo.project.name do
+          %small= todo.project.label
+      -if todo.context
+        =link_to "/todos/contexts/#{todo.context.label}" do
+          %small= todo.context.label
+  -#%li.list-group-item Vestibulum at eros

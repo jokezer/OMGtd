@@ -46,7 +46,7 @@ module TodoTypes
       state :someday
       state :waiting
       state :scheduled, :cycled do
-        validates_presence_of :expire
+        validates_presence_of :due
         validates :is_deadline, acceptance: {accept: '1',
                                              message:'Deadline is required!'}
       end

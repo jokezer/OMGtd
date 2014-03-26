@@ -42,12 +42,12 @@ describe ContextsController do
   end
   describe '#show' do
     it 'with correct context' do
-      xhr :get, :show, :label => @user.contexts.first.label
+      xhr :get, :show, :name => @user.contexts.first.name
       expect(response).to be_success
       expect(response).to render_template('todos/list')
     end
     it 'with incorrect context' do
-      xhr :get, :show, :label => 'incorrect_context'
+      xhr :get, :show, :name => 'incorrect_context'
       expect(response).to redirect_to(root_path)
     end
   end
@@ -58,7 +58,7 @@ describe ContextsController do
     end
     context 'when try to create todo with correct data' do
       subject { lambda { xhr :post, :update,
-                             :label => @context.id,
+                             :name => @context.id,
                              :context => {:name => 'Correct'} } }
       it do
         should_not change(@user.contexts, :count)
@@ -69,7 +69,7 @@ describe ContextsController do
     end
     context 'when try to create todo with incorrect data' do
       subject { lambda { xhr :post, :update,
-                             :label => @context.id,
+                             :name => @context.id,
                              :context => {:name => ''} } }
       it do
         should_not change(@user.contexts, :count)
@@ -84,7 +84,7 @@ describe ContextsController do
       @context_to_destroy = FactoryGirl.create(:context, user: @user, name: 'to_delete')
     end
     context 'if statuses trash' do
-      subject { lambda { xhr :delete, :destroy, :label => @context_to_destroy.id } }
+      subject { lambda { xhr :delete, :destroy, :name => @context_to_destroy.id } }
       it do
         should change(@user.contexts, :count).by(-1)
         expect(response).to redirect_to(contexts_path)

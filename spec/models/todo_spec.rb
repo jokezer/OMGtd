@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Todo do
   let(:user) { FactoryGirl.create(:user) }
   let(:todo) { FactoryGirl.create(:todo, user: user) }
+  let(:project) { FactoryGirl.create(:project, user: user) }
 
   it { should respond_to(:title) }
   it { should respond_to(:content) }
@@ -10,7 +11,7 @@ describe Todo do
   it { should respond_to(:state) }
   it { should respond_to(:kind) }
   it { should respond_to(:prior) }
-  it { should respond_to(:expire) }
+  it { should respond_to(:due) }
   it { should respond_to(:context) }
   it { should respond_to(:project) }
   context 'with correct data' do
@@ -57,14 +58,14 @@ describe Todo do
       FactoryGirl.create(:todo, kind: :scheduled,
                          title: 'First today deadline',
                          user: user,
-                         expire: DateTime.now)
+                         due: DateTime.now)
       FactoryGirl.create(:todo, kind: :next,
                          user: user,
-                         expire: DateTime.now-1.hour)
+                         due: DateTime.now-1.hour)
       FactoryGirl.create(:todo, kind: :waiting,
                          title: 'Last created todo',
                          user: user,
-                         expire: DateTime.now-1.week)
+                         due: DateTime.now-1.week)
       expect(user.todos.today.first.title).to eq('Last created todo')
       expect(user.todos.today.last.title).to eq('First today deadline')
       expect(user.todos.today.count).to eq(3)
@@ -73,7 +74,7 @@ describe Todo do
       FactoryGirl.create(:todo, kind: :scheduled,
                          title: 'Tomorrow todo',
                          user: user,
-                         expire: DateTime.now.tomorrow)
+                         due: DateTime.now.tomorrow)
       expect(user.todos.tomorrow.first.title).to eq('Tomorrow todo')
       expect(user.todos.tomorrow.count).to eq(1)
     end
@@ -81,7 +82,7 @@ describe Todo do
       FactoryGirl.create(:todo, kind: :scheduled,
                          title: 'Later todo',
                          user: user,
-                         expire: DateTime.now + 2.days)
+                         due: DateTime.now + 2.days)
       expect(user.todos.later_or_no_deadline.first.title).to eq('Later todo')
       expect(user.todos.later_or_no_deadline.count).to eq(1)
     end
@@ -178,10 +179,60 @@ describe Todo do
     end
     it 'cycled with deadline' do
       todo = user.todos.new(title: 'Title of scheduled', kind: 'scheduled',
-                            expire: DateTime.now)
+                            due: DateTime.now)
       expect(todo).to be_valid
     end
 
+  end
+
+  describe 'move' do
+    it 'to correct context' do
+      todo.move 'context', user.contexts.first.name
+      expect(todo.context.name).to eq(user.contexts.first.name)
+    end
+    it 'to incorrect context' do
+      todo.move 'context', 'incorrect'
+      expect(todo.context).to be_nil
+    end
+    it 'to correct project' do
+      todo.move 'project', project.name
+      expect(todo.project.name).to eq(project.name)
+      end
+    it 'to incorrect project' do
+      todo.move 'project', 'incorrect'
+      expect(todo.project).to be_nil
+    end
+    it 'to calendar today' do
+      todo.move 'calendar', 'today'
+      expect(todo.today?).to be_true
+    end
+    it 'to calendar tomorrow' do
+      todo.move 'calendar', 'tomorrow'
+      expect(todo.tomorrow?).to be_true
+    end
+    it 'to calendar incorrect' do
+      todo.move 'calendar', 'false'
+      expect(todo.due).to be_nil
+      expect(todo).to be_valid
+    end
+    it 'to correct kind' do
+      todo.move 'kind', 'next'
+      expect(todo.next?).to be_true
+      expect(todo.active?).to be_true
+    end
+    it 'to incorrect kind' do
+      todo.move 'kind', 'incorrect'
+      expect(todo.next?).to be_false
+      expect(todo.inbox?).to be_true
+    end
+    it 'to correct state' do
+      todo.move 'state', 'trash'
+      expect(todo.trash?).to be_true
+      end
+    it 'to incorrect state' do
+      todo.move 'state', 'incorrect'
+      expect(todo.reload.inbox?).to be_true
+    end
   end
 
 end

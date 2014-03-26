@@ -5,16 +5,16 @@ class TodosController < ApplicationController
 
   def index
     @todos = {}
-    @todos[:today] = current_user.todos.today
-    @todos[:tomorrow] = current_user.todos.tomorrow
-    @todos[:next] = current_user.todos.with_kind(:next).later_or_no_deadline
+    @todos[:today] = current_user.todos.with_state(:active).today
+    @todos[:tomorrow] = current_user.todos.with_state(:active).tomorrow
+    @todos[:next] = current_user.todos.with_state(:active).with_kind(:next).later_or_no_deadline
   end
 
   def show
   end
 
   def filter
-    @todos = current_user.todos.filter(params[:type], params[:label])
+    @todos = current_user.todos.filter(params[:type], params[:name])
     redirect_to root_path and return unless @todos
     @todos = @todos.paginate(:page => params[:page])
     render 'todos/list'
@@ -48,6 +48,17 @@ class TodosController < ApplicationController
     redirect_to root_path
   end
 
+  def move
+    params = move_params
+    todo = current_user.todos.find(params[:todo_id])
+    todo.move params[:group], params[:group_value], params[:due]
+    #redirect_to :back
+    respond_to do |format|
+      format.js {render inline: "location.reload();" }
+      format.html {redirect_to :back}
+    end
+  end
+
   private
 
   def todo_success(label)
@@ -71,7 +82,11 @@ class TodosController < ApplicationController
 
   def todo_params
     params.require(:todo).permit(:title, :kind, :prior, :project_id,
-                                 :content, :expire, :context_id, :is_deadline)
+                                 :content, :due, :context_id, :is_deadline)
+  end
+
+  def move_params
+    params.require(:move).permit(:todo_id, :group, :group_value, :due)
   end
 
   def get_todo

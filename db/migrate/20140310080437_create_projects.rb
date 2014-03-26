@@ -7,7 +7,7 @@ class CreateProjects < ActiveRecord::Migration
       t.integer :user_id, :null => false
       t.string :prior
       t.string :state
-      t.datetime :expire
+      t.datetime :due
       t.timestamps
     end
     add_index :projects, :user_id

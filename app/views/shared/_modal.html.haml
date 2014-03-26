@@ -1,0 +1,17 @@
+#modal.modal.fade{tabindex:'-1', role:'dialog',
+  :'aria-labelledby'=> 'mySmallModalLabel', :'aria-hidden'=>'true'}
+  .modal-dialog.modal-sm
+    .modal-content
+      .modal-header
+        %button.close{type:'button', :'data-dismiss'=>'modal',
+          :'aria-hidden'=>'true'} &times;
+        %h5.modal-title Update todo?
+      .modal-body
+        =form_tag("/todos/move", method: 'post', remote: true, id: 'move_form') do
+          =hidden_field_tag 'move[todo_id]'
+          =hidden_field_tag 'move[group]'
+          =hidden_field_tag 'move[group_value]'
+          =text_field_tag 'move[due]', '', style:'display:none;'
+          %p#message
+          %button.btn.btn-default{type:'button', :'data-dismiss'=>'modal'} Close
+          =submit_tag 'Move!', class:'btn btn-default'

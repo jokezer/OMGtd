@@ -1,4 +1,0 @@
-%li{:class => ('active' if (params[:label]==item[:label]))}
-  = link_to "/todos/filter/#{item[:link]}", :class => 'button white' do
-    %span= item[:label]
-    %span.badge.pull-right= item[:todos_count]||0

@@ -62,7 +62,7 @@ feature 'Todos CRUD actions' do
     visit todo_path(todo)
     expect(page).to have_selector("input[type=text][value='Changed title from feature test']")
     expect(page).to have_selector('textarea', text: 'Changed content from feature test')
-    expect(todo.reload.expire).to be_nil
+    expect(todo.reload.due).to be_nil
   end
   scenario 'Delete button presence' do
     trash_todo = FactoryGirl.create(:todo, user: user, state: 'trash')
@@ -182,7 +182,7 @@ feature 'Scheduled todo' do
     find(:css, "#todo_is_deadline[value='1']").set(true)
     fill_in 'Title', :with => 'With deadline'
     click_on 'Save changes'
-    expect(todo.reload.expire).to_not be_nil
+    expect(todo.reload.due).to_not be_nil
   end
   scenario 'create scheduled todo without deadline' do
     visit new_todo_path
@@ -191,10 +191,10 @@ feature 'Scheduled todo' do
     expect { click_on 'Create todo' }.not_to change(Todo, :count)
     expect(page).to have_content('Deadline is required!')
   end
-  scenario 'deadline selected if expire is set' do
+  scenario 'deadline selected if due is set' do
     visit todo_path(todo)
     find(:css, "#todo_is_deadline").should_not be_checked
-    todo_deadline = FactoryGirl.create(:todo, user: user, expire: DateTime.now)
+    todo_deadline = FactoryGirl.create(:todo, user: user, due: DateTime.now)
     visit todo_path(todo_deadline)
     find(:css, "#todo_is_deadline").should be_checked
   end

@@ -1,4 +1,3 @@
-#todo context and project models has many common things that would be better to put in module
 class Context < ActiveRecord::Base
   belongs_to :user
   has_many :todos, :dependent => :nullify
@@ -9,6 +8,7 @@ class Context < ActiveRecord::Base
             length: {maximum: 20}
 
   before_save { |c| c.name.tr!(' ', '_') }
+  #todo forbid names new, edit etc
 
   def prefix
     '@'

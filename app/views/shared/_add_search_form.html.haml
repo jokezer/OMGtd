@@ -1,6 +1,8 @@
 =form_tag("/todos", method: 'post', class:'navbar-form navbar-right') do
   .form-group
-    %input.form-control{placeholder:'Add todo', type:'text', name:'todo[title]'}
-  %button.btn.btn-default{type:'submit'}
-    %span.glyphicon.glyphicon-plus
-    Add
+    .input-group
+      %input.form-control{placeholder:'Add todo', type:'text', name:'todo[title]'}
+        %span.input-group-btn
+          %button.btn.btn-default{type:'submit'}
+            %span.glyphicon.glyphicon-plus
+            Add

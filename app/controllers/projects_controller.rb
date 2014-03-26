@@ -12,7 +12,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @project = current_user.projects.by_name(params[:label])
+    @project = current_user.projects.by_name(params[:name])
     redirect_to root_path and return unless @project
   end
 
@@ -38,7 +38,7 @@ class ProjectsController < ApplicationController
   end
 
   def get_project
-    @project = current_user.projects.find(params[:label])
+    @project = current_user.projects.find(params[:name])
     redirect_to root_path and return unless @project
   end
 end

@@ -37,6 +37,7 @@ gem 'coffee-rails', '~> 4.0.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
@@ -47,7 +48,7 @@ gem 'jbuilder', '~> 1.2'
 group :development, :test do
   #gem 'rspec-rails', '~> 3.0.0.beta'
   gem 'rspec-rails'
-  gem "capybara"
+  gem 'capybara'
   gem 'factory_girl_rails'
 end
 
@@ -59,9 +60,9 @@ end
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
 
-#Finite machine state
+#Finite state machine
 gem 'state_machine'
-gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing
+#gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing
 
 # Use unicorn as the app server
 # gem 'unicorn'

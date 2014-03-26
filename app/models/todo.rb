@@ -1,21 +1,22 @@
 class Todo < ActiveRecord::Base
+  #TODO FIX ORDERS
 
   attr_accessor :is_deadline
   include TodoStates
   include TodoTypes
   include Prior
-  before_validation { self.expire = nil if is_deadline=='0' }
+  before_validation { self.due = nil if is_deadline=='0' }
 
   scope :today, -> {
-    where('expire < ?', DateTime.now.end_of_day)
+    where('due < ?', DateTime.now.end_of_day)
     .order('updated_at DESC')
   }
   scope :tomorrow, -> {
-    where('expire BETWEEN ? AND ?', DateTime.now.tomorrow.beginning_of_day,
+    where('due BETWEEN ? AND ?', DateTime.now.tomorrow.beginning_of_day,
           DateTime.now.tomorrow.end_of_day)
     .order('updated_at DESC')
   }
-  scope :later_or_no_deadline, -> { where("expire > ? or expire is NULL",
+  scope :later_or_no_deadline, -> { where("due > ? or due is NULL",
                                           DateTime.now.tomorrow.end_of_day) }
 
   belongs_to :user
@@ -39,10 +40,10 @@ class Todo < ActiveRecord::Base
           elsif type == 'kind'
             with_state(:active).with_kind(label)
           elsif type == 'calendar'
-            if label == 'tomorrow'
-              with_state(:active).tomorrow
-            elsif label == 'today'
+            if label == 'today'
               with_state(:active).today
+            elsif label == 'tomorrow'
+              with_state(:active).tomorrow
             end
           else
             false
@@ -50,6 +51,46 @@ class Todo < ActiveRecord::Base
     rescue
       #incorrect state
     end
+  end
+
+  def move(group, value, set_due=nil)
+    self.due = DateTime.parse(set_due) if set_due.present?
+    activate
+    case group
+      when 'kind'
+        self.kind = value
+      when 'state'
+        self.state = value
+      when 'calendar'
+        self.due = DateTime.now if value == 'today'
+        self.due = DateTime.now.tomorrow if value == 'tomorrow'
+        self.kind = 'scheduled' if inbox? && due
+      when 'context'
+        context = user.contexts.by_name(value)
+        self.context_id = context.id if context
+      when 'project'
+        project = user.projects.by_name(value)
+        self.project_id = project.id if project
+      else
+        return false
+    end
+    save
+  end
+
+  def today?
+    return false unless due
+    due < DateTime.now.end_of_day
+  end
+
+  def tomorrow?
+    return false unless due
+    due > DateTime.now.tomorrow.beginning_of_day && due < DateTime.now.tomorrow.end_of_day
+  end
+
+  def get_schedule_label
+    return 'no' if due.blank?
+    return 'today' if today?
+    'tomorrow' if tomorrow?
   end
 
   private

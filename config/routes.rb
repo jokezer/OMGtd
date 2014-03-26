@@ -3,16 +3,16 @@ Gtd::Application.routes.draw do
 
   concern :context do
     collection do
-      resources :contexts, param: :label, only: [:show]
+      resources :contexts, param: :name, only: [:show]
     end
   end
 
-  resources :contexts, param: :label, only: [:new, :create, :edit, :update, :destroy, :index]
-  resources :projects, param: :label, only: [:show, :update, :destroy, :index]
+  resources :contexts, param: :name, only: [:new, :create, :edit, :update, :destroy, :index]
+  resources :projects, param: :name, only: [:show, :update, :destroy, :index]
   resources :todos, concerns: [:context]
 
-  match '/todos/filter/:type/:label', to: 'todos#filter', via: 'get'
-
+  match '/todos/filter/:type/:name', to: 'todos#filter', via: 'get'
+  match '/todos/move', to: 'todos#move', via: 'post'
   #get '/todos/statuses/:statuses', to: 'todos#statuses'
 
   match '/about', to: 'static_pages#about', via: 'get'

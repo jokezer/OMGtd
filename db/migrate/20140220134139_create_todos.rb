@@ -9,7 +9,7 @@ class CreateTodos < ActiveRecord::Migration
       t.string :prior
       t.integer :context_id
       t.integer :project_id
-      t.datetime :expire
+      t.datetime :due
 
       t.timestamps
 

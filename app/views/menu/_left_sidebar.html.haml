@@ -3,27 +3,7 @@
     %span.glyphicon.glyphicon-backward
     Back
 = render 'menu/new_todo_link'
--counts = sidebar_count_todos
-%ul.nav.nav-pills.nav-stacked
-  = render 'menu/item', item: {label:'inbox', link: 'state/inbox',
-  todos_count: counts[:state][:inbox]}
-  = render 'menu/item', item: {label:'today', link: 'calendar/today',
-  todos_count: counts[:calendar][:today]}
-  = render 'menu/item', item: {label:'next', link: 'kind/next',
-  todos_count: counts[:kind][:next]}
-  = render 'menu/item', item: {label:'tomorrow', link: 'calendar/tomorrow',
-  todos_count: counts[:calendar][:tomorrow]}
-  = render 'menu/item', item: {label:'scheduled', link: 'kind/scheduled',
-  todos_count: counts[:kind][:scheduled]}
-  = render 'menu/item', item: {label:'cycled', link: 'kind/cycled',
-  todos_count: counts[:kind][:cycled]}
-  = render 'menu/item', item: {label:'waiting', link: 'kind/waiting',
-  todos_count: counts[:kind][:waiting]}
-  = render 'menu/item', item: {label:'someday', link: 'kind/someday',
-  todos_count: counts[:kind][:someday]}
-Hidden
-%ul.nav.nav-pills.nav-stacked
-  = render 'menu/item', item: {label:'trash', link: 'state/trash',
-   todos_count: counts[:state][:trash]}
-  = render 'menu/item', item: {label:'completed', link: 'state/completed',
-   todos_count: counts[:state][:completed]}
+=make_badge(sidebar_active, label: lambda{|i|i[:name]},
+  link: lambda{|i|"/todos/filter#{i[:link]}/"})
+=make_badge(sidebar_hidden, group_label:'Finished', label: lambda{|i|i[:name]},
+  link: lambda{|i|"/todos/filter#{i[:link]}/"})

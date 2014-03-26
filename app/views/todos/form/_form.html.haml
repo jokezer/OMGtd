@@ -18,8 +18,8 @@
     = f.select :project_id, projects, :include_blank => true,
     selected: (action_name=='new' ? params[:from_project]:@todo.project_id)
   =f.form_group(:todo, label: {text: 'Deadline'}) do
-    = check_box(:todo, :is_deadline, {checked: @todo.expire ? true : false})
-    = datetime_select(:todo, :expire, :default => 24.hours.from_now,
+    = check_box(:todo, :is_deadline, {checked: @todo.due ? true : false})
+    = datetime_select(:todo, :due, :default => 24.hours.from_now,
      :minute_step => 10)
     = @todo.errors[:is_deadline] if @todo.errors[:is_deadline].any?
   = f.form_group do
