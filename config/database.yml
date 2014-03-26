@@ -8,7 +8,6 @@ development:
   encoding: unicode
   database: gtd_development
   pool: 5
-  username: jokezer
   password:
 
 # Warning: The database defined as "test" will be erased and
