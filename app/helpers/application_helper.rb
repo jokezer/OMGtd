@@ -56,7 +56,7 @@ module ApplicationHelper
   end
 
   def make_badge(collection, opts={})
-    return false if collection.empty?
+    return if collection.empty?
     opts[:name] ||= lambda { |item| item[:name] }
     opts[:label] ||= lambda { |item| item[:label] }
     opts[:counts] ||= lambda { |item| item[:counts] }
@@ -77,7 +77,7 @@ module ApplicationHelper
 
   #collections
   def render_collection(collection, opts={})
-    return false if collection.empty?
+    return if collection.empty?
     opts[:count] ||= 5
     opts[:group_name] ||= 'label'
     opts[:link]  ||= "/todos/filter/kind/#{opts[:label]}"
