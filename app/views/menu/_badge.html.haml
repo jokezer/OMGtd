@@ -1,9 +1,12 @@
-=group_label
-%ul.nav.nav-pills.nav-stacked
-  - collection.each do |item|
-    %li{:class => [('droppable' unless item[:disabled]), ('active' if params[:name]==name.call(item))],
-        group: item[:group], group_value: name.call(item)}
-      = link_to link.call(item),
-        :class => 'button white' do
-        %span= label.call(item)
-        %span.badge.pull-right= counts.call(item)||0
+.sidebar
+  -if group_label.present?
+    .panel.panel-default
+      .panel-body= group_label
+  %ul.nav.nav-pills.nav-stacked
+    - collection.each do |item|
+      %li{:class => [('droppable' unless item[:disabled]), ('active' if params[:name]==name.call(item))],
+          group: item[:group], group_value: name.call(item)}
+        = link_to link.call(item),
+          :class => 'button white' do
+          %span= label.call(item)
+          %span.badge.pull-right= counts.call(item)||0

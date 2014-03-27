@@ -1,0 +1,7 @@
+- content_for :application do
+  .container
+    = render 'shared/flash'
+    .col-lg-6.col-lg-offset-3
+      .panel.panel-default.panel-devise
+        = yield
+= render template: 'layouts/application'

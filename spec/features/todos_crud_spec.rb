@@ -151,8 +151,9 @@ feature 'finite machines' do
   scenario 'Cancel todo' do
     todo = FactoryGirl.create(:todo, user: user, kind: 'next')
     visit todo_path todo
+    todo.reload
     expect(page).not_to have_selector("input[type=submit][value='Activate']")
-    expect { click_on('Cancel') }.to change(user.todos.with_state('trash'),
+    expect { within(".form-horizontal") {click_on('Cancel')} }.to change(user.todos.with_state('trash'),
                                             :count).by(1)
   end
   scenario 'Activate todo' do
@@ -210,5 +211,23 @@ feature 'Quick add' do
     visit root_path
     fill_in 'Add todo', with: 'Some text'
     expect { click_on 'Add' }.to change(user.todos.with_state(:inbox), :count).by(1)
+  end
+end
+
+feature 'index page todos' do
+  let (:user) { FactoryGirl.create(:user) }
+  before do
+    sign_in_capybara(user)
+    FactoryGirl.create_list(:todo, 6, user: user, kind:'next', due: DateTime.now)
+    FactoryGirl.create_list(:todo, 5, user: user, kind:'next')
+  end
+  scenario 'check button presence' do
+    visit root_path
+    expect(page).to have_content('Today todos')
+    expect(page).to have_link('All today')
+    expect(page).to have_content('Next todos')
+    expect(page).not_to have_link('All next')
+    expect(page).not_to have_content('Tomorrow todos')
+    expect(page).not_to have_link('All tomorrow')
   end
 end

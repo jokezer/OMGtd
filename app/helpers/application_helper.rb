@@ -74,4 +74,18 @@ module ApplicationHelper
            group_label: opts[:group_label],
            show_group_label: opts[:show_group_name]
   end
+
+  #collections
+  def render_collection(collection, opts={})
+    return false if collection.empty?
+    opts[:count] ||= 5
+    opts[:group_name] ||= 'label'
+    opts[:link]  ||= "/todos/filter/kind/#{opts[:label]}"
+    render 'todos/collection',
+           collection: collection[0..(opts[:count]-1)],
+           show_button: (collection.count > opts[:count]),
+           group_name: opts[:group_name],
+           link: opts[:link]
+
+  end
 end

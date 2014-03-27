@@ -13,6 +13,72 @@
  *= require jquery.ui.all
  */
 
-#modal{
+#modal {
   margin-top: 10%;
+}
+
+.navbar-default {
+  margin-bottom: 0;
+}
+
+.navbar {
+  margin-bottom: 0;
+}
+
+$footer_height: 52px;
+
+html, body {
+  height: 100%;
+}
+
+#wrap {
+  min-height: 100%;
+}
+
+#main {
+  overflow: auto;
+  padding-bottom: $footer_height;
+}
+
+.footer {
+  position: relative;
+  margin-top: -$footer_height;
+  height: $footer_height;
+  clear: both;
+  padding-top: 20px;
+  .panel {
+    margin-bottom: 0;
+  }
+}
+
+.sidebar {
+  margin-bottom: 10px;
+  .panel {
+    margin-bottom: 10px;
+  }
+}
+
+//devise views
+.panel-devise {
+  .panel-heading {
+    margin-bottom: 10px;
+  }
+}
+
+//panel todo
+
+.panel-todo.prior-low {
+  .panel-body {
+    border-left: 8px solid #699ded;
+  }
+}
+.panel-todo.prior-medium {
+  .panel-body {
+    border-left: 8px solid #dbad51;
+  }
+}
+.panel-todo.prior-high {
+  .panel-body {
+    border-left: 8px solid #db705c;
+  }
 }

@@ -1,10 +1,11 @@
-.panel.panel-default.draggable{context: (todo.context.name if todo.context),
+.panel-todo.panel.panel-default.draggable{context: (todo.context.name if todo.context),
                                project: (todo.project.name if todo.project),
                                kind: (todo.kind if todo.kind),
                                state: (todo.state),
                                calendar: todo.get_schedule_label,
                                id: todo.id,
-                               due: (todo.due.strftime("%Y/%m/%d") if todo.due)}
+                               due: (todo.due.strftime("%Y/%m/%d") if todo.due),
+                               class: "prior-#{todo.prior}"}
   .panel-heading
     -if todo.due
       %small.pull-right

@@ -8,20 +8,29 @@
   = csrf_meta_tags
 
   %body
-    %header
-      %nav.navbar.navbar-default(role='navigation')
-        .container-fluid
-          .navbar-header
-            = link_to 'GTD', root_path, class: 'navbar-brand'
-          .collapse.navbar-collapse>
-            %ul.nav.navbar-nav
-              %li= link_to 'Contexts', contexts_path
-              %li= link_to 'Projects', projects_path
-              %li= link_to 'About', about_path
-            %ul.nav.navbar-nav.navbar-right
-              = render 'shared/sign_in_link'
-            = render 'shared/add_search_form'
-      = content_for?(:application) ? yield(:application) : yield
+    #wrap
+      #main.clear-top
+        %header
+          %nav.navbar.navbar-default(role='navigation')
+            .container-fluid
+              .navbar-header
+                = link_to 'GTD', root_path, class: 'navbar-brand'
+              .collapse.navbar-collapse
+                %ul.nav.navbar-nav
+                  %li= link_to 'Contexts', contexts_path
+                  %li= link_to 'Projects', projects_path
+                  %li= link_to 'About', about_path
+                %ul.nav.navbar-nav.navbar-right
+                  = render 'shared/sign_in_link'
+                = render 'shared/add_search_form'
+          .container-fluid
+            = content_for?(:application) ? yield(:application) : yield
+    .footer
+      .panel.panel-default
+        .panel-body
+          One more GTD by jokezer 2014
+          %span.pull-right jokezer@gmail.com
+
     .col-lg-12
       -if Rails.env.development?
         = debug(params)

@@ -1,12 +1,10 @@
 class Todo < ActiveRecord::Base
-  #TODO FIX ORDERS
-
+  #TODO FIX ORDERs
   attr_accessor :is_deadline
   include TodoStates
   include TodoTypes
   include Prior
   before_validation { self.due = nil if is_deadline=='0' }
-
   scope :today, -> {
     where('due < ?', DateTime.now.end_of_day)
     .order('updated_at DESC')
@@ -28,7 +26,7 @@ class Todo < ActiveRecord::Base
   validate :user_project
   validate :user_context
 
-  self.per_page = 5
+  self.per_page = 8
 
   def self.filter(type, label)
     type.to_s
@@ -38,12 +36,12 @@ class Todo < ActiveRecord::Base
           if type == 'state'
             with_state(label)
           elsif type == 'kind'
-            with_state(:active).with_kind(label)
+            active.with_kind(label)
           elsif type == 'calendar'
             if label == 'today'
-              with_state(:active).today
+              active.today
             elsif label == 'tomorrow'
-              with_state(:active).tomorrow
+              active.tomorrow
             end
           else
             false

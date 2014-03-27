@@ -1,5 +1,7 @@
 ready = ->
   jQuery ->
+    $("#todo_due").datepicker();
+
     $(".draggable").draggable({
       revert: "invalid",
       containment: "document",
@@ -16,9 +18,9 @@ ready = ->
         $this = $(this)
         group = $this.attr('group')
         field_value = $this.attr('group_value')
-        return false if group == 'kind' && field_value == e.attr('kind')
+        return false if group == 'kind' && field_value == e.attr('kind') && e.attr('state')=='active'
         return false if group == 'state' && field_value == e.attr('state')
-        return false if group == 'calendar' && field_value == e.attr('calendar')
+        return false if group == 'calendar' && field_value == e.attr('calendar') && e.attr('state')=='active'
         return false if group == 'context' && field_value == e.attr('context')
         return false if group == 'project' && field_value == e.attr('project')
         true
@@ -31,8 +33,8 @@ ready = ->
         group_value = $(this).attr('group_value')
         $modal = $("#modal")
         $("#move_due").hide()
+        $("#move_due").val('')
         if group=='kind' && group_value in ['scheduled', 'cycled']
-          $("#move_due").val('')
           $("#move_due").val(ui.draggable.attr("due"))
           console.log(ui.draggable)
           $("#move_due").datepicker({dateFormat: 'yy/mm/dd'});

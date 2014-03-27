@@ -4,6 +4,8 @@ module TodoStates
     before_create { |t| t.state = 'active' if t.kind.present? }
     before_update { |t| t.state = 'active' if t.kind.present? and t.inbox? }
     before_update { |t| false if t.state=='active' && t.kind.blank? }
+    scope :active, -> {where(:state => 'active')}
+
     state_machine :state, initial: :inbox do
       state :inbox
       state :active #validates presence of kind

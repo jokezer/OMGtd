@@ -40,7 +40,7 @@ feature 'Project CRUD actions' do
   end
   scenario 'cancel project' do
     visit project_path project.name
-    expect{click_on 'Cancel'}.not_to change(user.projects, :count)
+    expect{within('.form-horizontal'){click_on 'Cancel'}}.not_to change(user.projects, :count)
     expect(project.reload.state).to eq('trash')
   end
   scenario 'activate canceled(finished) project' do

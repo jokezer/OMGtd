@@ -1,18 +1,15 @@
-<h2>Sign up</h2>
+<div class="panel-heading">Sign up</div>
+<div class="panel-body">
+  <%= bootstrap_form_for(resource, :as => resource_name, :url => registration_path(resource_name),
+                         style: :horizontal, left: 'col-lg-3', right: 'col-lg-8') do |f| %>
+      <%= devise_error_messages! %>
+      <%= f.email_field :email, :autofocus => true %>
+      <%= f.password_field :password %>
+      <%= f.password_field :password_confirmation, label: 'Confirm password' %>
+      <%= f.form_group do -%>
+          <%= f.submit "Sign up" %>
+      <% end %>
+  <% end %>
 
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
-
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email, :autofocus => true %></div>
-
-  <div><%= f.label :password %><br />
-  <%= f.password_field :password %></div>
-
-  <div><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></div>
-
-  <div><%= f.submit "Sign up" %></div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+  <%= render "devise/shared/links" %>
+</div>

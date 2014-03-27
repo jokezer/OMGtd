@@ -1,9 +1,5 @@
-- if @todos[:today].any?
-  %h4 Today actions:
-  =render @todos[:today]
-- if @todos[:next].any?
-  %h4 Next actions:
-  =render @todos[:next]
-- if @todos[:tomorrow].any?
-  %h4 Tomorrow actions:
-  =render @todos[:tomorrow]
+=render_collection @todos[:today], group_name:'today',
+                   link:'/todos/filter/calendar/today/'
+=render_collection @todos[:next], group_name:'next'
+=render_collection @todos[:tomorrow], group_name:'tomorrow',
+                   link:'/todos/filter/calendar/tomorrow/'
