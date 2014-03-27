@@ -1,4 +1,4 @@
-module Project::ProjectStates
+module ProjectStates
   extend ActiveSupport::Concern
   included do
     state_machine :state, initial: :active do

@@ -1,4 +1,4 @@
-module Todo::TodoStates
+module TodoStates
   extend ActiveSupport::Concern
   included do
     before_create { |t| t.state = 'active' if t.kind.present? }
