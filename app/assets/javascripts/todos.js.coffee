@@ -1,5 +1,6 @@
 ready = ->
   jQuery ->
+    #panel shows when _todo prior updated
     $(".panel-todo").on("ajax:success", (e, data, status, xhr) ->
       $(this).hide('slide', 'fast')
     )
