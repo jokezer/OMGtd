@@ -60,6 +60,7 @@ class TodosController < ApplicationController
   def change_prior
     @todo.increase_prior if params[:increase_prior]
     @todo.decrease_prior if params[:decrease_prior]
+    flash[:todo_id] = @todo.id
     redirect_to_back
   end
 

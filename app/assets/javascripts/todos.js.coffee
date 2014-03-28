@@ -1,5 +1,8 @@
 ready = ->
   jQuery ->
+    $(".panel-todo").on("ajax:success", (e, data, status, xhr) ->
+      $(this).hide('slide', 'fast')
+    )
     $('.datetimepicker').datetimepicker({mask:'9999-19-39 29:59', format:'Y-m-d H:i'});
     $(".draggable").draggable({
       revert: "invalid",
