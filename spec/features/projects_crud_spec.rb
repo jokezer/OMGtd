@@ -11,7 +11,7 @@ feature 'Project CRUD actions' do
     expect(page).not_to have_content('Projects todos')
     expect(page).to have_selector("input[type=text][id='project_title'][name='project[title]']")
     find_field('Title').value.should eq(project.title)
-    find_field('Prior').value.should eq(project.prior)
+    #find_field('Prior').value.should eq(project.prior)
     expect(page).not_to have_link('Delete')
   end
   scenario 'active project with todos' do
@@ -48,5 +48,13 @@ feature 'Project CRUD actions' do
     visit project_path project.name
     expect{click_on 'Activate'}.not_to change(user.projects, :count)
     expect(project.reload.state).to eq('active')
+  end
+  scenario 'Change prior' do
+    visit project_path project.name
+    page.choose 'High'
+    click_on 'Update'
+    expect(project.reload.prior_name).to eq(:high)
+    visit project_path project.name
+    find("input[value='3'][name='project[prior]']").should be_checked
   end
 end

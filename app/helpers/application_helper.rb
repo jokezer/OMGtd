@@ -11,9 +11,13 @@ module ApplicationHelper
     link_params
   end
 
-  def get_priors
-    #TodoPrior::COLLECTION.invert
-    Todo.state_machines[:prior].states.map { |n| n.name }
+  def prior_buttons(selected, opts={})
+    priors = Todo.get_priors_collection
+    opts[:model] ||= 'todo'
+    render 'todos/form/prior_buttons',
+           collection: priors,
+           selected: selected,
+           model: opts[:model]
   end
 
   def sidebar_count_todos
@@ -80,7 +84,7 @@ module ApplicationHelper
     return if collection.empty?
     opts[:count] ||= 5
     opts[:group_name] ||= 'label'
-    opts[:link]  ||= "/todos/filter/kind/#{opts[:label]}"
+    opts[:link]  ||= "/todos/filter/kind/#{opts[:group_name]}"
     render 'todos/collection',
            collection: collection[0..(opts[:count]-1)],
            show_button: (collection.count > opts[:count]),

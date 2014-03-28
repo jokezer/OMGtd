@@ -4,7 +4,8 @@
   = f.text_area :content, hide_label: :true, placeholder: 'Todo description...'
   = f.select :kind, @todo.get_kinds,
   selected: action_name=='new' ? params[:from_kind] : @todo.kind
-  = f.select :prior, get_priors
+  =f.form_group(:todo, label: {text: 'Prior'}) do
+    = prior_buttons @todo.prior
   -contexts = get_contexts
   -if contexts.empty?
     = f.form_group do
@@ -17,11 +18,12 @@
   -if projects.any?
     = f.select :project_id, projects, :include_blank => true,
     selected: (action_name=='new' ? params[:from_project]:@todo.project_id)
-  =f.form_group(:todo, label: {text: 'Deadline'}) do
-    = check_box(:todo, :is_deadline, {checked: @todo.due ? true : false})
-    = datetime_select(:todo, :due, :default => 24.hours.from_now,
-     :minute_step => 10)
-    = @todo.errors[:is_deadline] if @todo.errors[:is_deadline].any?
+  -#=f.form_group(:todo, label: {text: 'Deadline'}) do
+  -#  = check_box(:todo, :is_deadline, {checked: @todo.due ? true : false})
+  -#  = datetime_select(:todo, :due, :default => 24.hours.from_now,
+  -#   :minute_step => 10)
+  -#  = @todo.errors[:is_deadline] if @todo.errors[:is_deadline].any?
+  = f.text_field :due, class:'datetimepicker'
   = f.form_group do
     = f.submit action_name=='show' ? 'Save changes':'Create todo',
      class: 'btn btn-primary'

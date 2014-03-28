@@ -1,6 +1,6 @@
 class TodosController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :get_todo, only: [:show, :update, :destroy]
+  before_filter :get_todo, only: [:show, :update, :destroy, :change_prior]
   layout 'loggedin'
 
   def index
@@ -48,15 +48,19 @@ class TodosController < ApplicationController
     redirect_to root_path
   end
 
+  # ajax actions
   def move
     params = move_params
     todo = current_user.todos.find(params[:todo_id])
     todo.move params[:group], params[:group_value], params[:due]
     #redirect_to :back
-    respond_to do |format|
-      format.js {render inline: "location.reload();" }
-      format.html {redirect_to :back}
-    end
+    redirect_to_back
+  end
+
+  def change_prior
+    @todo.increase_prior if params[:increase_prior]
+    @todo.decrease_prior if params[:decrease_prior]
+    redirect_to_back
   end
 
   private
@@ -82,7 +86,7 @@ class TodosController < ApplicationController
 
   def todo_params
     params.require(:todo).permit(:title, :kind, :prior, :project_id,
-                                 :content, :due, :context_id, :is_deadline)
+                                 :content, :due, :context_id)
   end
 
   def move_params
@@ -92,6 +96,12 @@ class TodosController < ApplicationController
   def get_todo
     @todo = current_user.todos.find_by_id(params[:id])
     redirect_to root_path unless @todo
+  end
+
+  def redirect_to_back
+    redirect_via_turbolinks_to :back
+  rescue ActionController::RedirectBackError
+    redirect_to root_path
   end
 
 end

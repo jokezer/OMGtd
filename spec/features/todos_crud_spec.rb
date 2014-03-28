@@ -11,7 +11,7 @@ feature 'Todos CRUD actions' do
     click_on 'Create new'
     expect(page).to have_selector("input[type=text][id='todo_title'][name='todo[title]']")
     expect(page).to have_selector("select[id='todo_kind'][name='todo[kind]']")
-    expect(page).to have_selector("select[id='todo_prior'][name='todo[prior]']")
+    expect(page).to have_selector("input[type=radio][name='todo[prior]']")
     expect(page).not_to have_selector("select[id='todo_project_id'][name='todo[project_id]']")
     expect(page).to have_selector("select[id='todo_context_id'][name='todo[context_id]']")
     expect(page).to have_selector("input[type=submit][value='Create todo']")
@@ -49,9 +49,11 @@ feature 'Todos CRUD actions' do
   end
   scenario 'Change prior' do
     visit todo_path(todo)
-    select('high', :from => 'Prior')
+    page.choose 'High'
     click_on 'Save changes'
-    expect(todo.reload.prior).to eq('high')
+    expect(todo.reload.prior_name).to eq(:high)
+    visit todo_path(todo)
+    find("input[value='3'][name='todo[prior]']").should be_checked
   end
   scenario 'Edit todo' do
     visit todo_path(todo)
@@ -153,8 +155,8 @@ feature 'finite machines' do
     visit todo_path todo
     todo.reload
     expect(page).not_to have_selector("input[type=submit][value='Activate']")
-    expect { within(".form-horizontal") {click_on('Cancel')} }.to change(user.todos.with_state('trash'),
-                                            :count).by(1)
+    expect { within(".form-horizontal") { click_on('Cancel') } }.to change(user.todos.with_state('trash'),
+                                                                           :count).by(1)
   end
   scenario 'Activate todo' do
     todo = FactoryGirl.create(:todo, user: user, kind: 'next')
@@ -180,7 +182,7 @@ feature 'Scheduled todo' do
   end
   scenario 'Set deadline' do
     visit todo_path(todo)
-    find(:css, "#todo_is_deadline[value='1']").set(true)
+    fill_in 'Due', with: '2014-03-21 19:02'
     fill_in 'Title', :with => 'With deadline'
     click_on 'Save changes'
     expect(todo.reload.due).to_not be_nil
@@ -193,11 +195,11 @@ feature 'Scheduled todo' do
     expect(page).to have_content('Deadline is required!')
   end
   scenario 'deadline selected if due is set' do
-    visit todo_path(todo)
-    find(:css, "#todo_is_deadline").should_not be_checked
-    todo_deadline = FactoryGirl.create(:todo, user: user, due: DateTime.now)
-    visit todo_path(todo_deadline)
-    find(:css, "#todo_is_deadline").should be_checked
+    #visit todo_path(todo)
+    #find(:css, "#todo_is_deadline").should_not be_checked
+    #todo_deadline = FactoryGirl.create(:todo, user: user, due: DateTime.now)
+    #visit todo_path(todo_deadline)
+    #find(:css, "#todo_is_deadline").should be_checked
   end
 end
 
@@ -218,8 +220,8 @@ feature 'index page todos' do
   let (:user) { FactoryGirl.create(:user) }
   before do
     sign_in_capybara(user)
-    FactoryGirl.create_list(:todo, 6, user: user, kind:'next', due: DateTime.now)
-    FactoryGirl.create_list(:todo, 5, user: user, kind:'next')
+    FactoryGirl.create_list(:todo, 6, user: user, kind: 'next', due: DateTime.now)
+    FactoryGirl.create_list(:todo, 5, user: user, kind: 'next')
   end
   scenario 'check button presence' do
     visit root_path

@@ -3,28 +3,40 @@
                                kind: (todo.kind if todo.kind),
                                state: (todo.state),
                                calendar: todo.get_schedule_label,
-                               id: todo.id,
-                               due: (todo.due.strftime("%Y/%m/%d") if todo.due),
-                               class: "prior-#{todo.prior}"}
+                               todo_id: todo.id,
+                               due: (todo.due.strftime("%Y-%m-%d %H:%M") if todo.due),
+                               id: "todo-#{todo.id}",
+                               class: "prior-#{todo.human_prior_name}"}
   .panel-heading
     -if todo.due
       %small.pull-right
         %span.glyphicon.glyphicon-time
-        due  #{todo.due.to_formatted_s(:long)}
+        due  #{todo.due.to_formatted_s(:short)}
     =link_to todo, :title => "View todo: #{todo.title}" do
       %h5.panel-title= todo.title
-  -if todo.content.present?
-    .panel-body
-      %small= todo.content
   .panel-body
-    %span.pull-right
-      %small= todo.prior
-    %span
-      %small= todo.kind_label
-      -if todo.project
-        =link_to project_path todo.project.name do
-          %small= todo.project.label
-      -if todo.context
-        =link_to "/todos/contexts/#{todo.context.label}" do
-          %small= todo.context.label
+    = form_for todo, url: "/todos/#{todo.id}/prior", remote: true do |f|
+      %span.pull-right
+        .btn-group-vertical
+          %button.btn.btn-xs{type:'submit', name: 'increase_prior',
+            disabled: ('disabled' unless todo.can_increase_prior?)}
+            %i.glyphicon.glyphicon-chevron-up
+          %button.btn.btn-xs{type:'submit', name: 'decrease_prior',
+            disabled: ('disabled' unless todo.can_decrease_prior?)}
+            %i.glyphicon.glyphicon-chevron-down
+      -if todo.content.present?
+        %p
+          -if todo.content.length > 250
+            =truncate(todo.content, length: 250)
+            =link_to_function 'Read more', "$(this).parent().html('#{escape_javascript todo.content}')"
+          -else
+            =todo.content
+      %span
+        %small= todo.kind_label
+        -if todo.project
+          =link_to project_path todo.project.name do
+            %small= todo.project.label
+        -if todo.context
+          =link_to "/todos/contexts/#{todo.context.label}" do
+            %small= todo.context.label
   -#%li.list-group-item Vestibulum at eros

@@ -1,0 +1,10 @@
+#prior-buttons.btn-group{'data-toggle'=>'buttons'}
+  -collection.each do |value, label|
+    -checked_prior = value==selected
+    %label.btn.btn-default
+      %input{type:'radio', name:"#{model}[prior]", value: value,
+        checked: checked_prior}
+        = label.capitalize
+%script
+  $('#prior-buttons.btn').button()
+  $("#prior-buttons input:checked").parent().addClass('active')

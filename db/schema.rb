@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 20140310080437) do
     t.string   "name"
     t.text     "content"
     t.integer  "user_id",    null: false
-    t.string   "prior"
+    t.integer  "prior"
     t.string   "state"
     t.datetime "due"
     t.datetime "created_at"
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20140310080437) do
     t.integer  "user_id",    null: false
     t.string   "state",      null: false
     t.string   "kind"
-    t.string   "prior"
+    t.integer  "prior"
     t.integer  "context_id"
     t.integer  "project_id"
     t.datetime "due"

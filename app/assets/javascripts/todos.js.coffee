@@ -1,7 +1,6 @@
 ready = ->
   jQuery ->
-    $("#todo_due").datepicker();
-
+    $('.datetimepicker').datetimepicker({mask:'9999-19-39 29:59', format:'Y-m-d H:i'});
     $(".draggable").draggable({
       revert: "invalid",
       containment: "document",
@@ -31,15 +30,17 @@ ready = ->
       drop: (event, ui) ->
         group = $(this).attr('group')
         group_value = $(this).attr('group_value')
+        todo_id = ui.draggable.attr("todo_id")
         $modal = $("#modal")
         $("#move_due").hide()
         $("#move_due").val('')
         if group=='kind' && group_value in ['scheduled', 'cycled']
           $("#move_due").val(ui.draggable.attr("due"))
           console.log(ui.draggable)
-          $("#move_due").datepicker({dateFormat: 'yy/mm/dd'});
+          $("#move_due").datetimepicker({mask:'9999-19-39 29:59', format:'Y-m-d H:i'})
+
           $("#move_due").show()
-        $("#move_todo_id").val(ui.draggable.context.id)
+        $("#move_todo_id").val(todo_id)
         $("#move_group").val(group)
         $("#move_group_value").val(group_value)
         $("#message").text("move to #{group} #{group_value}?")

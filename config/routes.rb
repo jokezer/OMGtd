@@ -13,6 +13,7 @@ Gtd::Application.routes.draw do
 
   match '/todos/filter/:type/:name', to: 'todos#filter', via: 'get'
   match '/todos/move', to: 'todos#move', via: 'post'
+  match '/todos/:id/prior', to: 'todos#change_prior', via: 'patch'
   #get '/todos/statuses/:statuses', to: 'todos#statuses'
 
   match '/about', to: 'static_pages#about', via: 'get'

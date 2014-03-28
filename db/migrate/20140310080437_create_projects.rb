@@ -5,7 +5,7 @@ class CreateProjects < ActiveRecord::Migration
       t.string :name
       t.text :content
       t.integer :user_id, :null => false
-      t.string :prior
+      t.integer :prior
       t.string :state
       t.datetime :due
       t.timestamps

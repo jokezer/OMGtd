@@ -25,7 +25,7 @@ class ContextsController < ApplicationController
   def show
     @context = current_user.contexts.by_name(params[:name])
     redirect_to root_path and return unless @context #todo make it :before function?
-    @todos = @context.todos.active.paginate(:page => params[:page])
+    @todos = @context.todos.active.ordering.paginate(:page => params[:page])
     render 'todos/list'
   end
 

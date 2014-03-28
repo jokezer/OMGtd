@@ -1,21 +1,22 @@
 class Todo < ActiveRecord::Base
   #TODO FIX ORDERs
-  attr_accessor :is_deadline
   include TodoStates
   include TodoTypes
   include Prior
-  before_validation { self.due = nil if is_deadline=='0' }
+  #before_save do
+  # self.due = DateTime.parse(due) if due.present?
+  #end
   scope :today, -> {
-    where('due < ?', DateTime.now.end_of_day)
-    .order('updated_at DESC')
+    ordering.where('due < ?', DateTime.now.end_of_day)
   }
   scope :tomorrow, -> {
-    where('due BETWEEN ? AND ?', DateTime.now.tomorrow.beginning_of_day,
+    ordering.where('due BETWEEN ? AND ?', DateTime.now.tomorrow.beginning_of_day,
           DateTime.now.tomorrow.end_of_day)
-    .order('updated_at DESC')
   }
-  scope :later_or_no_deadline, -> { where("due > ? or due is NULL",
+  scope :later_or_no_deadline, -> { ordering.where("due > ? or due is NULL",
                                           DateTime.now.tomorrow.end_of_day) }
+  #change ordering to default scope in rails 4.1
+  scope :ordering, -> { order('prior DESC').order('due').order('updated_at DESC') }
 
   belongs_to :user
   belongs_to :context
@@ -26,18 +27,18 @@ class Todo < ActiveRecord::Base
   validate :user_project
   validate :user_context
 
-  self.per_page = 8
+  self.per_page = 10
 
   def self.filter(type, label)
     type.to_s
     label.to_s
     begin
-      output =
-          if type == 'state'
+      output = case type
+          when 'state'
             with_state(label)
-          elsif type == 'kind'
+          when 'kind'
             active.with_kind(label)
-          elsif type == 'calendar'
+          when 'calendar'
             if label == 'today'
               active.today
             elsif label == 'tomorrow'
@@ -46,9 +47,10 @@ class Todo < ActiveRecord::Base
           else
             false
           end
-    rescue
+    rescue IndexError
       #incorrect state
     end
+    output.ordering if output
   end
 
   def move(group, value, set_due=nil)
@@ -104,5 +106,4 @@ class Todo < ActiveRecord::Base
       errors.add(:project, 'Incorrect context') unless user.id == context.user_id
     end
   end
-
 end

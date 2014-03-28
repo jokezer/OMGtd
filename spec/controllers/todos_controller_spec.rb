@@ -185,4 +185,12 @@ describe TodosController do
     end
   end
 
+  describe 'change prior' do
+    it 'should increase todos prior' do
+      xhr :patch, :change_prior, id: todo.id, increase_prior: ''
+      expect(todo.reload.prior_name).to eq :low
+    end
+  end
 end
+
+
