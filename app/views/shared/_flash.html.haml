@@ -6,5 +6,4 @@
       =value
   -if key == :todo_id
     %script
-      $('#todo-#{value}').css('display:none')
-      $('#todo-#{value}').show('slide');
+      $('#todo-#{value}').hide().show('slide');
