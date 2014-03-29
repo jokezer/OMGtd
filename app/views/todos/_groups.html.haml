@@ -1,0 +1,7 @@
+-#use this partial to grouping todos by states, kinds, dates for project and context
+=render_collection @todos[:today], group_name:'today',
+                   link: "/#{link_prepend}/filter/calendar/today/"
+=render_collection @todos[:next], group_name:'next',
+                   link: "/#{link_prepend}/filter/kind/next/"
+=render_collection @todos[:tomorrow], group_name:'tomorrow',
+                   link: "/#{link_prepend}/filter/calendar/tomorrow/"

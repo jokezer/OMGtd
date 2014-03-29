@@ -1,39 +1,18 @@
-= bootstrap_form_for(@project, style: :horizontal, left: 'col-lg-2',
-right: 'col-lg-8') do |f|
-  = f.text_field :title
-  -#todo make it in helper
-  .form-group
-    %label.col-lg-2.control-label Name
-    .col-lg-8
-      .input-group
-        %span.input-group-addon #
-        = text_field_tag 'project[name]', @project.name, class:'form-control'
-  = f.text_area :content, hide_label: :true, placeholder: 'Todo description...'
-  =f.form_group(:todo, label: {text: 'Prior'}) do
-    = prior_buttons @project.prior, model:'project'
-  %p state #{@project.state}
-  = f.form_group do
-    = f.submit 'Update', class: 'btn btn-primary'
-    -if @project.can_finish?
-      = f.submit 'Finish', name: 'finish', class: 'btn btn-primary',
-      data: { confirm: "You sure? #{@project.todos_count} todos will be affected!"}
-    -if @project.can_activate?
-      = f.submit 'Activate', name: 'activate', class: 'btn btn-primary',
-      data: { confirm: "You sure? #{@project.todos_count} todos will be affected!"}
-    -if @project.can_cancel?
-      = f.submit 'Cancel', name: 'cancel', class: 'btn btn-primary',
-      data: { confirm: "You sure? #{@project.todos_count} todos will be affected!"}
-    -if @project.can_delete?
-      = link_to 'Delete', @project, method: :delete, class: 'btn',
-      data: { confirm: "You sure? #{@project.todos_count} todos will be deleted!"}
--if @project.todos.any?
-  %h3 Projects todos
--if @project.todos.today.any?
-  %h4 Today todos
-  = render @project.todos.today
--if @project.todos.with_kind(:next).later_or_no_deadline.any?
-  %h4 Next todos
-  = render @project.todos.with_kind(:next).later_or_no_deadline
--if @project.todos.tomorrow.any?
-  %h4 Tomorrow todos
-  = render @project.todos.tomorrow
+=render 'header'
+=render 'todos/groups', link_prepend: "projects/#{@project.name}"
+-#-if @project.todos.today.any?
+-#  =link_to 'All project todos', "/projects/#{(@project.name)}/todos/"
+-#  .panel.panel-default
+-#    .panel-body
+-#      Today todos
+-#  = render @project.todos.today
+-#-if @project.todos.with_kind(:next).later_or_no_deadline.any?
+-#  .panel.panel-default
+-#    .panel-body
+-#      Next todos
+-#  = render @project.todos.with_kind(:next).later_or_no_deadline
+-#-if @project.todos.tomorrow.any?
+-#  .panel.panel-default
+-#    .panel-body
+-#      Tomorrow todos
+-#  = render @project.todos.tomorrow

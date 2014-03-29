@@ -8,13 +8,14 @@ Gtd::Application.routes.draw do
   end
 
   resources :contexts, param: :name, only: [:new, :create, :edit, :update, :destroy, :index]
-  resources :projects, param: :name, only: [:show, :update, :destroy, :index]
   resources :todos, concerns: [:context]
-
   match '/todos/filter/:type/:name', to: 'todos#filter', via: 'get'
   match '/todos/move', to: 'todos#move', via: 'post'
   match '/todos/:id/prior', to: 'todos#change_prior', via: 'patch'
-  #get '/todos/statuses/:statuses', to: 'todos#statuses'
+
+  resources :projects, param: :name, only: [:show, :edit, :update, :destroy, :index]
+  match '/project/:name/change_state', to: 'projects#change_state', via: 'patch'
+  match '/projects/:name/filter/:type/:type_name', to: 'projects#filter', via: 'get'
 
   match '/about', to: 'static_pages#about', via: 'get'
 

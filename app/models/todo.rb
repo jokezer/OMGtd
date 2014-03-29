@@ -3,9 +3,7 @@ class Todo < ActiveRecord::Base
   include TodoStates
   include TodoTypes
   include Prior
-  #before_save do
-  # self.due = DateTime.parse(due) if due.present?
-  #end
+
   scope :today, -> {
     ordering.where('due < ?', DateTime.now.end_of_day)
   }
@@ -24,6 +22,7 @@ class Todo < ActiveRecord::Base
 
   validates :user, presence: true
   validates :title, presence: true
+  validates :title, length: {maximum: 255}
   validate :user_project
   validate :user_context
 
@@ -91,6 +90,14 @@ class Todo < ActiveRecord::Base
     return 'no' if due.blank?
     return 'today' if today?
     'tomorrow' if tomorrow?
+  end
+
+  def self.get_index
+    todos = {}
+    todos[:today] = with_state(:active).today
+    todos[:tomorrow] = with_state(:active).tomorrow
+    todos[:next] = with_state(:active).with_kind(:next).later_or_no_deadline
+    todos
   end
 
   private

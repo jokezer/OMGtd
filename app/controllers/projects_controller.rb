@@ -1,6 +1,7 @@
 class ProjectsController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :get_project, only: [:update, :destroy]
+  before_filter :get_project, only: [:show, :edit, :update, :filter,
+                                             :destroy, :change_state]
 
   layout 'loggedin'
 
@@ -12,17 +13,32 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @project = current_user.projects.by_name(params[:name])
-    redirect_to root_path and return unless @project
+    @todos = @project.todos.get_index
+  end
+
+  def edit
+  end
+
+  def filter
+    @todos = @project.todos.filter(params[:type], params[:type_name])
+    redirect_to root_path and return unless @todos
+    @todos = @todos.paginate(:page => params[:page])
+    @category_label = "#{@project.label} #{params[:type_name]} todos"
+    render 'todos/list'
   end
 
   def update
     @project.update_attributes(project_params)
+    flash.now[:success] = 'Project updated'
+    redirect_to project_path @project.name
+  end
+
+  def change_state
     @project.finish if params[:finish] && @project.can_finish?
     @project.cancel if params[:cancel] && @project.can_cancel?
     @project.activate if params[:activate] && @project.can_activate?
     flash.now[:success] = 'Project updated'
-    render(:show) #todo fix redirect address
+    redirect_to projects_path
   end
 
   def destroy
@@ -38,7 +54,7 @@ class ProjectsController < ApplicationController
   end
 
   def get_project
-    @project = current_user.projects.find(params[:name])
+    @project = current_user.projects.by_name(params[:name])
     redirect_to root_path and return unless @project
   end
 end

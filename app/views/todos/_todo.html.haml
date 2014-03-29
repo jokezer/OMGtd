@@ -26,8 +26,8 @@
             %i.glyphicon.glyphicon-chevron-down
       -if todo.content.present?
         %p
-          -if todo.content.length > 250
-            =truncate(todo.content, length: 250)
+          -if todo.content.length > 230
+            =truncate(todo.content, length: 230)
             =link_to_function 'Read more', "$(this).parent().html('#{escape_javascript todo.content}')"
           -else
             =todo.content

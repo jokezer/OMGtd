@@ -4,10 +4,7 @@ class TodosController < ApplicationController
   layout 'loggedin'
 
   def index
-    @todos = {}
-    @todos[:today] = current_user.todos.with_state(:active).today
-    @todos[:tomorrow] = current_user.todos.with_state(:active).tomorrow
-    @todos[:next] = current_user.todos.with_state(:active).with_kind(:next).later_or_no_deadline
+    @todos = current_user.todos.get_index
   end
 
   def show
