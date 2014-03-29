@@ -69,7 +69,11 @@ html, body {
 
 //panel todo
 
-.panel-todo.prior-low {
+.panel-todo.prior-none {
+  .panel-body {
+    border-left: 8px solid white;
+  }
+}.panel-todo.prior-low {
   .panel-body {
     border-left: 8px solid #699ded;
   }

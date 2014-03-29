@@ -1,6 +1,8 @@
-%h4 #{group_name.capitalize} todos:
+.panel.panel-default
+  .panel-body
+    #{group_name.capitalize} todos:
+    -if show_button
+      =link_to link, class:'btn btn-xs pull-right' do
+        All #{group_name}
+        %span.glyphicon.glyphicon-forward
 =render collection
--if show_button
-  =link_to link, class:'btn btn-default' do
-    All #{group_name}
-    %span.glyphicon.glyphicon-forward

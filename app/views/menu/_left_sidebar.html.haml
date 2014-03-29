@@ -1,8 +1,10 @@
-= link_to url_for(:back), class: '' do
-  %small
-    %span.glyphicon.glyphicon-backward
-    Back
-= render 'menu/new_todo_link'
+.panel.panel-default
+  .panel-body
+    = link_to url_for(:back), class: '' do
+      %small
+        %span.glyphicon.glyphicon-backward
+        Back
+    = render 'menu/new_todo_link'
 =make_badge(sidebar_active, label: lambda{|i|i[:name]},
   link: lambda{|i|"/todos/filter#{i[:link]}/"})
 =make_badge(sidebar_hidden, group_label:'Finished', label: lambda{|i|i[:name]},
