@@ -2,7 +2,8 @@
   .panel-body
     #{group_name.capitalize} todos (#{collection.count} from #{todo_counts}):
     -if show_button
-      =link_to link, class:'btn btn-xs pull-right' do
-        All #{group_name}
-        %span.glyphicon.glyphicon-forward
+      %small
+        =link_to link, class:'pull-right' do
+          All #{group_name}
+          %span.glyphicon.glyphicon-forward
 =render collection
