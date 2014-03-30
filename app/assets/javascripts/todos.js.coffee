@@ -1,7 +1,7 @@
 ready = ->
   jQuery ->
     $(".toggle_content").on("click", ->
-      $(this).parent().parent().find("div").toggle())
+      $(this).parent().parent().find(".content").toggle())
     #panel shows when _todo prior updated
     $(".panel-todo").on("ajax:success", (e, data, status, xhr) ->
       $(this).hide('slide', {}, 'fast', ->
