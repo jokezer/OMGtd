@@ -32,7 +32,9 @@
           -if todo.content.lines.count > 3 || todo.content.length > 230
             %a.btn.btn-default.btn-xs.toggle_content Show
         .content{style:'display:none;'}
-          =simple_format todo.content
+          -todo.content.lines.each do |line|
+            =line
+            %br
           %a.btn.btn-default.btn-xs.toggle_content Hide
       %span
         %small= todo.kind_label
