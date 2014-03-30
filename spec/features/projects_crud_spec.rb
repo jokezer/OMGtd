@@ -17,7 +17,7 @@ feature 'Project CRUD actions' do
   scenario 'active project with todos' do
     todo = FactoryGirl.create(:todo, user: user, project: project, kind:'next')
     visit project_path project.name
-    expect(page).to have_content('Next todos:')
+    expect(page).to have_content('Next todos (1 from 1):')
     expect(page).to have_content(todo.title)
   end
   scenario 'trash and finished project edit form' do

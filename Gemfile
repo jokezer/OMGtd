@@ -22,8 +22,6 @@ gem 'sass-rails', '~> 4.0.0'
 # Bootstrap https://github.com/twbs/bootstrap-sass
 gem 'bootstrap-sass', '~> 3.1.1'
 gem 'bootstrap_form'
-
-# Pagination gem
 gem 'will_paginate-bootstrap'
 
 # Use Uglifier as compressor for JavaScript assets

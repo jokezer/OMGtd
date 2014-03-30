@@ -1,1 +1,66 @@
-@import "bootstrap";
+
+#modal {
+  margin-top: 10%;
+}
+
+$footer_height: 52px;
+
+html, body {
+  height: 100%;
+}
+
+#wrap {
+  min-height: 100%;
+}
+
+#main {
+  overflow: auto;
+  padding-bottom: $footer_height;
+}
+
+.footer {
+  position: relative;
+  margin-top: -$footer_height;
+  height: $footer_height;
+  clear: both;
+  padding-top: 20px;
+  .panel {
+    margin-bottom: 0;
+  }
+}
+
+.sidebar {
+  margin-bottom: 10px;
+  .panel {
+    margin-bottom: 10px;
+  }
+}
+
+//devise views
+.panel-devise {
+  .panel-heading {
+    margin-bottom: 10px;
+  }
+}
+
+//panel todo
+
+.panel-todo.prior-none {
+  .panel-body {
+    border-left: 8px solid white;
+  }
+}.panel-todo.prior-low {
+   .panel-body {
+     border-left: 8px solid #699ded;
+   }
+ }
+.panel-todo.prior-medium {
+  .panel-body {
+    border-left: 8px solid rgba(228, 174, 61, 0.78);
+  }
+}
+.panel-todo.prior-high {
+  .panel-body {
+    border-left: 8px solid #db705c;
+  }
+}

@@ -9,7 +9,7 @@ Gtd::Application.routes.draw do
 
   resources :contexts, param: :name, only: [:new, :create, :edit, :update, :destroy, :index]
   resources :todos, concerns: [:context]
-  match '/todos/filter/:type/:name', to: 'todos#filter', via: 'get'
+  match '/todos/filter/:type/:type_name', to: 'todos#filter', via: 'get'
   match '/todos/move', to: 'todos#move', via: 'post'
   match '/todos/:id/prior', to: 'todos#change_prior', via: 'patch'
 

@@ -5,3 +5,21 @@
                    link: "/#{link_prepend}/filter/kind/next/"
 =render_collection @todos[:tomorrow], group_name:'tomorrow',
                    link: "/#{link_prepend}/filter/calendar/tomorrow/"
+=render 'todos/heading', group_name: 'scheduled',
+  counts: counts[:kind][:scheduled],
+  link: "/#{link_prepend}/filter/kind/scheduled/"
+=render 'todos/heading', group_name: 'cycled',
+  counts: counts[:kind][:cycled],
+  link: "/#{link_prepend}/filter/kind/cycled/"
+=render 'todos/heading', group_name: 'someday',
+  counts: counts[:kind][:someday],
+  link: "/#{link_prepend}/filter/kind/someday/"
+=render 'todos/heading', group_name: 'waiting',
+  counts: counts[:kind][:waiting],
+  link: "/#{link_prepend}/filter/kind/waiting/"
+=render 'todos/heading', group_name: 'canceled',
+  counts: counts[:state][:trash],
+  link: "/#{link_prepend}/filter/state/trash/"
+=render 'todos/heading', group_name: 'completed',
+  counts: counts[:state][:completed],
+  link: "/#{link_prepend}/filter/state/completed/"

@@ -5,7 +5,7 @@ module ApplicationHelper
 
   def link_params
     link_params = {}
-    link_params[:from_kind] = params[:name] if (params[:controller]=='todos' && params[:type]=='kind')
+    link_params[:from_kind] = params[:type_name] if (params[:controller]=='todos' && params[:type]=='kind')
     link_params[:from_project] = @project.id if (params[:controller]=='projects' && action_name == 'show')
     link_params[:from_context] = @context.id if (params[:controller]=='contexts' && action_name == 'show')
     link_params
@@ -20,17 +20,8 @@ module ApplicationHelper
            model: opts[:model]
   end
 
-  def sidebar_count_todos
-    counts = {calendar: {}}
-    counts[:state] = current_user.todos.count_state
-    counts[:kind] = current_user.todos.with_state(:active).count_kind
-    counts[:calendar][:today] = current_user.todos.with_state(:active).today.count
-    counts[:calendar][:tomorrow] = current_user.todos.with_state(:active).tomorrow.count
-    counts
-  end
-
   def sidebar_active
-    counts = sidebar_count_todos
+    counts = current_user.todos.count_groups
     [
         {name: 'inbox', link: '/state/inbox', counts: counts[:state][:inbox], group: 'state', disabled: true},
         {name: 'today', link: '/calendar/today', counts: counts[:calendar][:today], group: 'calendar'},
@@ -44,7 +35,7 @@ module ApplicationHelper
   end
 
   def sidebar_hidden
-    counts = sidebar_count_todos
+    counts = current_user.todos.count_groups
     [
         {name: 'trash', link: '/state/trash', counts: counts[:state][:trash], group: 'state'},
         {name: 'completed', link: '/state/completed', counts: counts[:state][:completed], group: 'state'}
@@ -87,9 +78,20 @@ module ApplicationHelper
     opts[:link]  ||= "/todos/filter/kind/#{opts[:group_name]}"
     render 'todos/collection',
            collection: collection[0..(opts[:count]-1)],
+           todo_counts: collection.count,
            show_button: (collection.count > opts[:count]),
            group_name: opts[:group_name],
            link: opts[:link]
 
   end
+
+  def make_breadcrumb
+    if controller_name == 'projects'
+      render 'menu/breadcrumb',
+             parent: @project.label,
+             parent_href: project_path(@project.name),
+             active: params[:type_name]
+    end
+  end
+
 end

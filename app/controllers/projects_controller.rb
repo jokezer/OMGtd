@@ -23,7 +23,6 @@ class ProjectsController < ApplicationController
     @todos = @project.todos.filter(params[:type], params[:type_name])
     redirect_to root_path and return unless @todos
     @todos = @todos.paginate(:page => params[:page])
-    @category_label = "#{@project.label} #{params[:type_name]} todos"
     render 'todos/list'
   end
 

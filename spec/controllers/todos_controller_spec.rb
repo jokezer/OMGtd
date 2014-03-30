@@ -168,19 +168,19 @@ describe TodosController do
       FactoryGirl.create_list(:todo, 3, kind: 'next', state: 'trash', user: @user)
     end
     it 'kind with correct label' do
-      xhr :get, :filter, type: 'state', name: 'inbox'
+      xhr :get, :filter, type: 'state', type_name: 'inbox'
       expect(response).to render_template('list')
     end
     it 'state with correct label' do
-      xhr :get, :filter, type: 'state', name: 'trash'
+      xhr :get, :filter, type: 'state', type_name: 'trash'
       expect(response).to render_template('list')
     end
     it 'kind with incorrect label' do
-      xhr :get, :filter, type: 'kind', name: 'non_existed'
+      xhr :get, :filter, type: 'kind', type_name: 'non_existed'
       expect(response).to redirect_to(root_path)
     end
     it 'state with incorrect label' do
-      xhr :get, :filter, type: 'state', name: 'non_existed'
+      xhr :get, :filter, type: 'state', type_name: 'non_existed'
       expect(response).to redirect_to(root_path)
     end
   end

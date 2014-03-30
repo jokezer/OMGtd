@@ -4,7 +4,7 @@
       .panel-body= group_label
   %ul.nav.nav-pills.nav-stacked
     - collection.each do |item|
-      %li{:class => [('droppable' unless item[:disabled]), ('active' if params[:name]==name.call(item))],
+      %li{:class => [('droppable' unless item[:disabled]), ('active' if params[:type_name]==name.call(item))],
           group: item[:group], group_value: name.call(item)}
         = link_to link.call(item),
           :class => 'button white' do

@@ -1,0 +1,7 @@
+-if counts.present?
+  .panel.panel-default
+    .panel-body
+      #{group_name.capitalize} todos (#{counts||0}):
+      =link_to link, class:'btn btn-xs pull-right' do
+        All #{group_name}
+        %span.glyphicon.glyphicon-forward

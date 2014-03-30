@@ -11,7 +11,7 @@ class TodosController < ApplicationController
   end
 
   def filter
-    @todos = current_user.todos.filter(params[:type], params[:name])
+    @todos = current_user.todos.filter(params[:type], params[:type_name])
     redirect_to root_path and return unless @todos
     @todos = @todos.paginate(:page => params[:page])
     render 'todos/list'

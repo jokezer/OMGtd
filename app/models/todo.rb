@@ -9,10 +9,10 @@ class Todo < ActiveRecord::Base
   }
   scope :tomorrow, -> {
     ordering.where('due BETWEEN ? AND ?', DateTime.now.tomorrow.beginning_of_day,
-          DateTime.now.tomorrow.end_of_day)
+                   DateTime.now.tomorrow.end_of_day)
   }
   scope :later_or_no_deadline, -> { ordering.where("due > ? or due is NULL",
-                                          DateTime.now.tomorrow.end_of_day) }
+                                                   DateTime.now.tomorrow.end_of_day) }
   #change ordering to default scope in rails 4.1
   scope :ordering, -> { order('prior DESC').order('due').order('updated_at DESC') }
 
@@ -27,29 +27,39 @@ class Todo < ActiveRecord::Base
   validate :user_context
 
   self.per_page = 10
-
+  #todo decouple filter and count_groups methods
   def self.filter(type, label)
     type.to_s
     label.to_s
     begin
       output = case type
-          when 'state'
-            with_state(label)
-          when 'kind'
-            active.with_kind(label)
-          when 'calendar'
-            if label == 'today'
-              active.today
-            elsif label == 'tomorrow'
-              active.tomorrow
-            end
-          else
-            false
-          end
+                 when 'state'
+                   with_state(label)
+                 when 'kind'
+                   active.with_kind(label)
+                 when 'calendar'
+                   if label == 'today'
+                     active.today
+                   elsif label == 'tomorrow'
+                     active.tomorrow
+                   end
+                 else
+                   false
+               end
     rescue IndexError
       #incorrect state
     end
     output.ordering if output
+  end
+  def self.count_groups
+    {
+        state: count_state,
+        kind: active.count_kind,
+        calendar: {
+            today: active.today.count,
+            tomorrow: active.tomorrow.count
+        }
+    }
   end
 
   def move(group, value, set_due=nil)
