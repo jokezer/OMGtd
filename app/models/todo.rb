@@ -51,6 +51,7 @@ class Todo < ActiveRecord::Base
     end
     output.ordering if output
   end
+
   def self.count_groups
     {
         state: count_state,
@@ -108,6 +109,26 @@ class Todo < ActiveRecord::Base
     todos[:tomorrow] = with_state(:active).tomorrow
     todos[:next] = with_state(:active).with_kind(:next).later_or_no_deadline
     todos
+  end
+
+  def self.create_defaults
+    create(title: 'Welcome to One More GTD',
+           content: "This is GTD style task manager\n"+
+               "Click to \"Create new\" to create new task.",
+           kind: 'next',
+           prior: 3)
+    create(title: 'Drag and Drop',
+           content: "Drag and drop todos with mouse to manage them",
+           kind: 'next',
+           prior: 2)
+    create(title: 'Edit todos',
+           content: "Click on todo header to edit todo content.\n Also you can create project from todo",
+           kind: 'next',
+           prior: 2)
+    create(title: 'Edit todos',
+           content: "Use arrow buttons on the right to change todo prior",
+           kind: 'next',
+           prior: 2)
   end
 
   private

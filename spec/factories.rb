@@ -3,6 +3,7 @@ FactoryGirl.define do
     sequence(:email) { |n| "person#{n}@example.com" }
     password "foobar88"
     password_confirmation "foobar88"
+    test_user true
   end
 
   factory :todo do

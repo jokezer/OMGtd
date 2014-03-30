@@ -94,4 +94,7 @@ module ApplicationHelper
     end
   end
 
+  def truncate_content(content)
+      simple_format content.truncate(230).lines[0..2].join
+  end
 end

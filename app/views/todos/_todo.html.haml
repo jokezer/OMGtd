@@ -25,12 +25,15 @@
             disabled: ('disabled' unless todo.can_decrease_prior?)}
             %i.glyphicon.glyphicon-chevron-down
       -if todo.content.present?
-        %p
-          -if todo.content.length > 230
-            =truncate(todo.content, length: 230)
-            =link_to_function 'Read more', "$(this).parent().html('#{escape_javascript todo.content}')"
-          -else
-            =todo.content
+        %div.short_content
+          -todo.content.truncate(230).lines[0..2].each do |line|
+            =line
+            %br
+          -if todo.content.lines.count > 3 || todo.content.length > 230
+            %a.btn.btn-default.btn-xs.toggle_content Show
+        .content{style:'display:none;'}
+          =simple_format todo.content
+          %a.btn.btn-default.btn-xs.toggle_content Hide
       %span
         %small= todo.kind_label
         -if todo.project

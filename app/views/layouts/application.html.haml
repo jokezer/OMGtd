@@ -22,7 +22,8 @@
                   %li= link_to 'About', about_path
                 %ul.nav.navbar-nav.navbar-right
                   = render 'shared/sign_in_link'
-                = render 'shared/add_search_form'
+                - if user_signed_in?
+                  = render 'shared/add_search_form'
           .container-fluid
             = content_for?(:application) ? yield(:application) : yield
     .footer

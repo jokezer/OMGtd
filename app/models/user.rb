@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-
+  attr_accessor :test_user
   #todo optimize db requests
   has_many :todos, :dependent => :delete_all
   has_many :contexts, :dependent => :delete_all
@@ -11,6 +11,9 @@ class User < ActiveRecord::Base
 
   after_create do |user|
     user.contexts.create_defaults
+  end
+  after_create do |user|
+    user.todos.create_defaults unless user.test_user
   end
 
   #validates :name, presence: true
