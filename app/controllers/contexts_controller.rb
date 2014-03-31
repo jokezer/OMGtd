@@ -4,7 +4,7 @@ class ContextsController < ApplicationController
   layout 'loggedin'
 
   def index
-    @contexts = current_user.contexts
+    @contexts = current_user.contexts.ordering
   end
 
   def new

@@ -1,6 +1,7 @@
 class Context < ActiveRecord::Base
   belongs_to :user
   has_many :todos, :dependent => :nullify
+  scope :ordering, -> { order('contexts.id') }
   validates :user, presence: true
   validates :name,
             presence: true,

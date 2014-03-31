@@ -43,7 +43,7 @@ module ApplicationHelper
   end
 
   def sidebar_contexts
-    current_user.contexts.make_group.each { |i| i[:group]='context' }
+    current_user.contexts.ordering.make_group.each { |i| i[:group]='context' }
   end
 
   def sidebar_projects
