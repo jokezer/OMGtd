@@ -10,8 +10,8 @@
  *
  *= require_self
  *= require jquery.ui.all
- *= require_tree .
  *= require_tree ./plugins/
+ *= require_tree .
  */
 @import "plugins/flatly";
 @import "bootstrap";

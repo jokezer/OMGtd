@@ -11,13 +11,13 @@ module ApplicationHelper
     link_params
   end
 
-  def prior_buttons(selected, opts={})
-    priors = Todo.get_priors_collection
+  def prior_buttons(collection, opts={})
     opts[:model] ||= 'todo'
     render 'todos/form/prior_buttons',
-           collection: priors,
-           selected: selected,
-           model: opts[:model]
+           collection: collection,
+           selected: opts[:selected],
+           model: opts[:model],
+           column: opts[:column]
   end
 
   def sidebar_active

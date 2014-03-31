@@ -1,10 +1,10 @@
-#prior-buttons.btn-group{'data-toggle'=>'buttons'}
+.prior-buttons.btn-group{'data-toggle'=>'buttons'}
   -collection.each do |value, label|
-    -checked_prior = value==selected
+    -checked_prior = value.to_s==selected.to_s
     %label.btn.btn-default
-      %input{type:'radio', name:"#{model}[prior]", value: value,
+      %input{type:'radio', name:"#{model}[#{column}]", value: value,
         checked: checked_prior}
-        = label.capitalize
+        = column=='context_id' ? label : label.capitalize
 %script
-  $('#prior-buttons.btn').button()
-  $("#prior-buttons input:checked").parent().addClass('active')
+  $('.prior-buttons.btn').button()
+  $(".prior-buttons input:checked").parent().addClass('active')

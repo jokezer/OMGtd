@@ -10,20 +10,18 @@ feature 'Todos CRUD actions' do
     visit todos_path
     click_on 'Create new'
     expect(page).to have_selector("input[type=text][id='todo_title'][name='todo[title]']")
-    expect(page).to have_selector("select[id='todo_kind'][name='todo[kind]']")
+    expect(page).to have_selector("input[type=radio][name='todo[kind]']")
     expect(page).to have_selector("input[type=radio][name='todo[prior]']")
     expect(page).not_to have_selector("select[id='todo_project_id'][name='todo[project_id]']")
-    expect(page).to have_selector("select[id='todo_context_id'][name='todo[context_id]']")
+    expect(page).to have_selector("input[type=radio][name='todo[context_id]']")
     expect(page).to have_selector("input[type=submit][value='Create todo']")
     expect(page).to have_selector("input[type=submit][value='Make project']")
-    expect(page).to have_selector("option[value='']")
-    expect(page).to have_selector("option[value='next']")
     #without data
     expect { click_on 'Create todo' }.not_to change(Todo, :count)
     expect(page).to have_content('can\'t be blank')
     #with data
     fill_in 'Title', :with => 'Test todo from feature test'
-    select('next', :from => 'Kind')
+    choose 'Next'
     expect { click_on 'Create todo' }.to change(user.todos, :count).by(1)
     expect(page).to have_content('Todo created!')
     expect(page).to have_content('Test todo from feature test')
@@ -31,18 +29,17 @@ feature 'Todos CRUD actions' do
   scenario 'Check edit form' do
     todo.update_attributes(kind: 'next')
     visit todo_path(todo)
-    #expect(page).not_to have_selector("option[value='']") find by name
-    expect(page).to have_selector("option[value='next']")
+    find("input[name='todo[kind]'][value='next'][type=radio]").should be_checked
   end
   scenario 'Change kinds' do
     visit todo_path(todo)
-    select('next', :from => 'Kind')
+    choose 'Next'
     expect { click_on 'Save changes' }
     .to change(user.todos.with_kind(:next), :count).by(1)
   end
   scenario 'Change context' do
     visit todo_path(todo)
-    select('@Errands', :from => 'Context')
+    choose '@Errands'
     expect { click_on 'Save changes' }
     .to change(user.contexts.find_by_name('Errands').todos, :count).by(1)
     expect(todo.reload.context.name).to eq('Errands')
@@ -101,12 +98,12 @@ feature 'Todos CRUD actions' do
     visit root_path
     click_on('waiting')
     click_on('Create new')
-    expect(page).to have_select('Kind', :selected => 'waiting')
+    find("input[name='todo[kind]'][value='waiting'][type=radio]").should be_checked
   end
   scenario 'edit todo with kind' do
     todo = FactoryGirl.create(:todo, user: user, kind: 'next')
     visit todo_path todo
-    expect(page).to have_select('Kind', :selected => 'next')
+    find("input[name='todo[kind]'][value='next'][type=radio]").should be_checked
   end
   scenario 'create todo from project' do
     project = FactoryGirl.create(:project, title: 'Set project', user: user)
@@ -116,9 +113,11 @@ feature 'Todos CRUD actions' do
   end
   scenario 'edit todo from context' do
     visit root_path
-    click_on '@Home'
+    context = user.contexts.first
+    click_on context.label
     click_on 'Create new'
-    expect(page).to have_select('Context', :selected => '@Home')
+    find("input[name='todo[context_id]'][value='#{context.id}'][type=radio]").should be_checked
+    #expect(page).to have_selector("input[name='todo[context_id]'][value='#{context.id}'][type=radio]")
   end
   scenario 'create todo with project' do
     project = FactoryGirl.create(:project, title: 'Set project', user: user)
@@ -130,7 +129,8 @@ feature 'Todos CRUD actions' do
     context = user.contexts.first
     todo = FactoryGirl.create(:todo, user: user, context: context)
     visit todo_path todo
-    expect(page).to have_select('Context', :selected => context.label)
+    #expect(page).to have_select('Context', :selected => context.label)
+    find("input[name='todo[context_id]'][value='#{context.id}'][type=radio]").should be_checked
   end
   scenario 'create todo from today, tomorrow paths' do
     pending 'todos should have date inserted'
@@ -189,17 +189,10 @@ feature 'Scheduled todo' do
   end
   scenario 'create scheduled todo without deadline' do
     visit new_todo_path
-    select('scheduled', :from => 'Kind')
+    choose 'Scheduled'
     fill_in 'Title', :with => 'Scheduled without deadline'
     expect { click_on 'Create todo' }.not_to change(Todo, :count)
     expect(page).to have_content('Deadline is required!')
-  end
-  scenario 'deadline selected if due is set' do
-    #visit todo_path(todo)
-    #find(:css, "#todo_is_deadline").should_not be_checked
-    #todo_deadline = FactoryGirl.create(:todo, user: user, due: DateTime.now)
-    #visit todo_path(todo_deadline)
-    #find(:css, "#todo_is_deadline").should be_checked
   end
 end
 

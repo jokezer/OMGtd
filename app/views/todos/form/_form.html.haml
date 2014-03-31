@@ -1,19 +1,26 @@
-= bootstrap_form_for(@todo, style: :horizontal, left: 'col-lg-2',
-  right: 'col-lg-9') do |f|
+= bootstrap_form_for(@todo, style: :horizontal, left: 'col-lg-2 col-md-2 col-sm-2',
+  right: 'col-lg-9 col-md-9 col-sm-9') do |f|
   = f.text_field :title
-  = f.text_area :content, hide_label: :true, placeholder: 'Todo description...'
-  = f.select :kind, @todo.get_kinds,
-  selected: action_name=='new' ? params[:from_kind] : @todo.kind
+  = f.text_area :content, hide_label: :true, placeholder: 'Todo description...',
+    rows: '7'
+  -#= f.select :kind, @todo.get_kinds,
+  -#selected: action_name=='new' ? params[:from_kind] : @todo.kind
+  =f.form_group(:todo, label: {text: 'Kind'}) do
+    = prior_buttons @todo.get_kinds, column: 'kind',
+      selected: action_name=='new' ? params[:from_kind] : @todo.kind
   =f.form_group(:todo, label: {text: 'Prior'}) do
-    = prior_buttons @todo.prior
+    = prior_buttons Todo.get_priors_collection, selected: @todo.prior, column: 'prior'
   -contexts = get_contexts
   -if contexts.empty?
     = f.form_group do
       There is no contexts
       = link_to('Create contexts', contexts_path)
   -else
-    = f.select :context_id, contexts, :include_blank => true,
-     selected: action_name=='new' ? params[:from_context] : @todo.context_id
+    -#= f.select :context_id, contexts, :include_blank => true,
+    -# selected: action_name=='new' ? params[:from_context] : @todo.context_id
+    =f.form_group(:todo, label: {text: 'Context'}) do
+      = prior_buttons contexts, column: 'context_id',
+        selected: action_name=='new' ? params[:from_context] : @todo.context_id
   - projects = get_projects
   -if projects.any?
     = f.select :project_id, projects, :include_blank => true,

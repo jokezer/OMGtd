@@ -66,8 +66,8 @@ module TodoTypes
     .inject({}) do |hsh, sym|
       if sym
         hsh[sym]=sym
-      else
-        hsh[:inbox] = '' if inbox?
+      #else
+      #  hsh[:inbox] = '' if inbox?
       end
       hsh
     end

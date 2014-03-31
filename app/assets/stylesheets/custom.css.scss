@@ -64,3 +64,21 @@ html, body {
     border-left: 8px solid #db705c;
   }
 }
+
+$error_color: darkred;
+
+.has-error{
+  .help-block{
+    color: $error_color;
+  }
+  .control-label{
+    color: $error_color;
+  }
+  .form-control {
+    border-color:  $error_color;
+  }
+  .form-control:focus {
+    border-color:  $error_color;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 6px  $error_color;
+  }
+}

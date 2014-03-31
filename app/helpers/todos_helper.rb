@@ -1,7 +1,7 @@
 module TodosHelper
 
   def get_contexts
-    current_user.contexts.map { |context| [context.label, context.id] }
+    current_user.contexts.map { |context| [context.id, context.label] }
   end
 
   def get_projects
