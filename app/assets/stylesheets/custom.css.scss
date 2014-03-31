@@ -44,19 +44,25 @@ html, body {
 }
 
 //panel todo
+$prior_marker_width: 8px;
 
+.panel-todo{
+  h5{
+    padding-left: $prior_marker_width;
+  }
+}
 .panel-todo.prior-none {
   .panel-body {
-    border-left: 8px solid white;
+    border-left: $prior_marker_width solid white;
   }
 }.panel-todo.prior-low {
    .panel-body {
-     border-left: 8px solid #699ded;
+     border-left: $prior_marker_width solid #699ded;
    }
  }
 .panel-todo.prior-medium {
   .panel-body {
-    border-left: 8px solid rgba(228, 174, 61, 0.78);
+    border-left: $prior_marker_width solid rgba(228, 174, 61, 0.78);
   }
 }
 .panel-todo.prior-high {

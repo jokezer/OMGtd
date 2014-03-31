@@ -51,6 +51,7 @@ class TodosController < ApplicationController
     todo = current_user.todos.find(params[:todo_id])
     todo.move params[:group], params[:group_value], params[:due]
     #redirect_to :back
+    flash[:todo_id] = todo.id
     redirect_to_back
   end
 
@@ -65,6 +66,7 @@ class TodosController < ApplicationController
 
   def todo_success(label)
     flash[:success] = label
+    flash[:todo_id] = @todo.id
     redirect_to redirect_address
   end
 

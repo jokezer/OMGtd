@@ -6,4 +6,6 @@
       =value
   -if key == :todo_id
     %script
+      $( document ).ready(function() {
       $('#todo-#{value}').effect("slide");
+      });

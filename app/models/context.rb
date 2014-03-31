@@ -17,16 +17,6 @@ class Context < ActiveRecord::Base
 
   include ContextProject
 
-  def self.create_defaults
-    if count == 0
-      create([{name: 'Home'},
-              {name: 'Office'},
-              {name: 'Errands'},
-              {name: 'Phone'},
-              {name: 'Computer'}])
-    end
-  end
-
   def check_max
     if user.present?
       errors.add(:name, 'Maximum 6 contexts allowed') if user.contexts.count > 6

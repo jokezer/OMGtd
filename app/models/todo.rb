@@ -111,26 +111,6 @@ class Todo < ActiveRecord::Base
     todos
   end
 
-  def self.create_defaults
-    create(title: 'Welcome to One More GTD',
-           content: "This is GTD style task manager\n"+
-               "Click to \"Create new\" to create new task.",
-           kind: 'next',
-           prior: 3)
-    create(title: 'Drag and Drop',
-           content: "Drag and drop todos with mouse to manage them",
-           kind: 'next',
-           prior: 2)
-    create(title: 'Edit todos',
-           content: "Click on todo header to edit todo content.\n Also you can create project from todo",
-           kind: 'next',
-           prior: 2)
-    create(title: 'Edit todos',
-           content: "Use arrow buttons on the right to change todo prior",
-           kind: 'next',
-           prior: 2)
-  end
-
   private
 
   def user_project
