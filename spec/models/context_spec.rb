@@ -85,4 +85,14 @@ describe Context do
       expect(context).to_not be_valid
     end
   end
+  describe 'check max quantity of contexts' do
+    specify do
+      expect(user.contexts.count).to eq 5
+      context = user.contexts.create(name: '6th context')
+      expect(context).to be_valid
+      context2 = user.contexts.create(name: '7th context')
+      expect(context2).not_to be_valid
+      expect(context2.errors[:name]).to include 'Maximum 6 contexts allowed'
+    end
+  end
 end

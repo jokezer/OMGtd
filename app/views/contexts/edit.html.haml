@@ -1,7 +1,11 @@
-= form_for(@context, style: :horizontal, left: "col-lg-1", right: "col-lg-6") do |f|
-  .form-group
+= form_for(@context, style: :horizontal, left: 'col-lg-1 col-md-1 col-sm-1',
+  right: 'col-lg-6 col-md-6 col-sm-6') do |f|
+  .form-group{class: ('has-error' if @context.errors[:name].any?)}
     .input-group
       %span.input-group-addon @
       = f.text_field :name, class:'form-control'
-
+    -@context.errors[:name].each do |error|
+      %span.help-block
+        =error
   = f.submit 'Save', class: 'btn btn-primary'
+  =debug @context.errors

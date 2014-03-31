@@ -1,3 +1,4 @@
 %h2 Contexts
-= link_to 'Create new', new_context_path
+-if current_user.contexts.count<=6
+  = link_to 'Create new', new_context_path
 = render @contexts
