@@ -1,7 +1,7 @@
 .prior-buttons.btn-group{'data-toggle'=>'buttons'}
   -collection.each do |value, label|
     -checked_prior = value.to_s==selected.to_s
-    %label.btn.btn-default
+    %label.btn.btn-sm.btn-default
       %input{type:'radio', name:"#{model}[#{column}]", value: value,
         checked: checked_prior}
         = column=='context_id' ? label : label.capitalize

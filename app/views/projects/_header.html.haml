@@ -1,8 +1,9 @@
 %h4
   = @project.label
-  = link_to edit_project_path(@project.name), class:'btn' do
-    Edit
-    %span.glyphicon.glyphicon-pencil
+  %small
+    = link_to edit_project_path(@project.name), class:'' do
+      Edit
+      %span.glyphicon.glyphicon-pencil
 %p= @project.content
 %p
   = form_for(@project, url: "/project/#{@project.name}/change_state",

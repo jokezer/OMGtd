@@ -1,11 +1,12 @@
 .sidebar
   -if group_label.present?
     .panel.panel-default
-      .panel-body= group_label
+      .panel-heading= group_label
   %ul.nav.nav-pills.nav-stacked
     - collection.each do |item|
-      %li{:class => [('droppable' unless item[:disabled]), ('active' if params[:type_name]==name.call(item))],
-          group: item[:group], group_value: name.call(item)}
+      %li{:class => [('droppable' unless item[:disabled]),
+        ('active' if params[:type_name]==name.call(item))],
+        group: item[:group], group_value: name.call(item)}
         = link_to link.call(item),
           :class => 'button white' do
           %span= label.call(item)

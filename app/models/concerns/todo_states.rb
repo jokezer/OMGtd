@@ -62,7 +62,7 @@ module TodoTypes
   end
   #where nil changed to "inbox":
   def get_kinds
-    kinds = Todo.state_machines[:kind].states.map { |n| n.name }
+    Todo.state_machines[:kind].states.map { |n| n.name }
     .inject({}) do |hsh, sym|
       if sym
         hsh[sym]=sym
