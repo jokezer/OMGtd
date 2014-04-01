@@ -30,30 +30,25 @@ describe Todo do
   context 'with incorrect data' do
     it 'without title' do
       todo.title = nil
-      expect(todo).not_to be_valid
+      expect(todo).to have(1).errors_on(:title)
     end
     it 'with incorrect statuses' do
       todo.state = 'incorrect'
-      expect(todo).not_to be_valid
+      expect(todo).to have(1).errors_on(:state)
     end
     it 'without user on their own' do
       todo = Todo.new(title: 'Content of invalid todo')
       expect(todo).not_to be_valid
     end
-    it 'correct' do
-      expect(todo).to be_valid
-    end
   end
 
-  describe 'Dependant check' do
-    it 'Destroy user' do
-      delete_user = FactoryGirl.create(:user, email: 'delete_user@email.ru')
-      FactoryGirl.create(:todo, user: delete_user)
-      expect { delete_user.destroy }.to change(Todo, :count).by(-1)
-    end
+  it 'Destroy user' do
+    delete_user = FactoryGirl.create(:user, email: 'delete_user@email.ru')
+    FactoryGirl.create(:todo, user: delete_user)
+    expect { delete_user.destroy }.to change(Todo, :count).by(-1)
   end
 
-  describe 'scopes' do
+  context 'scopes' do
     it 'Today scope' do
       FactoryGirl.create(:todo, kind: :scheduled,
                          title: 'First today deadline',
@@ -88,7 +83,7 @@ describe Todo do
     end
   end
 
-  describe 'finite state machines test' do
+  context 'finite state machines test' do
     it 'have 4 states' do
       expect(Todo.state_machines[:state].states.count).to eq(4)
       expect(Todo.state_machines[:state].states.map { |n| n.name })
@@ -155,24 +150,24 @@ describe Todo do
     end
   end
 
-  describe 'user scopes' do
+  context 'user scopes' do
     it 'context scope' do
       another_user = FactoryGirl.create(:user, email: 'another@user.tu')
       another_context = another_user.contexts.first
       expect(user.id).not_to eq(another_user.id)
-      todoe = user.todos.new(title:'title', context: another_context)
+      todoe = user.todos.new(title: 'title', context: another_context)
       expect(todoe).not_to be_valid
     end
     it 'project scope' do
       another_user = FactoryGirl.create(:user, email: 'another@user.tu')
       another_project = FactoryGirl.create(:project, name: 'Other user project1',
                                            user: another_user)
-      todoe = user.todos.new(title:'title', project_id: another_project.id)
+      todoe = user.todos.new(title: 'title', project_id: another_project.id)
       expect(todoe).not_to be_valid
     end
   end
 
-  describe 'special todos features' do
+  context 'special todos features' do
     it 'scheduled without deadline' do
       todo = user.todos.new(title: 'Title of scheduled', kind: 'scheduled')
       expect(todo).to_not be_valid
@@ -185,7 +180,7 @@ describe Todo do
 
   end
 
-  describe 'move' do
+  context 'move' do
     it 'to correct context' do
       todo.move 'context', user.contexts.first.name
       expect(todo.context.name).to eq(user.contexts.first.name)
@@ -197,7 +192,7 @@ describe Todo do
     it 'to correct project' do
       todo.move 'project', project.name
       expect(todo.project.name).to eq(project.name)
-      end
+    end
     it 'to incorrect project' do
       todo.move 'project', 'incorrect'
       expect(todo.project).to be_nil
@@ -228,7 +223,7 @@ describe Todo do
     it 'to correct state' do
       todo.move 'state', 'trash'
       expect(todo.trash?).to be_true
-      end
+    end
     it 'to incorrect state' do
       todo.move 'state', 'incorrect'
       expect(todo.reload.inbox?).to be_true

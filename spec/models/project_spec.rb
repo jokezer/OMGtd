@@ -15,11 +15,29 @@ describe Project do
   it { should respond_to(:label) }
   it { should respond_to(:state) }
 
-  describe 'create valid project' do
-    specify do
-      project = user.projects.create(title: 'Test project', content: 'Text of test todo')
-      expect(project.name).to eq('Test_project')
-      expect(project.label).to eq('#Test_project')
+  it 'create valid project' do
+    project = user.projects.create(title: 'Test project', content: 'Text of test todo')
+    expect(project.name).to eq('Test_project')
+    expect(project.label).to eq('#Test_project')
+  end
+  context 'incorrect states' do
+    it 'without user' do
+      wrong_project = Project.new(title: '@Home')
+      expect(wrong_project).to have(1).errors_on(:user)
+    end
+    it 'without title' do
+      wrong_context = user.projects.new(title: '')
+      expect(wrong_context).to have(1).errors_on(:title)
+    end
+    it 'uniqueness in user scope' do
+      user = FactoryGirl.create(:user)
+      project = FactoryGirl.create(:project, user: user, title: 'same')
+      expect(project).to be_valid #first time @same context is valid
+      expect(user.projects.new(title: 'same')).to have(1).errors_on(:title)
+      expect(user.projects.new(title: 'SAME')).to have(1).errors_on(:title)
+      user2 = FactoryGirl.create(:user)
+      project = FactoryGirl.create(:project, user: user2, name: 'same')
+      expect(project).to be_valid #uniqness works only in user scope
     end
   end
 
@@ -40,7 +58,8 @@ describe Project do
       expect(user.todos.count).to eq(count)
     end
   end
-  describe 'name and label' do
+
+  context 'name and label' do
     it 'when name insert' do
       project = FactoryGirl.create(:project, title: 'When name insert',
                                    name: 'with name', user: user)
@@ -60,7 +79,7 @@ describe Project do
     expect { project.destroy }.to change(user.todos, :count).by(-3)
   end
 
-  describe 'finite state machines' do
+  context 'finite state machines' do
     before do
       @project = project
       FactoryGirl.create_list(:todo, 3, user: user, project: @project)
