@@ -72,6 +72,11 @@ describe Project do
       expect(project.title).to eq('When name insert')
       expect(project.name).to eq('When_name_insert')
     end
+    it 'name cutting to 20 symbols' do
+      project = FactoryGirl.create(:project, title: 'Project with very long title',
+                                   name: '', user: user)
+      expect(project.reload.name).to eq 'Project_with_very_lo'
+    end
   end
 
   it 'dependency check' do
