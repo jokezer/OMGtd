@@ -19,7 +19,7 @@ gem 'haml-rails'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 
-# Bootstrap https://github.com/twbs/bootstrap-sass
+# Bootstrap
 gem 'bootstrap-sass', '~> 3.1.1'
 gem 'bootstrap_form'
 gem 'will_paginate-bootstrap'

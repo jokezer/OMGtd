@@ -47,7 +47,11 @@ module ApplicationHelper
   end
 
   def sidebar_projects
-    current_user.projects.with_state('active').make_group.each { |i| i[:group]='project' }
+    #todo add link if todos.count > 10
+    #counts = current_user.projects.count
+    output = current_user.projects.with_state('active').limit(10).make_group.each { |i| i[:group]='project' }
+    #output << {name: 'Other projects', counts: counts} if counts > 10
+    output
   end
 
   def make_badge(collection, opts={})

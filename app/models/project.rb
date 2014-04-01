@@ -7,11 +7,12 @@ class Project < ActiveRecord::Base
   validates :user, presence: true
   validates :title,
             presence: true,
-            uniqueness: {:scope => :user_id, :case_sensitive => false},
-            length: {maximum: 20}
+            uniqueness: {:scope => :user_id, :case_sensitive => false}
+            #length: {maximum: 20}
   before_validation do |c|
     c.name = c.title if c.name.blank?
     c.name = c.name.tr(' ', '_')
+    c.name = c.name[0..19]
   end
 
   def prefix
