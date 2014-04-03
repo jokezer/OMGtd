@@ -7,12 +7,27 @@ describe TodosController do
   describe 'GET#index unauthorised user' do
     it 'render index template' do
       xhr :get, :index
-      expect(response.status).to eq(302)
-      expect(response).to redirect_to(login_url)
+      expect(response.status).to eq(401)
     end
   end
 
+  describe "POST#create unauthorised user" do
+
+    context "with correct data" do
+      it 'should save todo to database' do
+        expect { xhr :post, :create,
+                     todo: FactoryGirl.attributes_for(:todo, user: @user) }
+        .not_to change(@user.todos, :count)
+      end
+      it 'should redirect to state/inbox collection' do
+        xhr :post, :create,
+            todo: FactoryGirl.attributes_for(:todo, user: @user)
+        expect(response.status).to eq(401)
+      end
+    end
+  end
 end
+
 describe TodosController do
   let (:todo) { FactoryGirl.create(:todo, user: @user) }
   before do
@@ -66,9 +81,8 @@ describe TodosController do
         .to change(@user.todos, :count).by(1)
       end
       it 'should redirect to state/inbox collection' do
-        expect { xhr :post, :create,
-                     todo: FactoryGirl.attributes_for(:todo, user: @user) }
-        .to change(@user.todos, :count).by(1)
+        xhr :post, :create,
+            todo: FactoryGirl.attributes_for(:todo, user: @user)
         expect(response.status).to eq(302)
         expect(response).to redirect_to('/todos/filter/state/inbox')
       end

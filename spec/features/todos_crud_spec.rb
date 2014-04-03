@@ -117,7 +117,6 @@ feature 'Todos CRUD actions' do
     click_on context.label
     click_on 'Create new'
     find("input[name='todo[context_id]'][value='#{context.id}'][type=radio]").should be_checked
-    #expect(page).to have_selector("input[name='todo[context_id]'][value='#{context.id}'][type=radio]")
   end
   scenario 'create todo with project' do
     project = FactoryGirl.create(:project, title: 'Set project', user: user)
@@ -129,7 +128,6 @@ feature 'Todos CRUD actions' do
     context = user.contexts.first
     todo = FactoryGirl.create(:todo, user: user, context: context)
     visit todo_path todo
-    #expect(page).to have_select('Context', :selected => context.label)
     find("input[name='todo[context_id]'][value='#{context.id}'][type=radio]").should be_checked
   end
   scenario 'create todo from today, tomorrow paths' do
@@ -139,37 +137,32 @@ end
 
 feature 'finite machines' do
   let (:user) { FactoryGirl.create(:user) }
-  let (:todo) { FactoryGirl.create(:todo, user: user) }
-  before do
+  background do
     sign_in_capybara(user)
+    @todo = FactoryGirl.create(:next_todo, user: user)
   end
   scenario 'Complete todo' do
-    todo = FactoryGirl.create(:todo, user: user, kind: 'next')
-    visit todo_path todo
+    visit todo_path @todo
     expect(page).not_to have_selector("input[type=submit][value='Activate']")
     expect { click_on('Complete') }.to change(user.todos.with_state('completed'),
                                               :count).by(1)
   end
   scenario 'Cancel todo' do
-    todo = FactoryGirl.create(:todo, user: user, kind: 'next')
-    visit todo_path todo
-    todo.reload
+    visit todo_path @todo
     expect(page).not_to have_selector("input[type=submit][value='Activate']")
     expect { within(".form-horizontal") { click_on('Cancel') } }.to change(user.todos.with_state('trash'),
                                                                            :count).by(1)
   end
   scenario 'Activate todo' do
-    todo = FactoryGirl.create(:todo, user: user, kind: 'next')
-    todo.cancel
-    visit todo_path todo
+    @todo.cancel
+    visit todo_path @todo
     expect(page).not_to have_selector("input[type=submit][value='Complete']")
     expect(page).not_to have_selector("input[type=submit][value='Cancel']")
     expect { click_on('Activate') }.to change(user.todos.with_state('active'),
                                               :count).by(1)
   end
   scenario 'Complete todo' do
-    todo = FactoryGirl.create(:todo, user: user)
-    visit todo_path todo
+    visit todo_path @todo
     expect(page).not_to have_selector("input[type=submit][value='Activate']")
   end
 end
