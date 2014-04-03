@@ -43,11 +43,24 @@ gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
+#group :development, :test do
+#  #gem 'rspec-rails', '~> 3.0.0.beta'
+#  gem 'rspec-rails'
+#  gem 'capybara'
+#  gem 'factory_girl_rails'
+#end
+
 group :development, :test do
-  #gem 'rspec-rails', '~> 3.0.0.beta'
-  gem 'rspec-rails'
-  gem 'capybara'
-  gem 'factory_girl_rails'
+  gem "rspec-rails", "~> 2.14.0"
+  gem "factory_girl_rails"
+  gem "faker", "~> 1.1.2"
+end
+
+group :test do
+  gem "capybara"
+  gem "database_cleaner", "~> 1.0.1"
+  gem "launchy", "~> 2.3.0"
+  gem "selenium-webdriver", "~> 2.35.1"
 end
 
 group :doc do

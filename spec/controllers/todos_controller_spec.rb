@@ -1,117 +1,175 @@
 require 'spec_helper'
+
+describe TodosController do
+  before do
+    @user = FactoryGirl.create(:user)
+  end
+  describe 'GET#index unauthorised user' do
+    it 'render index template' do
+      xhr :get, :index
+      expect(response.status).to eq(302)
+      expect(response).to redirect_to(login_url)
+    end
+  end
+
+end
 describe TodosController do
   let (:todo) { FactoryGirl.create(:todo, user: @user) }
-  let (:todo_params) { {title: 'New Title'} }
   before do
     @user = FactoryGirl.create(:user)
     sign_in @user
   end
 
-  describe "GET index, show, new" do
-    it "returns http success" do
+  describe 'GET#index' do
+    it 'render index template' do
       xhr :get, :index
       expect(response).to be_success
+      expect(response).to render_template(:index)
     end
-    it 'new todo pass should render new template' do
+    it 'returns array with todo groups' do
+      xhr :get, :index
+      expect(assigns(:todos)).to include :today, :next, :tomorrow
+    end
+  end
+
+  describe 'GET#show' do
+    it 'render show' do
       xhr :get, :show, :id => todo.id
       expect(response).to be_success
       expect(response).to render_template(:show)
     end
-    it 'new todo pass should render new template' do
+    it 'get a todo object' do
+      xhr :get, :show, :id => todo.id
+      expect(assigns(:todo)).to eq todo
+    end
+  end
+
+  describe 'GET#new' do
+
+    it 'render new template' do
       xhr :get, :new
       expect(response).to be_success
       expect(response).to render_template(:new)
     end
+    it 'assigns a new Todo instance' do
+      xhr :get, :new
+      expect(assigns(:todo)).to be_a_new Todo
+    end
   end
 
-  describe "#create" do
-    context "when create with correct data" do
-      subject { lambda { xhr :post, :create, :todo => todo_params } }
-      it do
-        should change(@user.todos, :count).by(1)
+  describe "POST#create" do
+
+    context "with correct data" do
+      it 'should save todo to database' do
+        expect { xhr :post, :create,
+                     todo: FactoryGirl.attributes_for(:todo, user: @user) }
+        .to change(@user.todos, :count).by(1)
+      end
+      it 'should redirect to state/inbox collection' do
+        expect { xhr :post, :create,
+                     todo: FactoryGirl.attributes_for(:todo, user: @user) }
+        .to change(@user.todos, :count).by(1)
         expect(response.status).to eq(302)
         expect(response).to redirect_to('/todos/filter/state/inbox')
       end
     end
-    context 'when try to create todo with incorrect data' do
-      subject { lambda { xhr :post, :create, :todo => {title: ''} } }
-      it do
-        should_not change(@user.todos, :count)
+    context 'with incorrect data' do
+      it 'dont save todo to db' do
+        expect { xhr :post, :create, :todo => {title: ''} }
+        .not_to change(@user.todos, :count)
+      end
+      it 'render the new template' do
+        xhr :post, :create, :todo => {title: ''}
         expect(response).to render_template(:new)
       end
     end
     context 'create project from todo' do
       before do
         @count = @user.todos.count
+        @project_request = lambda { xhr :post, :create,
+                                        :todo => {title: 'Project'},
+                                        make_project: 'Make project' }
       end
-      subject { lambda { xhr :post, :create,
-                             :todo => {title: 'Project'},
-                             make_project: 'Make project' } }
-      it do
-        should change(@user.projects, :count).by(1)
+      it 'create new project' do
+        expect { @project_request.call }.to change(@user.projects, :count).by(1)
+      end
+      it 'do not change todo count' do
+        expect { @project_request.call }.not_to change(@user.todos, :count)
+      end
+      it 'redirects to projects path' do
+        @project_request.call
         expect(response.status).to eq(302)
         expect(response).to redirect_to(projects_path)
-        expect(@user.todos.count).to eq @count
       end
     end
   end
 
-  describe '#update' do
+  describe 'PATCH#update' do
     before do
       @todo_update = FactoryGirl.create(:todo, user: @user)
+      @update_request = lambda { |todo_attr, submit = :submit|
+        xhr :patch, :update,
+            :id => @todo_update.id,
+            :todo => todo_attr,
+            submit => true
+      }
     end
-    context 'when try to update todo with correct data' do
-      subject { lambda { xhr :post, :update,
-                             :id => @todo_update.id,
-                             :todo => {title: 'rspec updated statuses',
-                                       kind: 'next'
-                             } } }
-      it do
-        should_not change(@user.todos, :count)
+    context 'with correct data' do
+      it 'not change count of todos' do
+        expect { @update_request.call(FactoryGirl.attributes_for(:next_todo, title: 'rspec updated statuses')) }
+        .not_to change(@user.todos, :count)
+      end
+      it 'redirects to next filter' do
+        @update_request.call(FactoryGirl.attributes_for(:next_todo, title: 'rspec updated statuses'))
         expect(response.status).to eq(302)
         expect(response).to redirect_to('http://test.host/todos/filter/kind/next')
+      end
+      it 'todo becomes updated' do
+        @update_request.call(FactoryGirl.attributes_for(:next_todo, title: 'rspec updated statuses'))
         expect(@user.todos.order('updated_at').last.title)
         .to eq('rspec updated statuses')
       end
     end
-    context 'when try to update todo with incorrect data' do
-      subject { lambda { xhr :post, :update,
-                             :id => @todo_update.id,
-                             :todo => {title: ''} } }
-      it do
-        should_not change(@user.todos, :count)
+    context 'with incorrect data' do
+      it 'not change count of todos' do
+        expect { @update_request.call(FactoryGirl.attributes_for(:next_todo, title: '')) }
+        .not_to change(@user.todos, :count)
+      end
+      it 'render show template' do
+        @update_request.call(FactoryGirl.attributes_for(:next_todo, title: ''))
         expect(response).to render_template(:show)
       end
     end
     context 'create project from todo' do
-      before do
-        @count = @user.todos.count
+
+      it 'create new project' do
+        expect { @update_request.call(FactoryGirl.attributes_for(:next_todo), :make_project) }
+        .to change(@user.projects, :count).by(1)
       end
-      subject { lambda { xhr :post, :update,
-                             :id => @todo_update.id,
-                             :todo => {title: 'Project'},
-                             make_project: 'Make project' } }
-      it do
-        should change(@user.projects, :count).by(1)
+      it 'does not change todos count' do
+        expect { @update_request.call(FactoryGirl.attributes_for(:next_todo), :make_project) }
+        .to change(@user.todos, :count).by(-1)
+      end
+      it 'redirects to projects path' do
+        @update_request.call(FactoryGirl.attributes_for(:next_todo), :make_project)
         expect(response.status).to eq(302)
         expect(response).to redirect_to(projects_path)
-        expect(@user.todos.count).to eq @count-1
       end
     end
     context 'move todo to trash' do
-      subject { lambda { xhr :post, :update,
-                             id: @todo_update.id,
-                             todo: {title: 'To trash'},
-                             cancel: true } }
-      it do
-        should change(@user.todos.with_state(:trash), :count).by(1)
+      it 'move todo to trash' do
+        expect { @update_request.call(FactoryGirl.attributes_for(:next_todo), :cancel) }
+        .to change(@user.todos.with_state(:trash), :count).by(1)
+      end
+      it 'redirects to trash collection' do
+        @update_request.call(FactoryGirl.attributes_for(:next_todo), :cancel)
         expect(response.status).to eq(302)
         expect(response).to redirect_to('http://test.host/todos/filter/state/trash')
       end
     end
   end
 
-  describe '#destroy' do
+  describe 'DELETE#destroy' do
     render_views
     before do
       @todo = FactoryGirl.create(:todo, user: @user)

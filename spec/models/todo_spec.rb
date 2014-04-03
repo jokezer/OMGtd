@@ -14,11 +14,10 @@ describe Todo do
   it { should respond_to(:due) }
   it { should respond_to(:context) }
   it { should respond_to(:project) }
-  context 'with correct data' do
-    specify do
-      expect(todo).to be_valid
-    end
+  it 'with correct data' do
+    expect(todo).to be_valid
   end
+
   context 'check order' do
     specify do
       #pending 'Fix default order in postgresql'
@@ -50,14 +49,13 @@ describe Todo do
 
   context 'scopes' do
     it 'Today scope' do
-      FactoryGirl.create(:todo, kind: :scheduled,
+      FactoryGirl.create(:scheduled_todo,
                          title: 'First today deadline',
-                         user: user,
-                         due: DateTime.now)
-      FactoryGirl.create(:todo, kind: :next,
+                         user: user)
+      FactoryGirl.create(:next_todo,
                          user: user,
                          due: DateTime.now-1.hour)
-      FactoryGirl.create(:todo, kind: :waiting,
+      FactoryGirl.create(:waiting_todo,
                          title: 'Last created todo',
                          user: user,
                          due: DateTime.now-1.week)
@@ -66,7 +64,7 @@ describe Todo do
       expect(user.todos.today.count).to eq(3)
     end
     it 'Tomorrow scope' do
-      FactoryGirl.create(:todo, kind: :scheduled,
+      FactoryGirl.create(:scheduled_todo,
                          title: 'Tomorrow todo',
                          user: user,
                          due: DateTime.now.tomorrow)
@@ -74,10 +72,10 @@ describe Todo do
       expect(user.todos.tomorrow.count).to eq(1)
     end
     it 'later or with no deadline' do
-      FactoryGirl.create(:todo, kind: :scheduled,
+      FactoryGirl.create(:scheduled_todo,
                          title: 'Later todo',
                          user: user,
-                         due: DateTime.now + 2.days)
+                         due: DateTime.now + 3.days)
       expect(user.todos.later_or_no_deadline.first.title).to eq('Later todo')
       expect(user.todos.later_or_no_deadline.count).to eq(1)
     end
@@ -106,7 +104,7 @@ describe Todo do
       expect(active_todo.state).to eq('active')
     end
     it 'events test' do
-      todo = FactoryGirl.create(:todo, user: user, kind: 'next')
+      todo = FactoryGirl.create(:next_todo, user: user)
       todo.cancel
       expect(todo.state).to eq('trash')
       expect(todo.kind).to eq('next')
@@ -134,12 +132,12 @@ describe Todo do
       expect(todo.state).to eq('active')
     end
     it 'should be impossible to set kind inbox to not new state todo' do
-      todo = FactoryGirl.create(:todo, user: user, kind: 'next')
+      todo = FactoryGirl.create(:next_todo)
       todo.update_attributes(kind: 'inbox')
       expect(todo.reload.kind).to eq('next')
     end
     it 'should be impossible to set state new to not inbox kind todo' do
-      todo = FactoryGirl.create(:todo, user: user, kind: 'next')
+      todo = FactoryGirl.create(:next_todo)
       todo.update_attributes(state: 'new')
       expect(todo.reload.kind).to eq('next')
       expect(todo.reload.state).to eq('active')
@@ -155,15 +153,15 @@ describe Todo do
       another_user = FactoryGirl.create(:user, email: 'another@user.tu')
       another_context = another_user.contexts.first
       expect(user.id).not_to eq(another_user.id)
-      todoe = user.todos.new(title: 'title', context: another_context)
-      expect(todoe).not_to be_valid
+      todo = user.todos.new(title: 'title', context: another_context)
+      expect(todo).not_to be_valid
     end
     it 'project scope' do
       another_user = FactoryGirl.create(:user, email: 'another@user.tu')
       another_project = FactoryGirl.create(:project, name: 'Other user project1',
                                            user: another_user)
-      todoe = user.todos.new(title: 'title', project_id: another_project.id)
-      expect(todoe).not_to be_valid
+      todo = user.todos.new(title: 'title', project_id: another_project.id)
+      expect(todo).not_to be_valid
     end
   end
 
@@ -173,7 +171,7 @@ describe Todo do
       expect(todo).to_not be_valid
     end
     it 'cycled with deadline' do
-      todo = user.todos.new(title: 'Title of scheduled', kind: 'scheduled',
+      todo = user.todos.new(title: 'Title of scheduled', kind: 'cycled',
                             due: DateTime.now)
       expect(todo).to be_valid
     end

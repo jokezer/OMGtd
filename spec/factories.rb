@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :user do
-    sequence(:email) { |n| "person#{n}@example.com" }
+    email {Faker::Internet.email}
     password "foobar88"
     password_confirmation "foobar88"
     test_user true
@@ -8,17 +8,28 @@ FactoryGirl.define do
 
   factory :todo do
     title 'Factory girl todo'
+    content {Faker::Lorem.paragraph}
     user
+    factory :next_todo do
+      kind 'next'
+    end
+    factory :scheduled_todo do
+      kind 'scheduled'
+      due DateTime.now
+    end
+    factory :waiting_todo do
+      kind 'waiting'
+    end
   end
 
   factory :context do
-    name '@Home'
+    name '@one_more'
     user
   end
 
   factory :project do
     title 'Factory girl project'
-    content 'Factory girl projects content'
+    content Faker::Lorem.paragraph
     user
   end
 
