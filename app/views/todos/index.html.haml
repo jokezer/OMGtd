@@ -1,5 +1,14 @@
-=render_collection @todos[:today], group_name:'today',
-                   link:'/todos/filter/calendar/today/'
-=render_collection @todos[:next], group_name:'next'
-=render_collection @todos[:tomorrow], group_name:'tomorrow',
-                   link:'/todos/filter/calendar/tomorrow/'
+-#=render_collection @todos[:today], group_name:'today',
+-#                   link:'/todos/filter/calendar/today/'
+-#=render_collection @todos[:next], group_name:'next'
+-#=render_collection @todos[:tomorrow], group_name:'tomorrow',
+-#                   link:'/todos/filter/calendar/tomorrow/'
+#todos
+
+:javascript
+  $( document ).ready(function() {
+    $(function() {
+      window.router = new Gtd.Routers.Todos({todos: #{@todos.to_json.html_safe}});
+      Backbone.history.start();
+    });
+  });

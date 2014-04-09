@@ -15,6 +15,9 @@ gem 'pg'
 # Use HAML
 gem 'haml'
 gem 'haml-rails'
+# Haml coffee
+gem 'haml_coffee_assets'
+gem 'execjs'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
@@ -34,7 +37,8 @@ gem 'coffee-rails', '~> 4.0.0'
 # gem 'therubyracer', platforms: :ruby
 
 #Backbone.js
-gem "rails-backbone"
+# gem 'rails-backbone-old'
+gem 'backbone-on-rails'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -54,16 +58,16 @@ gem 'jbuilder', '~> 1.2'
 #end
 
 group :development, :test do
-  gem "rspec-rails", "~> 2.14.0"
-  gem "factory_girl_rails"
-  gem "faker", "~> 1.1.2"
+  gem 'rspec-rails', '~> 2.14.0'
+  gem 'factory_girl_rails'
+  gem 'faker', '~> 1.1.2'
 end
 
 group :test do
-  gem "capybara"
-  gem "database_cleaner", "~> 1.0.1"
-  gem "launchy", "~> 2.3.0"
-  gem "selenium-webdriver", "~> 2.35.1"
+  gem 'capybara'
+  gem 'database_cleaner', '~> 1.0.1'
+  gem 'launchy', '~> 2.3.0'
+  gem 'selenium-webdriver', '~> 2.35.1'
 end
 
 group :doc do

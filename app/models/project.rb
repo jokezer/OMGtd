@@ -12,6 +12,7 @@ class Project < ActiveRecord::Base
   before_validation do |c|
     c.name = c.title if c.name.blank?
     c.name = c.name.tr(' ', '_')
+    c.name = c.name.tr('.', '_')
     c.name = c.name[0..19]
   end
 

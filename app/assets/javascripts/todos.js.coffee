@@ -1,3 +1,4 @@
+#= require hamlcoffee
 ready = ->
   jQuery ->
     $(".toggle_content").on("click", ->

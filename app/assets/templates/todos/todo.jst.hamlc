@@ -1,0 +1,15 @@
+.panel-todo.panel.panel-default.draggable
+  .panel-heading
+    -if @due
+      %small.pull-right
+        %span.glyphicon.glyphicon-time
+        due  #{@due}
+    %h5.panel-title= @title
+  .panel-body
+    .content= @content
+    %span
+      %small= @kind
+        -if @project_id
+          %small Project #{@project_id}
+        -if @context_id
+          %small Context #{@context_id}

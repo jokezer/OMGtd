@@ -4,7 +4,16 @@ class TodosController < ApplicationController
   layout 'loggedin'
 
   def index
-    @todos = current_user.todos.get_index
+    @todos = current_user.todos
+    respond_to do |format|
+      format.html
+      format.js   { render :json => @todos }
+      # format.json { render :json => @todos.to_json(include: :context) }
+    end
+      # @invite = Invite.includes(:user).find(params[:id])
+      # respond_to do |format|
+      #   format.json { render :json => @invite.to_json(include: :user) }
+      # end
   end
 
   def show
