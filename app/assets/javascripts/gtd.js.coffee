@@ -3,7 +3,8 @@ window.Gtd =
   Collections: {}
   Views: {}
   Routers: {}
-  initialize: -> console.log 'Hello from Backbone!'
+  initialize: ->
+    console.log 'Hello from Backbone!'
 
 $(document).ready ->
   Gtd.initialize()

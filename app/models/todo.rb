@@ -1,5 +1,5 @@
 class Todo < ActiveRecord::Base
-  #TODO FIX ORDERs
+
   include TodoStates
   include TodoTypes
   include Prior
@@ -88,6 +88,14 @@ class Todo < ActiveRecord::Base
     save
   end
 
+  def self.get_index
+    todos = {}
+    todos[:today] = with_state(:active).today
+    todos[:tomorrow] = with_state(:active).tomorrow
+    todos[:next] = with_state(:active).with_kind(:next).later_or_no_deadline
+    todos
+  end
+
   def today?
     return false unless due
     due < DateTime.now.end_of_day
@@ -98,18 +106,11 @@ class Todo < ActiveRecord::Base
     due > DateTime.now.tomorrow.beginning_of_day && due < DateTime.now.tomorrow.end_of_day
   end
 
+  # for js mb delete after bb integration
   def get_schedule_label
     return 'no' if due.blank?
     return 'today' if today?
     'tomorrow' if tomorrow?
-  end
-
-  def self.get_index
-    todos = {}
-    todos[:today] = with_state(:active).today
-    todos[:tomorrow] = with_state(:active).tomorrow
-    todos[:next] = with_state(:active).with_kind(:next).later_or_no_deadline
-    todos
   end
 
   private

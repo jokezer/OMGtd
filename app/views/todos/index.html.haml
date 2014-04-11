@@ -8,7 +8,7 @@
 :javascript
   $( document ).ready(function() {
     $(function() {
-      window.router = new Gtd.Routers.Todos({todos: #{@todos.to_json.html_safe}});
+      window.router = new Gtd.Routers.Todos({todos: #{@todos.to_json(methods: :kind_label).html_safe}});
       Backbone.history.start();
     });
   });

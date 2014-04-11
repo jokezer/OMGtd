@@ -17,6 +17,8 @@ class Gtd.Routers.Todos extends Backbone.Router
   index: ->
     @view = new Gtd.Views.Todos.IndexView(todos: @todos)
     $("#todos").html(@view.render().el)
+#    byState = @todos.groupByA('state')
+    console.log(@todos.subGroup(@todos.groupByA('state')))
 
   show: (id) ->
     todo = @todos.get(id)

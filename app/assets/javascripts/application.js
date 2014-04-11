@@ -16,6 +16,8 @@
 //= require turbolinks
 //= require underscore
 //= require backbone
+//= require backbone.virtual_collection
+//= require backbone.grouped_collection
 //= require gtd
 //= require_tree ../templates
 //= require_tree ./models
