@@ -9,11 +9,13 @@ class Gtd.Collections.Todos extends Backbone.Collection
     })
 
   groupByKind: (model) =>
-    Backbone.buildGroupedCollection({
+    model.grouped_vc = Backbone.buildGroupedCollection({
       collection: model.vc,
       groupBy: (animal) =>
         return animal.get('kind_label')
     })
 
-  subGroup: (collection) =>
+  subGroup: =>
+    collection = @groupByA('state')
     @groupByKind(model) for model in collection.models
+    return collection
