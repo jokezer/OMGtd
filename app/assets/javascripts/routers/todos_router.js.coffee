@@ -1,7 +1,8 @@
 class Gtd.Routers.Todos extends Backbone.Router
   initialize: (options) ->
-    @todos = new Gtd.Collections.Todos()
-    @todos.reset options.todos
+#    @todos = new Gtd.Collections.Todos()
+#    @todos.reset options.todos
+    @todos = options.todos
 
   routes:
     "new"      : "newTodo"
@@ -18,7 +19,7 @@ class Gtd.Routers.Todos extends Backbone.Router
     @view = new Gtd.Views.Todos.IndexView(todos: @todos)
     $("#todos").html(@view.render().el)
 #    byState = @todos.groupByA('state')
-    console.log(@todos.subGroup())
+    console.log(@todos.subGroup().get('active').grouped_vc.get('next').vc.at(0)  )
 
   show: (id) ->
     todo = @todos.get(id)

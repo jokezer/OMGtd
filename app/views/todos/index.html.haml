@@ -7,8 +7,11 @@
 
 :javascript
   $( document ).ready(function() {
-    $(function() {
-      window.router = new Gtd.Routers.Todos({todos: #{@todos.to_json(methods: :kind_label).html_safe}});
+    //var bookList, books = new Books();
+    var todos = new Gtd.Collections.Todos();
+    var p = todos.fetch();
+    p.done(function () {
+      window.router = new Gtd.Routers.Todos({todos: todos});
       Backbone.history.start();
     });
   });

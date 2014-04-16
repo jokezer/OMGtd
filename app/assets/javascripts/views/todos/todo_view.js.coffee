@@ -6,7 +6,8 @@ class Gtd.Views.Todos.TodoView extends Backbone.View
   events:
     "click .destroy" : "destroy"
 
-  tagName: "tr"
+  tagName: "div"
+  className: "draggable panel panel-default panel-todo"
 
   destroy: () ->
     @model.destroy()
@@ -15,5 +16,7 @@ class Gtd.Views.Todos.TodoView extends Backbone.View
     return false
 
   render: ->
+    #_todo prior
+    $(@el).addClass("prior-#{this.model.attributes.prior_name}")
     $(@el).html(@template(@model.toJSON() ))
     return this
