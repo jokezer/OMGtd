@@ -4,7 +4,8 @@ class TodosController < ApplicationController
   layout 'loggedin'
 
   def index
-    @todos = current_user.todos.ordering.to_json(methods: [:kind_label, :prior_name])
+    @todos = current_user.todos.ordering
+    .to_json(methods: [:kind_label, :prior_name])
     respond_to do |format|
       format.html
       format.json   { render :json => @todos }

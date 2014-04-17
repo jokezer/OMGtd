@@ -12,7 +12,7 @@ class Gtd.Views.Todos.IndexView extends Backbone.View
 
   addOne: (todo) =>
     view = new Gtd.Views.Todos.TodoView({model : todo})
-    @$("tbody").append(view.render().el)
+    @$("#todos_collection").append(view.render().el)
 
   render: =>
     $(@el).html(@template(todos: @options.todos.toJSON() ))

@@ -1,9 +1,5 @@
 %h1 Listing todos
-%table#todos-table
-  %tr
-    %th
-    %th
-    %th
+#todos_collection
 %br
 
 %a{href: '#/new'} New Todo

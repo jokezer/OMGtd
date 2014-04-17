@@ -16,7 +16,6 @@ class Gtd.Views.Todos.TodoView extends Backbone.View
     return false
 
   render: ->
-    #_todo prior
-    $(@el).addClass("prior-#{this.model.attributes.prior_name}")
+    $(@el).addClass("prior-#{this.model.attributes.prior_name}") #_todo prior
     $(@el).html(@template(@model.toJSON() ))
     return this

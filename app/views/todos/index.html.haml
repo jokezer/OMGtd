@@ -11,6 +11,7 @@
     var todos = new Gtd.Collections.Todos();
     var p = todos.fetch();
     p.done(function () {
+      console.log(todos);
       window.router = new Gtd.Routers.Todos({todos: todos});
       Backbone.history.start();
     });

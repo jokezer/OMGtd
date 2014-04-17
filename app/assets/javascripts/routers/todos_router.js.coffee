@@ -1,7 +1,5 @@
 class Gtd.Routers.Todos extends Backbone.Router
   initialize: (options) ->
-#    @todos = new Gtd.Collections.Todos()
-#    @todos.reset options.todos
     @todos = options.todos
 
   routes:
@@ -9,7 +7,8 @@ class Gtd.Routers.Todos extends Backbone.Router
     "index"    : "index"
     ":id/edit" : "edit"
     ":id"      : "show"
-    ".*"        : "index"
+    ".*"       : "index"
+    "state/:state" : "filterState"
 
   newTodo: ->
     @view = new Gtd.Views.Todos.NewView(collection: @todos)
@@ -18,8 +17,8 @@ class Gtd.Routers.Todos extends Backbone.Router
   index: ->
     @view = new Gtd.Views.Todos.IndexView(todos: @todos)
     $("#todos").html(@view.render().el)
-#    byState = @todos.groupByA('state')
-    console.log(@todos.subGroup().get('active').grouped_vc.get('next').vc.at(0)  )
+    console.log(@todos.groupByA('state'))
+#    console.log(@todos.subGroup().get('active').grouped_vc.get('next').vc.at(0)  )
 
   show: (id) ->
     todo = @todos.get(id)
@@ -29,6 +28,9 @@ class Gtd.Routers.Todos extends Backbone.Router
 
   edit: (id) ->
     todo = @todos.get(id)
-
     @view = new Gtd.Views.Todos.EditView(model: todo)
+    $("#todos").html(@view.render().el)
+
+  filterState: (state) ->
+    @view = new Gtd.Views.Todos.IndexView(todos: @todos.subGroup().get(state).vc )
     $("#todos").html(@view.render().el)
