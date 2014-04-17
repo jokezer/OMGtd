@@ -17,7 +17,7 @@ class Gtd.Routers.Todos extends Backbone.Router
   index: ->
     @view = new Gtd.Views.Todos.IndexView(todos: @todos)
     $("#todos").html(@view.render().el)
-    console.log(@todos.groupByA('state'))
+#    console.log(@todos.groupByA('state'))
 #    console.log(@todos.subGroup().get('active').grouped_vc.get('next').vc.at(0)  )
 
   show: (id) ->
@@ -32,5 +32,5 @@ class Gtd.Routers.Todos extends Backbone.Router
     $("#todos").html(@view.render().el)
 
   filterState: (state) ->
-    @view = new Gtd.Views.Todos.IndexView(todos: @todos.subGroup().get(state).vc )
+    @view = new Gtd.Views.Todos.IndexView(todos: @todos.grouped_states.get(state).vc )
     $("#todos").html(@view.render().el)

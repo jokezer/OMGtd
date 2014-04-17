@@ -1,5 +1,8 @@
 %h1 Listing todos
+%a{href: '#/state/inbox'} Inbox
+%a{href: '#/state/active'} Active
+%a{href: '#/state/trash'} Trash
+%a{href: '#/state/completed'} Completed
 #todos_collection
 %br
 
-%a{href: '#/new'} New Todo
