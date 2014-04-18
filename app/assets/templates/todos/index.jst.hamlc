@@ -1,8 +1,14 @@
 %h1 Listing todos
-%a{href: '#/state/inbox'} Inbox
-%a{href: '#/state/active'} Active
-%a{href: '#/state/trash'} Trash
-%a{href: '#/state/completed'} Completed
+%a{href: '#/filter/inbox'} Inbox
+%a{href: '#/filter/active/calendar/today'} Today
+%a{href: '#/filter/active/kind/next'} Next
+%a{href: '#/filter/active/calendar/tomorrow'} Tomorrow
+%a{href: '#/filter/active/kind/scheduled'} Scheduled
+%a{href: '#/filter/active/kind/cycled'} Cycled
+%a{href: '#/filter/active/kind/waiting'} Waiting
+%a{href: '#/filter/active/kind/someday'} Someday
+%a{href: '#/filter/trash'} Trash
+%a{href: '#/filter/completed'} Completed
 #todos_collection
 %br
 

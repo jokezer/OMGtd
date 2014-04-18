@@ -9,6 +9,7 @@ class Gtd.Views.Todos.IndexView extends Backbone.View
 
   addAll: () =>
     @options.todos.each(@addOne)
+    $(@el).append('No items in this category') if @options.todos.length == 0
 
   addOne: (todo) =>
     view = new Gtd.Views.Todos.TodoView({model : todo})
@@ -17,5 +18,4 @@ class Gtd.Views.Todos.IndexView extends Backbone.View
   render: =>
     $(@el).html(@template(todos: @options.todos.toJSON() ))
     @addAll()
-
     return this

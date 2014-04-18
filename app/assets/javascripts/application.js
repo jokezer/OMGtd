@@ -13,7 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.datetimepicker
-//= require turbolinks
 //= require underscore
 //= require backbone
 //= require backbone.virtual_collection
@@ -33,3 +32,5 @@
 // require backbone_rails_sync
 // require backbone_datalink
 // require backbone-old/gtd
+
+// require turbolinks

@@ -3,6 +3,7 @@
     %small.pull-right
       %span.glyphicon.glyphicon-time
       due  #{@due}
+      calendar #{@schedule_label}
   %h5.panel-title= @title
 .panel-body
   .content= @content

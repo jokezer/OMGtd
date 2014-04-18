@@ -107,7 +107,7 @@ class Todo < ActiveRecord::Base
   end
 
   # for js mb delete after bb integration
-  def get_schedule_label
+  def schedule_label
     return 'no' if due.blank?
     return 'today' if today?
     'tomorrow' if tomorrow?
