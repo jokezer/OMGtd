@@ -12,13 +12,12 @@ class Gtd.Collections.Todos extends Backbone.Collection
     stateCollection = @groupedStates.get(state)
     switch group
       when 'kind'
-        kindCollection = stateCollection.groupedKinds.get(label)
-        todos = kindCollection.vc if kindCollection
+        finalCollection = stateCollection.groupedKinds.get(label)
       when 'calendar'
-        calendarCollection = stateCollection.groupedCalendars.get(label)
-        todos = calendarCollection.vc if calendarCollection
+        finalCollection = stateCollection.groupedCalendars.get(label)
       else
-        todos = stateCollection.vc if stateCollection
+        finalCollection = stateCollection
+    todos = finalCollection.vc if finalCollection
     return todos
 
   _groupByA: (collection, attr) =>

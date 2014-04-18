@@ -2,7 +2,7 @@
                                project: (todo.project.name if todo.project),
                                kind: (todo.kind if todo.kind),
                                state: (todo.state),
-                               calendar: todo.get_schedule_label,
+                               calendar: todo.schedule_label,
                                todo_id: todo.id,
                                due: (todo.due.strftime("%Y-%m-%d %H:%M") if todo.due),
                                id: "todo-#{todo.id}",
