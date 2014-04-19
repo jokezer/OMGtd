@@ -17,10 +17,8 @@ class Gtd.Routers.Todos extends Backbone.Router
     $("#todos").html(@view.render().el)
 
   index: ->
-    @view = new Gtd.Views.Todos.IndexView(todos: @todos)
+    @view = new Gtd.Views.Todos.indexView(todos: @todos)
     $("#todos").html(@view.render().el)
-#    console.log(@todos.groupByA('state'))
-#    console.log(@todos.subGroup().get('active').grouped_vc.get('next').vc.at(0)  )
 
   show: (id) ->
     todo = @todos.get(id)
@@ -33,12 +31,6 @@ class Gtd.Routers.Todos extends Backbone.Router
     $("#todos").html(@view.render().el)
 
   filterState: (state, group=false, label=false) ->
-#    todos = new Gtd.Collections.Todos()
-#    stateCollection = @todos.groupedStates.get(state)
-#    todos = stateCollection.vc if stateCollection
-#    if kind
-#      kindCollection = stateCollection.groupedKinds.get(kind)
-#      todos = kindCollection.vc if stateCollection
     todos = @todos.getGroup(state, group, label)
-    @view = new Gtd.Views.Todos.IndexView(todos: todos)
+    @view = new Gtd.Views.Todos.filterView(todos: todos)
     $("#todos").html(@view.render().el)
