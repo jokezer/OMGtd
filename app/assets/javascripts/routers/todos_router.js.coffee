@@ -2,6 +2,8 @@ class Gtd.Routers.Todos extends Backbone.Router
   initialize: (options) ->
     @todos = options.todos
     @todos.makeGroups()
+    left_sidebar = new Gtd.Views.Sidebar.LeftSidebar({todos: @todos})
+    left_sidebar.render()
 
   routes:
     "new"      : "newTodo"
@@ -32,5 +34,5 @@ class Gtd.Routers.Todos extends Backbone.Router
 
   filterState: (state, group=false, label=false) ->
     todos = @todos.getGroup(state, group, label)
-    @view = new Gtd.Views.Todos.filterView(todos: todos)
+    @view = new Gtd.Views.Todos.filterView(todos: todos, label: todos.label, length: todos.length)
     $("#todos").html(@view.render().el)

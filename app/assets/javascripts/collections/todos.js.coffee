@@ -18,7 +18,18 @@ class Gtd.Collections.Todos extends Backbone.Collection
       else
         finalCollection = stateCollection
     todos = finalCollection.vc if finalCollection
+    todos.href = @_makeHref([state, group, label])
+    todos.label = @_makeLabel(state, label)
     return todos
+
+  _makeHref: (arr) ->
+    newArr = arr.filter (item) -> item isnt undefined
+    newArr.join('/')
+
+  _makeLabel: (state, label=false) =>
+    label = state unless label
+    return label
+
 
   _groupByA: (collection, attr) =>
     Backbone.buildGroupedCollection({

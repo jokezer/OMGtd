@@ -3,16 +3,8 @@ class Todo < ActiveRecord::Base
   include TodoStates
   include TodoTypes
   include Prior
+  include TodoDues
 
-  scope :today, -> {
-    ordering.where('due < ?', DateTime.now.end_of_day)
-  }
-  scope :tomorrow, -> {
-    ordering.where('due BETWEEN ? AND ?', DateTime.now.tomorrow.beginning_of_day,
-                   DateTime.now.tomorrow.end_of_day)
-  }
-  scope :later_or_no_deadline, -> { ordering.where("due > ? or due is NULL",
-                                                   DateTime.now.tomorrow.end_of_day) }
   #change ordering to default scope in rails 4.1
   scope :ordering, -> { order('prior DESC').order('due').order('updated_at DESC') }
 
@@ -94,23 +86,6 @@ class Todo < ActiveRecord::Base
     todos[:tomorrow] = with_state(:active).tomorrow
     todos[:next] = with_state(:active).with_kind(:next).later_or_no_deadline
     todos
-  end
-
-  def today?
-    return false unless due
-    due < DateTime.now.end_of_day
-  end
-
-  def tomorrow?
-    return false unless due
-    due > DateTime.now.tomorrow.beginning_of_day && due < DateTime.now.tomorrow.end_of_day
-  end
-
-  # for js mb delete after bb integration
-  def schedule_label
-    return 'no' if due.blank?
-    return 'today' if today?
-    'tomorrow' if tomorrow?
   end
 
   private

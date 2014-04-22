@@ -26,7 +26,7 @@ class Gtd.Views.Todos.indexView extends Backbone.View
     @addGroup('today todos',      @options.todos.getGroup('active', 'calendar', 'today'))
     @addGroup('next todos',       @options.todos.getGroup('active', 'kind', 'next'))
     @addGroup('tomorrow todos',   @options.todos.getGroup('active', 'calendar', 'tomorrow'))
-    @addGroup('other scheduled(all now)',  @options.todos.getGroup('active', 'kind', 'scheduled'))
+    @addGroup('seven_days',       @options.todos.getGroup('active', 'calendar', 'seven_days'))
     @addGroup('cycled',           @options.todos.getGroup('active', 'kind', 'cycled'))
     @addGroup('waiting',          @options.todos.getGroup('active', 'kind', 'waiting'))
     @addGroup('someday',          @options.todos.getGroup('active', 'kind', 'someday'))

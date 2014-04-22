@@ -16,6 +16,6 @@ class Gtd.Views.Todos.filterView extends Backbone.View
     @$("#todos_collection").append(view.render().el)
 
   render: =>
-    $(@el).html(@template(todos: @options.todos.toJSON()))
+    $(@el).html(@template(todos: @options.todos.toJSON(), count:@options.length, label:@options.label))
     @addAll()
     return this

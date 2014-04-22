@@ -2,6 +2,7 @@ class TodosController < ApplicationController
   before_filter :authenticate_user!
   before_filter :get_todo, only: [:show, :update, :destroy, :change_prior]
   layout 'loggedin'
+  layout 'single_page', only: [:index]
 
   def index
     @todos = current_user.todos.ordering
