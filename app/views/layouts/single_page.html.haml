@@ -4,6 +4,11 @@
     = render 'shared/flash'
     = yield
     = render 'shared/modal'
-  #right-sidebar.col-lg-3.col-md-3.col-sm-3
-    = render 'menu/right_sidebar'
+  .col-lg-3.col-md-3.col-sm-3
+    #context-sidebar
+      .panel.panel-default
+        .panel-heading Contexts
+    #project-sidebar
+      .panel.panel-default
+        .panel-heading Projects
 = render template: 'layouts/application'

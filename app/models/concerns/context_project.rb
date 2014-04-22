@@ -12,7 +12,7 @@ module ContextProject
     def make_group
       class_name = to_s.downcase
       table = class_name.pluralize
-      self.select("name, name as label, count(todos.id) as counts")
+      self.select("name, name as label, count(todos.id) as counts, count(todos.id) as length") #todo fix it
       .joins("left outer join todos on todos.#{class_name}_id = #{table}.id and todos.state='active'")
       .group("#{table}.id")
       .to_a.map { |a| a.serializable_hash.symbolize_keys }

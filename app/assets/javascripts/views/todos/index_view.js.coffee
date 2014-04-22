@@ -1,20 +1,7 @@
 Gtd.Views.Todos ||= {}
 
-class Gtd.Views.Todos.indexView extends Backbone.View
+class Gtd.Views.Todos.indexView extends Gtd.Views.Todos.baseIndexView
   template: JST['todos/index']
-
-  initialize: (options) ->
-    @options = options
-    @options.todos.bind('reset', @addAll)
-
-  addAll: () =>
-    @options.todos.each(@addOne)
-    $(@el).append('No items in this category') if @options.todos.length == 0
-
-  #do not touch, method in parent class
-  addOne: (todo) =>
-    view = new Gtd.Views.Todos.TodoView({model : todo})
-    @$("#todos_collection").append(view.render().el)
 
   addGroup: (group, todos)=>
     @$("#todos_collection").append($('<p>', text:"Group of #{group} - #{todos.length} todos"))

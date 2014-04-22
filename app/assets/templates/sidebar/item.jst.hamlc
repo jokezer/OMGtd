@@ -1,2 +1,2 @@
 %a.button.white{href: "/#/filter/#{@href}"} #{@label}
-  %span.badge.pull-right #{@count}
+  %span.badge.pull-right #{@length}

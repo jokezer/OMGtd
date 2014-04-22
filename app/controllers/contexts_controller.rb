@@ -5,6 +5,10 @@ class ContextsController < ApplicationController
 
   def index
     @contexts = current_user.contexts.ordering
+    respond_to do |format|
+      format.html
+      format.json   { render :json => current_user.contexts.make_group }
+    end
   end
 
   def new
@@ -57,7 +61,7 @@ class ContextsController < ApplicationController
 
   def get_context
     @context = current_user.contexts.find(params[:name])
-    redirect_to '/todos/contexts/' and return unless @context
+    redirect_to '/todos/contexts/' unless @context
   end
 
 end
