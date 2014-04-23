@@ -6,7 +6,7 @@ class Gtd.Views.Sidebar.base extends Backbone.View
 
   initialize: (options) ->
     @options = options
-#    @options.todos.bind('add', @erender)
+    @options.todos.on('sync', @erender)
 
   tagName: 'ul'
   className: 'nav nav-pills nav-stacked'
@@ -15,6 +15,5 @@ class Gtd.Views.Sidebar.base extends Backbone.View
     view = new Gtd.Views.Sidebar.Item(attr)
     $(@el).append(view.render().el)
 
-#  erender: () =>
-#    @render()
-#    console.log(@render().el)
+  erender: () =>
+    @render()

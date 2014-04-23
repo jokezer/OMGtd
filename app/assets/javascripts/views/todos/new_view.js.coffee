@@ -20,16 +20,13 @@ class Gtd.Views.Todos.NewView extends Backbone.View
     formData =
       title:   $('#todoTitle').val()
       content: $('#todoContent').val()
-    @collection.trigger('sync')
 
-    todo = new Gtd.Models.Todo
-    todo.save(formData)
-#    @collection.create(formData,
-#      success: (todo) =>
-#        @cancel()
-#      error: (todo, jqXHR) =>
-#        console.log(jqXHR.responseText)
-#    )
+    @collection.create(formData,
+      success: (todo) =>
+        @cancel()
+      error: (todo, jqXHR) =>
+        console.log(jqXHR.responseText)
+    )
 
   cancel: (e=false) ->
     e.preventDefault() if e
