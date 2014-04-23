@@ -2,7 +2,7 @@ class Gtd.Routers.Todos extends Backbone.Router
   initialize: (options) ->
     @todos = options.todos
     @todos.makeGroups()
-    @renderSidebars()
+    @renderLayout()
 
   routes:
     "new"      : "newTodo"
@@ -18,7 +18,7 @@ class Gtd.Routers.Todos extends Backbone.Router
     $("#todos").html(@view.render().el)
 
   index: ->
-    @view = new Gtd.Views.Todos.indexView(todos: @todos)
+    @view = new Gtd.Views.Todos.indexView(layout:@layout, todos: @todos)
     $("#todos").html(@view.render().el)
 
   show: (id) ->
@@ -33,22 +33,9 @@ class Gtd.Routers.Todos extends Backbone.Router
 
   filterState: (state, group=false, label=false) ->
     todos = @todos.getGroup(state, group, label)
-    @view = new Gtd.Views.Todos.filterView(todos: todos, label: todos.label, length: todos.length)
+    @view = new Gtd.Views.Todos.filterView(layout:@layout, todos: todos, label: todos.label)
     $("#todos").html(@view.render().el)
 
-  #todo move from here
-  renderSidebars: ->
-    left_sidebar = new Gtd.Views.Sidebar.LeftSidebar(todos: @todos)
-    left_sidebar.render()
-    #contexts
-    contexts = new Gtd.Collections.Contexts
-    p = contexts.fetch()
-    p.done ->
-      context_sidebar = new Gtd.Views.Sidebar.ContextSidebar(collection:contexts, type:'context')
-      context_sidebar.render()
-    #projects
-    projects = new Gtd.Collections.Projects
-    p = projects.fetch()
-    p.done ->
-      context_sidebar = new Gtd.Views.Sidebar.ContextSidebar(collection:projects, type:'project')
-      context_sidebar.render()
+  renderLayout: () ->
+    @layout = new Gtd.Views.Layout(todos: @todos)
+    $("#main-content").html(@layout.render().el)

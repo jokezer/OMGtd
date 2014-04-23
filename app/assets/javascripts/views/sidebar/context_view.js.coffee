@@ -4,9 +4,10 @@ class Gtd.Views.Sidebar.ContextSidebar extends Gtd.Views.Sidebar.base
 
   render: ->
     $('#'+@options.type+'-sidebar').append($(@el).html(@template()))
-    @options.collection.each(@makeLink)
+    @options.todos.each(@makeLink)
     return this
 
   makeLink: (item) =>
+    item.attributes.href = @options.type + '/' + item.id
     view = new Gtd.Views.Sidebar.Item(item.attributes)
     $(@el).append(view.render().el)

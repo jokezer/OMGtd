@@ -1,14 +1,11 @@
 - content_for :application do
-  #left-sidebar.col-lg-3.col-md-3.col-sm-3
-  .col-lg-6.col-md-6.col-sm-6
-    = render 'shared/flash'
-    = yield
-    = render 'shared/modal'
-  .col-lg-3.col-md-3.col-sm-3
-    #context-sidebar
-      .panel.panel-default
-        .panel-heading Contexts
-    #project-sidebar
-      .panel.panel-default
-        .panel-heading Projects
+  :javascript
+    $( document ).ready(function() {
+      var todos = new Gtd.Collections.Todos();
+      var p = todos.fetch();
+      p.done(function () {
+        window.router = new Gtd.Routers.Todos({todos: todos});
+        Backbone.history.start();
+      });
+    });
 = render template: 'layouts/application'

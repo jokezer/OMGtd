@@ -24,7 +24,8 @@ class Gtd.Collections.Todos extends Backbone.Collection
 
   _makeHref: (arr) ->
     newArr = arr.filter (item) -> item isnt undefined
-    newArr.join('/')
+    'filter/' + newArr.join('/')
+
 
   _makeLabel: (state, label=false) =>
     label = state unless label

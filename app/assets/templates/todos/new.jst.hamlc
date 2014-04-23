@@ -1,0 +1,9 @@
+%form#new-todo{name: 'todo'}
+  .draggable.panel.panel-default.panel-todo
+    .panel-heading
+      %input#todoTitle{type:'text', name:'todo[title]', placeholder:'New todo'}
+    .panel-body
+      %textarea#todoContent{name:'todo[content]', placeholder:'Content of new todo', rows:2, cols:90}
+    .panel-body
+      %input{type:'submit', value:'Save'}
+      %a.cancel{href:'#'} Close

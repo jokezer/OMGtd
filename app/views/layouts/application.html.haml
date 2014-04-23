@@ -24,7 +24,7 @@
                   = render 'shared/sign_in_link'
                 - if user_signed_in?
                   = render 'shared/add_search_form'
-        .container-fluid
+        #main-content.container-fluid
           = content_for?(:application) ? yield(:application) : yield
     .footer
       .panel.panel-default

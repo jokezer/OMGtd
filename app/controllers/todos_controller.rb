@@ -31,7 +31,12 @@ class TodosController < ApplicationController
     @todo = current_user.todos.build(todo_params)
     render(new_todo_path) and return unless @todo.save
     create_project and return if params[:make_project]
-    todo_success('Todo created!')
+    # todo_success('Todo created!')
+    respond_to do |format|
+      format.html
+      format.json   { render :json => @todo }
+    end
+
   end
 
   def update
