@@ -40,6 +40,9 @@ gem 'coffee-rails', '~> 4.0.0'
 # gem 'rails-backbone-old'
 gem 'backbone-on-rails'
 
+#Jasmine
+gem 'jasmine'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
