@@ -5,27 +5,27 @@ feature 'Todos CRUD actions' do
   before do
     sign_in_capybara(user)
   end
-  scenario 'Check new form' do
-    user.projects.destroy_all
-    visit todos_path
-    click_on 'Create new'
-    expect(page).to have_selector("input[type=text][id='todo_title'][name='todo[title]']")
-    expect(page).to have_selector("input[type=radio][name='todo[kind]']")
-    expect(page).to have_selector("input[type=radio][name='todo[prior]']")
-    expect(page).not_to have_selector("select[id='todo_project_id'][name='todo[project_id]']")
-    expect(page).to have_selector("input[type=radio][name='todo[context_id]']")
-    expect(page).to have_selector("input[type=submit][value='Create todo']")
-    expect(page).to have_selector("input[type=submit][value='Make project']")
-    #without data
-    expect { click_on 'Create todo' }.not_to change(Todo, :count)
-    expect(page).to have_content('can\'t be blank')
-    #with data
-    fill_in 'Title', :with => 'Test todo from feature test'
-    choose 'Next'
-    expect { click_on 'Create todo' }.to change(user.todos, :count).by(1)
-    expect(page).to have_content('Todo created!')
-    expect(page).to have_content('Test todo from feature test')
-  end
+  # scenario 'Check new form' do
+  #   user.projects.destroy_all
+  #   visit todos_path
+  #   click_on 'Create new'
+  #   expect(page).to have_selector("input[type=text][id='todo_title'][name='todo[title]']")
+  #   expect(page).to have_selector("input[type=radio][name='todo[kind]']")
+  #   expect(page).to have_selector("input[type=radio][name='todo[prior]']")
+  #   expect(page).not_to have_selector("select[id='todo_project_id'][name='todo[project_id]']")
+  #   expect(page).to have_selector("input[type=radio][name='todo[context_id]']")
+  #   expect(page).to have_selector("input[type=submit][value='Create todo']")
+  #   expect(page).to have_selector("input[type=submit][value='Make project']")
+  #   #without data
+  #   expect { click_on 'Create todo' }.not_to change(Todo, :count)
+  #   expect(page).to have_content('can\'t be blank')
+  #   #with data
+  #   fill_in 'Title', :with => 'Test todo from feature test'
+  #   choose 'Next'
+  #   expect { click_on 'Create todo' }.to change(user.todos, :count).by(1)
+  #   expect(page).to have_content('Todo created!')
+  #   expect(page).to have_content('Test todo from feature test')
+  # end
   scenario 'Check edit form' do
     todo.update_attributes(kind: 'next')
     visit todo_path(todo)
@@ -52,17 +52,17 @@ feature 'Todos CRUD actions' do
     visit todo_path(todo)
     find("input[value='3'][name='todo[prior]']").should be_checked
   end
-  scenario 'Edit todo' do
-    visit todo_path(todo)
-    fill_in 'Title', :with => 'Changed title from feature test'
-    fill_in 'Content', :with => 'Changed content from feature test'
-    click_on 'Save changes'
-    expect(page).to have_content('Todo updated!')
-    visit todo_path(todo)
-    expect(page).to have_selector("input[type=text][value='Changed title from feature test']")
-    expect(page).to have_selector('textarea', text: 'Changed content from feature test')
-    expect(todo.reload.due).to be_nil
-  end
+  # scenario 'Edit todo' do
+  #   visit todo_path(todo)
+  #   fill_in 'Title', :with => 'Changed title from feature test'
+  #   fill_in 'Content', :with => 'Changed content from feature test'
+  #   click_on 'Save changes'
+  #   expect(page).to have_content('Todo updated!')
+  #   visit todo_path(todo)
+  #   expect(page).to have_selector("input[type=text][value='Changed title from feature test']")
+  #   expect(page).to have_selector('textarea', text: 'Changed content from feature test')
+  #   expect(todo.reload.due).to be_nil
+  # end
   scenario 'Delete button presence' do
     trash_todo = FactoryGirl.create(:todo, user: user, state: 'trash')
     completed_todo = FactoryGirl.create(:todo, user: user, state: 'completed')
@@ -94,12 +94,12 @@ feature 'Todos CRUD actions' do
     .to change(user.projects.find_by_name('Set_project').todos, :count).by(1)
     expect(todo.reload.project.name).to eq('Set_project')
   end
-  scenario 'create new todo from kind' do
-    visit root_path
-    click_on('waiting')
-    click_on('Create new')
-    find("input[name='todo[kind]'][value='waiting'][type=radio]").should be_checked
-  end
+  # scenario 'create new todo from kind' do
+  #   visit root_path
+  #   click_on('waiting')
+  #   click_on('Create new')
+  #   find("input[name='todo[kind]'][value='waiting'][type=radio]").should be_checked
+  # end
   scenario 'edit todo with kind' do
     todo = FactoryGirl.create(:todo, user: user, kind: 'next')
     visit todo_path todo
@@ -111,13 +111,13 @@ feature 'Todos CRUD actions' do
     click_on('Create new')
     expect(page).to have_select('Project', :selected => project.label)
   end
-  scenario 'edit todo from context' do
-    visit root_path
-    context = user.contexts.first
-    click_on context.label
-    click_on 'Create new'
-    find("input[name='todo[context_id]'][value='#{context.id}'][type=radio]").should be_checked
-  end
+  # scenario 'edit todo from context' do
+  #   visit root_path
+  #   context = user.contexts.first
+  #   click_on context.label
+  #   click_on 'Create new'
+  #   find("input[name='todo[context_id]'][value='#{context.id}'][type=radio]").should be_checked
+  # end
   scenario 'create todo with project' do
     project = FactoryGirl.create(:project, title: 'Set project', user: user)
     todo = FactoryGirl.create(:todo, user: user, project: project)
@@ -147,12 +147,12 @@ feature 'finite machines' do
     expect { click_on('Complete') }.to change(user.todos.with_state('completed'),
                                               :count).by(1)
   end
-  scenario 'Cancel todo' do
-    visit todo_path @todo
-    expect(page).not_to have_selector("input[type=submit][value='Activate']")
-    expect { within(".form-horizontal") { click_on('Cancel') } }.to change(user.todos.with_state('trash'),
-                                                                           :count).by(1)
-  end
+  # scenario 'Cancel todo' do
+  #   visit todo_path @todo
+  #   expect(page).not_to have_selector("input[type=submit][value='Activate']")
+  #   expect { within(".form-horizontal") { click_on('Cancel') } }.to change(user.todos.with_state('trash'),
+  #                                                                          :count).by(1)
+  # end
   scenario 'Activate todo' do
     @todo.cancel
     visit todo_path @todo
@@ -189,33 +189,33 @@ feature 'Scheduled todo' do
   end
 end
 
-feature 'Quick add' do
-  let (:user) { FactoryGirl.create(:user) }
-  let (:todo) { FactoryGirl.create(:todo, user: user) }
-  before do
-    sign_in_capybara(user)
-  end
-  scenario 'Quick add inbox todo' do
-    visit root_path
-    fill_in 'Add todo', with: 'Some text'
-    expect { click_on 'Add' }.to change(user.todos.with_state(:inbox), :count).by(1)
-  end
-end
+# feature 'Quick add' do
+  # let (:user) { FactoryGirl.create(:user) }
+  # let (:todo) { FactoryGirl.create(:todo, user: user) }
+  # before do
+  #   sign_in_capybara(user)
+  # end
+  # scenario 'Quick add inbox todo' do
+  #   visit root_path
+  #   fill_in 'Add todo', with: 'Some text'
+  #   expect { click_on 'Add' }.to change(user.todos.with_state(:inbox), :count).by(1)
+  # end
+# end
 
-feature 'index page todos' do
-  let (:user) { FactoryGirl.create(:user) }
-  before do
-    sign_in_capybara(user)
-    FactoryGirl.create_list(:todo, 6, user: user, kind: 'next', due: DateTime.now)
-    FactoryGirl.create_list(:todo, 5, user: user, kind: 'next')
-  end
-  scenario 'check button presence' do
-    visit root_path
-    expect(page).to have_content('Today todos')
-    expect(page).to have_link('All today')
-    expect(page).to have_content('Next todos')
-    expect(page).not_to have_link('All next')
-    expect(page).not_to have_content('Tomorrow todos')
-    expect(page).not_to have_link('All tomorrow')
-  end
-end
+# feature 'index page todos' do
+#   let (:user) { FactoryGirl.create(:user) }
+#   before do
+#     sign_in_capybara(user)
+#     FactoryGirl.create_list(:todo, 6, user: user, kind: 'next', due: DateTime.now)
+#     FactoryGirl.create_list(:todo, 5, user: user, kind: 'next')
+#   end
+#   scenario 'check button presence' do
+#     visit root_path
+#     expect(page).to have_content('Today todos')
+#     expect(page).to have_link('All today')
+#     expect(page).to have_content('Next todos')
+#     expect(page).not_to have_link('All next')
+#     expect(page).not_to have_content('Tomorrow todos')
+#     expect(page).not_to have_link('All tomorrow')
+#   end
+# end

@@ -20,6 +20,9 @@ class Gtd.Views.Todos.NewView extends Backbone.View
     formData =
       title:   $('#todoTitle').val()
       content: $('#todoContent').val()
+      kind:   $("input[type='radio'][name='todo[kind]']:checked").val()
+      prior:   $("input[type='radio'][name='todo[prior]']:checked").val()
+      due: $('#todoDue').val()
 
     @collection.create(formData,
       success: (todo) =>
@@ -30,11 +33,18 @@ class Gtd.Views.Todos.NewView extends Backbone.View
 
   cancel: (e=false) ->
     e.preventDefault() if e
-    @$el.remove()
+    @$el.find('input')
+      .not(':button, :submit, :reset, :hidden')
+      .val('')
+      .removeAttr('checked')
+      .removeAttr('selected');
+    @$el.hide()
     $('#createNew').show()
 
   render: ->
-    $(@el).html(@template(@model.toJSON()))
-
-
+    attr = @model.toJSON()
+    attr.kinds = @model.kinds
+    attr.priors = @model.priors
+    $(@el).html(@template(attr))
+    @$el.find('#todoDue').datetimepicker({format: 'Y-m-d H:i'})
     return this

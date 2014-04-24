@@ -36,14 +36,18 @@ describe TodosController do
   end
 
   describe 'GET#index' do
+    render_views
     it 'render index template' do
       xhr :get, :index
       expect(response).to be_success
       expect(response).to render_template(:index)
     end
-    it 'returns array with todo groups' do
-      xhr :get, :index
-      expect(assigns(:todos)).to include :today, :next, :tomorrow
+    it 'json request respond with array of todos' do
+      FactoryGirl.create(:todo, user: @user)
+      xhr :get, :index, format: 'json'
+      expect(response.body).to eq @user.todos.ordering.to_json(
+                                      methods: [:kind_label, :prior_name,
+                                                :schedule_label])
     end
   end
 
@@ -76,15 +80,15 @@ describe TodosController do
 
     context "with correct data" do
       it 'should save todo to database' do
-        expect { xhr :post, :create,
+        expect { xhr :post, :create, format:'json',
                      todo: FactoryGirl.attributes_for(:todo, user: @user) }
         .to change(@user.todos, :count).by(1)
       end
-      it 'should redirect to state/inbox collection' do
-        xhr :post, :create,
+      it 'should respond with created todo' do
+        xhr :post, :create, format:'json',
             todo: FactoryGirl.attributes_for(:todo, user: @user)
-        expect(response.status).to eq(302)
-        expect(response).to redirect_to('/todos/filter/state/inbox')
+        expect(response.status).to eq(200)
+        expect(response.body).to eq(@user.todos.last.to_json)
       end
     end
     context 'with incorrect data' do
