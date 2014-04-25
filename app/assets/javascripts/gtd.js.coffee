@@ -8,3 +8,4 @@ window.Gtd =
 
 $(document).ready ->
   Gtd.initialize()
+
