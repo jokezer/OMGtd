@@ -28,7 +28,6 @@ class Gtd.Views.Layout extends Backbone.View
     @newForm.$el.show()
 
   renderNewForm: () ->
-    console.log('render new')
     @newForm = new Gtd.Views.Todos.NewView(collection: @options.todos)
     @newForm.$el.hide()
     @$el.find('#createNew').after(@newForm.render().el)

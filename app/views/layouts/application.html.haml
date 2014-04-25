@@ -34,4 +34,5 @@
 
     .col-lg-12
       -if Rails.env.development?
+        = link_to 'Run Jasmine', 'http://localhost:8888'
         = debug(params)

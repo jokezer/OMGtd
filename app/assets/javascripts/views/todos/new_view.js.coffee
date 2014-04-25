@@ -43,8 +43,8 @@ class Gtd.Views.Todos.NewView extends Backbone.View
 
   render: ->
     attr = @model.toJSON()
-    attr.kinds = @model.kinds
-    attr.priors = @model.priors
+    attr.kinds = Gtd.Models.Todo.kinds
+    attr.priors = Gtd.Models.Todo.priors
     $(@el).html(@template(attr))
     @$el.find('#todoDue').datetimepicker({format: 'Y-m-d H:i'})
     return this
