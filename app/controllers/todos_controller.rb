@@ -5,7 +5,7 @@ class TodosController < ApplicationController
   layout 'single_page', only: [:index]
 
   def index
-    @todos = current_user.todos.ordering
+    @todos = current_user.todos
     .to_json(methods: [:kind_label, :prior_name, :schedule_label])
     respond_to do |format|
       format.html

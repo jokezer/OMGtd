@@ -30,7 +30,7 @@ describe "Todo Model", ->
       it "have state inbox and kind inbox by default", ->
         todo = new Gtd.Models.Todo {title:'Correct todo'}
         expect(todo.attributes.state).toBe('inbox')
-        expect(todo.attributes.kind).toBe('inbox')
+        expect(todo.attributes.kind).toBe('')
 
 
     describe "with incorrect data", ->

@@ -1,7 +1,6 @@
 class Gtd.Routers.Todos extends Backbone.Router
   initialize: (options) ->
     @todos = options.todos
-    @todos.makeGroups()
     @renderLayout()
 
   routes:
@@ -18,6 +17,7 @@ class Gtd.Routers.Todos extends Backbone.Router
     $("#todos").html(@view.render().el)
 
   index: ->
+    console.log(@todos)
     @view = new Gtd.Views.Todos.indexView(layout:@layout, todos: @todos)
     $("#todos").html(@view.render().el)
 

@@ -2,24 +2,26 @@ class Gtd.Models.Todo extends Backbone.Model
   url: '/todos'
   paramRoot: 'todo'
 
-  @kinds: ['inbox', 'next', 'someday', 'waiting', 'scheduled', 'cycled']
+  @kinds = ['next', 'someday', 'waiting', 'scheduled', 'cycled']
   @states = ['inbox', 'active', 'trash', 'completed']
   @priors = {0: 'none', 1: 'low', 2: 'medium', 3: 'high'}
 
   initialize: () ->
     @_setState()
+    @on('save', @_setState, @)
     @on('change', @_setState, @)
 
   defaults:
     title: ''
     content: ''
     state: 'inbox'
-    kind: 'inbox'
+    kind: ''
 
   validation:
     title:
       required: true
     kind:
+      required: false
       oneOf: @kinds
     prior:
       required: false
@@ -29,6 +31,5 @@ class Gtd.Models.Todo extends Backbone.Model
         return 'Due is required!' unless value
 
   _setState: () ->
-    state = @get('state')
-    kind = @get('kind')
-    @set({state:'active'}, silent:true) if state=='inbox' and kind!='inbox'
+    if @attributes.state=='inbox' and !!@attributes.kind
+      @set({state:'active'}, silent:true)

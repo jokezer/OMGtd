@@ -1,10 +1,17 @@
 class Gtd.Collections.Todos extends Backbone.Collection
   model: Gtd.Models.Todo
   url: '/todos'
+  initialize: () ->
+    @on('sync', @makeGroups, @)
+    @on('reset', @makeGroups, @)
+
+  comparator: (itemA, itemB) =>
+    return 1 if itemA.get('prior') < itemB.get('prior')
+    return 0
 
   makeGroups: =>
     @groupedStates = @_groupByA(@, 'state')
-    model.groupedKinds = @_groupByA(model.vc, 'kind_label') for model in @groupedStates.models
+    model.groupedKinds = @_groupByA(model.vc, 'kind') for model in @groupedStates.models
     model.groupedCalendars = @_groupByA(model.vc, 'schedule_label') for model in @groupedStates.models
 
   getGroup: (state, group, label) =>

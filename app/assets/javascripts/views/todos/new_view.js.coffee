@@ -39,6 +39,7 @@ class Gtd.Views.Todos.NewView extends Backbone.View
       .removeAttr('checked')
       .removeAttr('selected');
     @$el.hide()
+    @$el.find('textarea').val('')
     $('#createNew').show()
 
   render: ->

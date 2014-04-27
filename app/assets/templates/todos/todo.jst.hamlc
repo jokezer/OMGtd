@@ -8,7 +8,7 @@
 .panel-body
   .content= @content
   %span
-    %small= @kind_label
+    %small= @kind||@state
       -if @project_id
         %small Project #{@project_id}
       -if @context_id
