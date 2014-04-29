@@ -6,9 +6,9 @@ class Gtd.Collections.Todos extends Backbone.Collection
     @on('reset', @makeGroups, @)
 
   comparator: (itemA, itemB) =>
+    return 1 if itemA.get('prior') < itemB.get('prior')
     if itemA.get('prior') == itemB.get('prior')
       return 1 if itemA.get('due_seconds') > itemB.get('due_seconds')
-    return 1 if itemA.get('prior') < itemB.get('prior')
     return 0
 
   makeGroups: =>

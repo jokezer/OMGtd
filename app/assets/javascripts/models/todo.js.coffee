@@ -37,5 +37,9 @@ class Gtd.Models.Todo extends Backbone.Model
 
   _setJdate: () ->
     jDate = @get('due_seconds')
-    jDate = new Date(Number(jDate) * 1000);
-    @set({jdue:jDate}, silent:true) #todo set to due?
+    if jDate
+      jDate = new Date(Number(jDate) * 1000);
+      @set({jdue:jDate}, silent:true) #todo set to due?
+    else
+      @set({due_seconds:9999999999}, silent:true) #use for sorting
+
