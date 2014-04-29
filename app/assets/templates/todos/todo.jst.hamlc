@@ -2,8 +2,9 @@
   -if @due
     %small.pull-right
       %span.glyphicon.glyphicon-time
-      due  #{@due}
-      calendar #{@schedule_label}
+      due  #{@jdue.toLocaleString()}
+      -#seconds  #{@due_seconds}
+      -#calendar #{@schedule_label}
   %h5.panel-title= @title
 .panel-body
   .content= @content

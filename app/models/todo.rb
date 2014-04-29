@@ -6,7 +6,8 @@ class Todo < ActiveRecord::Base
   include TodoDues
 
   #change ordering to default scope in rails 4.1
-  scope :ordering, -> { order('prior DESC').order('due').order('updated_at DESC') }
+  scope :ordering, -> { order('prior DESC').order('due') }
+  # .order('updated_at DESC') }
 
   belongs_to :user
   belongs_to :context

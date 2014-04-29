@@ -7,6 +7,7 @@ class Gtd.Models.Todo extends Backbone.Model
   @priors = {0: 'none', 1: 'low', 2: 'medium', 3: 'high'}
 
   initialize: () ->
+    @_setJdate()
     @_setState()
     @on('save', @_setState, @)
     @on('change', @_setState, @)
@@ -33,3 +34,8 @@ class Gtd.Models.Todo extends Backbone.Model
   _setState: () ->
     if @attributes.state=='inbox' and !!@attributes.kind
       @set({state:'active'}, silent:true)
+
+  _setJdate: () ->
+    jDate = @get('due_seconds')
+    jDate = new Date(Number(jDate) * 1000);
+    @set({jdue:jDate}, silent:true) #todo set to due?

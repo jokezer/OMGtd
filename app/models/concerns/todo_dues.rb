@@ -38,4 +38,11 @@ module TodoDues
     return 'tomorrow' if tomorrow?
     'seven_days' if seven_days?
   end
+
+  def due_seconds
+    due.to_i
+  end
+  def updated_seconds
+    updated_at.to_i
+  end
 end

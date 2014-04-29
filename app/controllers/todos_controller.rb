@@ -6,7 +6,7 @@ class TodosController < ApplicationController
 
   def index
     @todos = current_user.todos
-    .to_json(methods: [:kind_label, :prior_name, :schedule_label])
+    .to_json(methods: [:kind_label, :prior_name, :schedule_label, :due_seconds, :updated_seconds])
     respond_to do |format|
       format.html
       format.json   { render :json => @todos }
