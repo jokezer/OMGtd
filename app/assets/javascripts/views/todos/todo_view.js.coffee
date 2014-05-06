@@ -6,19 +6,21 @@ class Gtd.Views.Todos.TodoView extends Backbone.View
   events:
     "dblclick" : "edit"
     "focusout" : "close"
+    "submit"   : "update"
 
   tagName: "form"
   className: "draggable panel panel-default panel-todo"
 
   edit: ->
-    @$el.addClass('editing')
-    @$el.find('input').focus()
-
-  another: ($el) ->
-    console.log($el.find('.edit:focus').length)
+    unless @$el.hasClass('editing')
+      @$el.addClass('editing')
+      @$el.find('input').focus()
 
   close: ->
-    _.delay(@another, 1000, @$el);
+    saveTodo =  ($el) ->
+      unless $el.find('.edit:focus').length
+        $el.removeClass('editing')
+    _.delay(saveTodo, 1000, @$el);
 
   render: ->
     $(@el).addClass("prior-#{Gtd.Models.Todo.priors[@model.get('prior')]}")

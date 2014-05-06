@@ -17,9 +17,25 @@
 }
 
 .panel-todo {
+  .panel-heading{
+//    height: 100px;
+    >*{
+      padding-left: 8px;
+    }
+    input{
+      margin: 0;
+    }
+  }
   .edit {
     display: none;
     border: none;
+    width: 80%;
+    background: none;
+  }
+  textarea {
+    overflow: hidden;
+    outline: none;
+//    resize: none;
   }
   .info {
     display: block;
