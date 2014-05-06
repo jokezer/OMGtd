@@ -2,12 +2,21 @@
   -if @due
     %small.pull-right
       %span.glyphicon.glyphicon-time
-      due  #{@jdue.toLocaleString()}
+      due  #{@jdue.toLocaleString() if @jdue}
       -#seconds  #{@due_seconds}
       -#calendar #{@schedule_label}
-  %h5.panel-title= @title
+  %h5.info.panel-title= @title
+  %input.edit{type:'text', name:'todo[title]', value:@title}
 .panel-body
-  .content= @content
+  %span.pull-right
+    .btn-group-vertical
+      %button.btn.btn-xs{type:'submit', name: 'increase_prior', disabled: 'disabled'}
+        %i.glyphicon.glyphicon-chevron-up
+      %button.btn.btn-xs{type:'submit', name: 'decrease_prior', disabled: 'disabled'}
+        %i.glyphicon.glyphicon-chevron-down
+  .content.info= @content
+  %textarea.edit{name:'todo[content]', placeholder:'Content of todo', rows:2, cols:90}
+    =@content
   %span
     %small= @kind||@state
       -if @project_id

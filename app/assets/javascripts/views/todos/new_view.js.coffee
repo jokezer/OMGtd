@@ -10,8 +10,8 @@ class Gtd.Views.Todos.NewView extends Backbone.View
     super(options)
     @model = new @collection.model()
 
-    @model.bind("change:errors", () =>
-      this.render()
+    @model.bind('validated:invalid', (model, errors) =>
+      console.log(errors)
     )
 
   save: (e) ->
@@ -24,17 +24,24 @@ class Gtd.Views.Todos.NewView extends Backbone.View
       prior:   $("input[type='radio'][name='todo[prior]']:checked").val()
       due: $('#todoDue').val()
 
-    @collection.create(formData,
-      success: (todo) =>
-        @cancel()
-      error: (todo, jqXHR) =>
-        console.log(jqXHR.responseText)
-    )
+    @model.set(formData)
+    if @model.isValid(true)
+      @model.save({},
+        success: (todo, jqXHR) =>
+          @collection.add(@model)
+          @cancel()
+        error: (todo, jqXHR) =>
+          console.log(jqXHR)
+      )
+    else
+      console.log('render huender')
+
+
 
   cancel: (e=false) ->
     e.preventDefault() if e
     @$el.find('input')
-      .not(':button, :submit, :reset, :hidden')
+      .not(':button, :submit, :reset, :hidden, :radio')
       .val('')
       .removeAttr('checked')
       .removeAttr('selected');
@@ -43,6 +50,7 @@ class Gtd.Views.Todos.NewView extends Backbone.View
     $('#createNew').show()
 
   render: ->
+#    Backbone.Validation.bind(@)
     attr = @model.toJSON()
     attr.kinds = Gtd.Models.Todo.kinds
     attr.priors = Gtd.Models.Todo.priors

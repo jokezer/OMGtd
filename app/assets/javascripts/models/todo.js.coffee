@@ -11,12 +11,15 @@ class Gtd.Models.Todo extends Backbone.Model
     @_setState()
     @on('save', @_setState, @)
     @on('change', @_setState, @)
+    @on('save', @_setJdate, @)
+    @on('change', @_setJdate, @)
 
   defaults:
     title: ''
     content: ''
     state: 'inbox'
     kind: ''
+    prior: 0
 
   validation:
     title:

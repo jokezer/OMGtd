@@ -4,18 +4,23 @@ class Gtd.Views.Todos.TodoView extends Backbone.View
   template: JST['todos/todo']
 
   events:
-    "click .destroy" : "destroy"
+    "dblclick" : "edit"
+    "focusout" : "close"
 
-  tagName: "div"
+  tagName: "form"
   className: "draggable panel panel-default panel-todo"
 
-  destroy: () ->
-    @model.destroy()
-    this.remove()
+  edit: ->
+    @$el.addClass('editing')
+    @$el.find('input').focus()
 
-    return false
+  another: ($el) ->
+    console.log($el.find('.edit:focus').length)
+
+  close: ->
+    _.delay(@another, 1000, @$el);
 
   render: ->
-    $(@el).addClass("prior-#{this.model.attributes.prior_name}") #_todo prior
+    $(@el).addClass("prior-#{Gtd.Models.Todo.priors[@model.get('prior')]}")
     $(@el).html(@template(@model.toJSON() ))
     return this

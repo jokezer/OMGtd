@@ -4,20 +4,19 @@ class Gtd.Routers.Todos extends Backbone.Router
     @renderLayout()
 
   routes:
-    "new"      : "newTodo"
+#    "new"      : "newTodo"
     "index"    : "index"
-    ":id/edit" : "edit"
-    ":id"      : "show"
+#    ":id/edit" : "edit"
+#    ":id"      : "show"
     ".*"       : "index"
     "filter/:state" : "filterState"
     "filter/:state/:group/:label" : "filterState"
 
-  newTodo: ->
-    @view = new Gtd.Views.Todos.NewView(collection: @todos)
-    $("#todos").html(@view.render().el)
+#  newTodo: ->
+#    @view = new Gtd.Views.Todos.NewView(collection: @todos)
+#    $("#todos").html(@view.render().el)
 
   index: ->
-    console.log(@todos)
     @view = new Gtd.Views.Todos.indexView(layout:@layout, todos: @todos)
     $("#todos").html(@view.render().el)
 

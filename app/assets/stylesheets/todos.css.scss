@@ -15,3 +15,22 @@
 .ui-state-active{
   background-color: #db5e3f;
 }
+
+.panel-todo {
+  .edit {
+    display: none;
+    border: none;
+  }
+  .info {
+    display: block;
+  }
+}
+
+.panel-todo.editing {
+  .edit {
+    display: block;
+  }
+  .info {
+    display: none;
+  }
+}
