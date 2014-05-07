@@ -60,3 +60,7 @@ describe "Todo Model", ->
       it "should have due inserted if kind is cycled", ->
         attrs["kind"] = 'cycled'
         attrs["due"]  = null
+
+    xdescribe "save model with server"
+
+    xdescribe "update model with server"

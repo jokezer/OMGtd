@@ -18,11 +18,29 @@ class Gtd.Views.Todos.TodoView extends Backbone.View
       @$el.find('input').focus()
 
   close: ->
-    saveTodo =  ($el) ->
-      unless $el.find('.edit:focus').length
-        $el.removeClass('editing')
-        $el.find('.textarea').trigger('autosize.destroy');
-    _.delay(saveTodo, 1000, @$el);
+    saveTodo =  (view) ->
+      unless view.$el.find('.edit:focus').length
+        view.$el.removeClass('editing').addClass('saving')
+        view.$el.find('.textarea').trigger('autosize.destroy')
+        view.save()
+    _.delay(saveTodo, 1000, @);
+
+  #todo merge with new_view
+  save: ->
+    formData =
+      title: $('input.panel-title', @$el).val()
+      content: $('textarea.edit', @$el).val()
+
+    @model.set(formData)
+    if @model.isValid(true)
+      @model.save({},
+        success: (todo, jqXHR) =>
+          @render()
+        error: (todo, jqXHR) =>
+          console.log(jqXHR)
+      )
+    else
+      alert('dver zapilil')
 
   _setContent: ->
     content = @model.get('content')

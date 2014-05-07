@@ -35,6 +35,7 @@
   .edit {
     display: none;
     border: none;
+    padding: 0;
 //    border: 1px solid red;
     background: none;
   }
@@ -48,7 +49,7 @@
     display: block;
   }
   .content{
-//    width: 95%;
+    padding: 0;
   }
   .textField{
     width: 95%;
@@ -65,4 +66,8 @@
   .info {
     display: none;
   }
+}
+
+.panel-todo.saving{
+  background-color: red;
 }

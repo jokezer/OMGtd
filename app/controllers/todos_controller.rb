@@ -40,12 +40,17 @@ class TodosController < ApplicationController
   end
 
   def update
-    render(:show) and return unless @todo.update_attributes(todo_params)
-    create_project and return if params[:make_project]
-    @todo.activate if params[:activate]
-    @todo.complete if params[:complete]
-    @todo.cancel if params[:cancel]
-    todo_success('Todo updated!')
+    # render(:show) and return unless @todo.update_attributes(todo_params)
+    # create_project and return if params[:make_project]
+    # @todo.activate if params[:activate]
+    # @todo.complete if params[:complete]
+    # @todo.cancel if params[:cancel]
+    # todo_success('Todo updated!')
+    @todo.update_attributes(todo_params)
+    respond_to do |format|
+      # format.html
+      format.json   { render :json => @todo.to_json(methods: [:schedule_label, :due_seconds, :updated_seconds]) }
+    end
   end
 
   def destroy
