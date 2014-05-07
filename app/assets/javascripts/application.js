@@ -18,6 +18,7 @@
 //= require backbone.validation
 //= require backbone.virtual_collection
 //= require backbone.grouped_collection
+//= require jquery.autosize
 //= require gtd
 //= require_tree ../templates
 //= require_tree ./models

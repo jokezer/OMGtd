@@ -4,6 +4,7 @@
       %span.glyphicon.glyphicon-time
       due  #{@jdue.toLocaleString() if @jdue}
   %h5.info.panel-title= @title
+  %span.glyphicon.glyphicon-pencil.pull-left
   %input.panel-title.edit{type:'text', name:'todo[title]', value:@title}
 .panel-body
   %span.pull-right
@@ -12,9 +13,27 @@
         %i.glyphicon.glyphicon-chevron-up
       %button.btn.btn-xs{type:'submit', name: 'decrease_prior', disabled: 'disabled'}
         %i.glyphicon.glyphicon-chevron-down
-  .content.info= @content
-  %textarea.edit{name:'todo[content]', placeholder:'Content of todo'}
-    =@content
+  .textField
+    .content.info
+      - if @groupedContent
+        - for line in @groupedContent.visible
+          =line
+          %br
+        -if @groupedContent.hidden
+          %a.btn.btn-xs.btn-info.showMore
+            Show #{@groupedContent.hidden.length} more strings
+            %span.glyphicon.glyphicon-chevron-down
+
+          .hiddenContent{style:'display: none;'}
+            - for hiddenLine in @groupedContent.hidden
+              =hiddenLine
+              %br
+            %a.btn.btn-xs.btn-info.hideContent
+              Hide content
+              %span.glyphicon.glyphicon-chevron-up
+    %textarea.edit{name:'todo[content]', placeholder:'Content of todo'}
+      - if @content
+        =@content
   %span
     %small= @kind||@state
       -if @project_id

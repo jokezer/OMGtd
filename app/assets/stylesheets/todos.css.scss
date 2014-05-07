@@ -17,33 +17,49 @@
 }
 
 .panel-todo {
+  .glyphicon-pencil{
+    display: none;
+  }
   .panel-heading{
-//    height: 100px;
+    height: 33px;
     >*{
       padding-left: 8px;
     }
     input{
-      margin: 0;
+      height: 21px;
+      font-size: 17px;
+      line-height: 22px;
+      width: 70%;
     }
   }
   .edit {
     display: none;
     border: none;
-    width: 80%;
+//    border: 1px solid red;
     background: none;
   }
   textarea {
     overflow: hidden;
     outline: none;
-//    resize: none;
+    resize: none;
+    width: 100%;
   }
   .info {
     display: block;
+  }
+  .content{
+//    width: 95%;
+  }
+  .textField{
+    width: 95%;
   }
 }
 
 .panel-todo.editing {
   .edit {
+    display: block;
+  }
+  .glyphicon-pencil{
     display: block;
   }
   .info {
