@@ -6,7 +6,8 @@ class TodosController < ApplicationController
 
   def index
     @todos = current_user.todos
-    .to_json(methods: [:schedule_label, :due_seconds, :updated_seconds])
+    .to_json(methods: [:schedule_label, :due_seconds, :updated_seconds,
+                       :can_increase_prior?, :can_decrease_prior?])
     respond_to do |format|
       format.html
       format.json   { render :json => @todos }
@@ -34,7 +35,10 @@ class TodosController < ApplicationController
     # todo_success('Todo created!')
     respond_to do |format|
       format.html
-      format.json   { render :json => @todo.to_json(methods: [:schedule_label, :due_seconds, :updated_seconds]) }
+      format.json   { render :json => @todo.to_json(methods: [:schedule_label,
+                                                              :due_seconds,
+                                                              :can_increase_prior?,
+                                                              :can_decrease_prior?]) }
     end
 
   end
@@ -49,7 +53,10 @@ class TodosController < ApplicationController
     @todo.update_attributes(todo_params)
     respond_to do |format|
       # format.html
-      format.json   { render :json => @todo.to_json(methods: [:schedule_label, :due_seconds, :updated_seconds]) }
+      format.json   { render :json => @todo.to_json(methods: [:schedule_label,
+                                                              :due_seconds,
+                                                              :can_increase_prior?,
+                                                              :can_decrease_prior?]) }
     end
   end
 

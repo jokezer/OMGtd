@@ -9,9 +9,9 @@
 .panel-body
   %span.pull-right
     .btn-group-vertical
-      %button.btn.btn-xs{type:'submit', name: 'increase_prior', disabled: 'disabled'}
+      %a.btn.btn-xs.inc-prior{name: 'increase_prior', disabled: !this['can_increase_prior?']}
         %i.glyphicon.glyphicon-chevron-up
-      %button.btn.btn-xs{type:'submit', name: 'decrease_prior', disabled: 'disabled'}
+      %a.btn.btn-xs.dec-prior{name: 'decrease_prior', disabled: !this['can_decrease_prior?']}
         %i.glyphicon.glyphicon-chevron-down
   .textField
     .content.info

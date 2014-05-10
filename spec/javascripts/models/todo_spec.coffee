@@ -61,6 +61,6 @@ describe "Todo Model", ->
         attrs["kind"] = 'cycled'
         attrs["due"]  = null
 
-    xdescribe "save model with server"
+    xit "save model with server"
 
-    xdescribe "update model with server"
+    xit "update model with server"

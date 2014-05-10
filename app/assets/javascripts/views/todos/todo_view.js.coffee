@@ -7,9 +7,23 @@ class Gtd.Views.Todos.TodoView extends Backbone.View
     "focusout" : "close"
     "click .showMore"   : "toggleContent"
     "click .hideContent"   : "toggleContent"
+    "click .inc-prior"   : "incPrior",
+    "click .dec-prior"   : "decPrior",
 
   tagName: "form"
   className: "draggable panel panel-default panel-todo"
+
+  incPrior: ->
+    prior = @model.get('prior')
+    if prior < 3
+      @model.set({prior:++prior})
+      @_savePrior()
+
+  decPrior: ->
+    prior = @model.get('prior')
+    if prior >= 0
+      @model.set({prior:prior-1})
+      @_savePrior()
 
   edit: ->
     unless @$el.hasClass('editing')
@@ -25,7 +39,7 @@ class Gtd.Views.Todos.TodoView extends Backbone.View
         view.save()
     _.delay(saveTodo, 1000, @);
 
-  #todo merge with new_view
+  #todo merge with new_view?
   save: ->
     formData =
       title: $('input.panel-title', @$el).val()
@@ -36,8 +50,9 @@ class Gtd.Views.Todos.TodoView extends Backbone.View
       @model.save({},
         success: (todo, jqXHR) =>
           @render()
+          @$el.removeClass('saving')
         error: (todo, jqXHR) =>
-          console.log(jqXHR)
+          console.log(jqXHR.responseText)
       )
     else
       alert('dver zapilil')
@@ -55,8 +70,23 @@ class Gtd.Views.Todos.TodoView extends Backbone.View
     @$el.find('.hiddenContent').toggle()
 
   render: ->
-    @$el.addClass("prior-#{Gtd.Models.Todo.priors[@model.get('prior')]}")
+    @_setPriorName()
     data = @model.toJSON()
     data.groupedContent = @_setContent()
     @$el.html(@template(data))
     return this
+
+  _setPriorName: ->
+    @$el.attr('class', (i, c) ->
+      c.replace(/\bprior-\S+/g, ''))
+    @$el.addClass("prior-#{Gtd.Models.Todo.priors[@model.get('prior')]}")
+
+  _savePrior: ->
+    @model.save({},
+      success: (todo, jqXHR) =>
+#        @model.collection.render()
+        @render().$el.hide().show('slide', {}, 'fast')
+      error: (todo, jqXHR) =>
+        console.log(jqXHR.responseText)
+    )
+

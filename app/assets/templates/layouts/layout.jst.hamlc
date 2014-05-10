@@ -11,3 +11,5 @@
   #projects-sidebar
     .panel.panel-default
       .panel-heading Projects
+#overlay
+  %img#img-load{src:"http://www.sanbaldo.com/wordpress/wp-content/bigrotation2.gif"}

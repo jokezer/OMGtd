@@ -95,3 +95,13 @@ $error_color: darkred;
     margin-top: 4px;
   }
 }
+
+//ajax loading
+#overlay {
+  display:none;
+  position:absolute;
+  background:#fff;
+}
+#img-load {
+  position:absolute;
+}
