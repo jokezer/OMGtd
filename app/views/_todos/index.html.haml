@@ -1,0 +1,16 @@
+-#=render_collection @todos[:today], group_name:'today',
+-#                   link:'/todos/filter/calendar/today/'
+-#=render_collection @todos[:next], group_name:'next'
+-#=render_collection @todos[:tomorrow], group_name:'tomorrow',
+-#                   link:'/todos/filter/calendar/tomorrow/'
+#todos
+
+:javascript
+  $( document ).ready(function() {
+    var todos = new Gtd.Collections.Todos();
+    var p = todos.fetch();
+    p.done(function () {
+      window.router = new Gtd.Routers.Todos({todos: todos});
+      Backbone.history.start();
+    });
+  });

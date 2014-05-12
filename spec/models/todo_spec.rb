@@ -150,10 +150,10 @@ describe Todo do
       expect(todo.reload.kind).to eq('next')
       expect(todo.reload.state).to eq('active')
     end
-    it 'incorrect filter test' do
-      expect(user.todos.filter(:state, :incorrect)).to be_false
-      expect(user.todos.filter(:incorrect, :incorrect)).to be_false
-    end
+    # it 'incorrect filter test' do
+    #   expect(user.todos.filter(:state, :incorrect)).to be_false
+    #   expect(user.todos.filter(:incorrect, :incorrect)).to be_false
+    # end
   end
 
   context 'user scopes' do
@@ -186,54 +186,54 @@ describe Todo do
 
   end
 
-  context 'move' do
-    it 'to correct context' do
-      todo.move 'context', user.contexts.first.name
-      expect(todo.context.name).to eq(user.contexts.first.name)
-    end
-    it 'to incorrect context' do
-      todo.move 'context', 'incorrect'
-      expect(todo.context).to be_nil
-    end
-    it 'to correct project' do
-      todo.move 'project', project.name
-      expect(todo.project.name).to eq(project.name)
-    end
-    it 'to incorrect project' do
-      todo.move 'project', 'incorrect'
-      expect(todo.project).to be_nil
-    end
-    it 'to calendar today' do
-      todo.move 'calendar', 'today'
-      expect(todo.today?).to be_true
-    end
-    it 'to calendar tomorrow' do
-      todo.move 'calendar', 'tomorrow'
-      expect(todo.tomorrow?).to be_true
-    end
-    it 'to calendar incorrect' do
-      todo.move 'calendar', 'false'
-      expect(todo.due).to be_nil
-      expect(todo).to be_valid
-    end
-    it 'to correct kind' do
-      todo.move 'kind', 'next'
-      expect(todo.next?).to be_true
-      expect(todo.active?).to be_true
-    end
-    it 'to incorrect kind' do
-      todo.move 'kind', 'incorrect'
-      expect(todo.next?).to be_false
-      expect(todo.inbox?).to be_true
-    end
-    it 'to correct state' do
-      todo.move 'state', 'trash'
-      expect(todo.trash?).to be_true
-    end
-    it 'to incorrect state' do
-      todo.move 'state', 'incorrect'
-      expect(todo.reload.inbox?).to be_true
-    end
-  end
+  # context 'move' do
+  #   it 'to correct context' do
+  #     todo.move 'context', user.contexts.first.name
+  #     expect(todo.context.name).to eq(user.contexts.first.name)
+  #   end
+  #   it 'to incorrect context' do
+  #     todo.move 'context', 'incorrect'
+  #     expect(todo.context).to be_nil
+  #   end
+  #   it 'to correct project' do
+  #     todo.move 'project', project.name
+  #     expect(todo.project.name).to eq(project.name)
+  #   end
+  #   it 'to incorrect project' do
+  #     todo.move 'project', 'incorrect'
+  #     expect(todo.project).to be_nil
+  #   end
+  #   it 'to calendar today' do
+  #     todo.move 'calendar', 'today'
+  #     expect(todo.today?).to be_true
+  #   end
+  #   it 'to calendar tomorrow' do
+  #     todo.move 'calendar', 'tomorrow'
+  #     expect(todo.tomorrow?).to be_true
+  #   end
+  #   it 'to calendar incorrect' do
+  #     todo.move 'calendar', 'false'
+  #     expect(todo.due).to be_nil
+  #     expect(todo).to be_valid
+  #   end
+  #   it 'to correct kind' do
+  #     todo.move 'kind', 'next'
+  #     expect(todo.next?).to be_true
+  #     expect(todo.active?).to be_true
+  #   end
+  #   it 'to incorrect kind' do
+  #     todo.move 'kind', 'incorrect'
+  #     expect(todo.next?).to be_false
+  #     expect(todo.inbox?).to be_true
+  #   end
+  #   it 'to correct state' do
+  #     todo.move 'state', 'trash'
+  #     expect(todo.trash?).to be_true
+  #   end
+  #   it 'to incorrect state' do
+  #     todo.move 'state', 'incorrect'
+  #     expect(todo.reload.inbox?).to be_true
+  #   end
+  # end
 
 end

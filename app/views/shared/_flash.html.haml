@@ -1,11 +1,6 @@
 - flash.each do |key, value|
-  -if [:notice, :alert, :success].include? key
-    - key = 'info' if key==:notice || key==:alert
+  -if ['notice', 'alert', 'success'].include? key
+    - key = 'info' if key=='notice'|| key=='alert'
     %div{class:"alert alert-#{key} alert-dismissable"}
       %button.close{type:'button', :'data-dismiss'=>'alert', :'aria-hidden'=>'true'} &times
       =value
-  -if key == :todo_id
-    %script
-      $( document ).ready(function() {
-      $('#todo-#{value}').effect("slide");
-      });
