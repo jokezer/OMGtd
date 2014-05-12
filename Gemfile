@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.1.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.4'
+gem 'rails', '4.1.0'
 
 #authentication
 gem 'devise'
@@ -15,8 +15,8 @@ gem 'pg'
 # Use HAML
 gem 'haml'
 gem 'haml-rails'
-# Haml coffee
-gem 'haml_coffee_assets'
+# Haml coffee, rails 4.1 fixed in master
+gem 'haml_coffee_assets', git: "https://github.com/netzpirat/haml_coffee_assets"
 gem 'execjs'
 
 # Use SCSS for stylesheets

@@ -12,9 +12,9 @@ class Gtd.Routers.Todos extends Backbone.Router
     "filter/:state" : "filterState"
     "filter/:state/:group/:label" : "filterState"
 
-#  newTodo: ->
-#    @view = new Gtd.Views.Todos.NewView(collection: @todos)
-#    $("#todos").html(@view.render().el)
+  newTodo: ->
+    @view = new Gtd.Views.Todos.NewView(collection: @todos)
+    $("#todos").html(@view.render().el)
 
   index: ->
     @view = new Gtd.Views.Todos.indexView(layout:@layout, todos: @todos)
