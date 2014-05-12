@@ -6,7 +6,7 @@ class Gtd.Views.Todos.baseIndexView extends Backbone.View
     @options = options
     @options.todos.on('add', @render, @)
     @options.todos.on('reset', @render, @)
-    @render()
+#    @render()
 
   addAll: () =>
     @options.todos.each(@addOne)

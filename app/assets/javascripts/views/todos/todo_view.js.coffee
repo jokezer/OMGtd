@@ -84,7 +84,9 @@ class Gtd.Views.Todos.TodoView extends Backbone.View
   _savePrior: ->
     @model.save({},
       success: (todo, jqXHR) =>
-#        @model.collection.render()
+        console.log(@collection)
+        @model.collection.sort()
+        console.log(@model.collection)
         @render().$el.hide().show('slide', {}, 'fast')
       error: (todo, jqXHR) =>
         console.log(jqXHR.responseText)

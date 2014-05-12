@@ -4,6 +4,7 @@ class Gtd.Collections.Todos extends Backbone.Collection
   initialize: () ->
     @on('sync', @makeGroups, @)
     @on('reset', @makeGroups, @)
+    @on('reset', @consolelog, @)
 
   comparator: (itemA, itemB) =>
     return 1 if itemA.get('prior') < itemB.get('prior')
@@ -47,3 +48,6 @@ class Gtd.Collections.Todos extends Backbone.Collection
       groupBy: (todo) =>
         return todo.get(attr)
     })
+
+  consolelog: () ->
+    console.log('sorted')

@@ -21,6 +21,7 @@ class Gtd.Models.Todo extends Backbone.Model
     @bind('validated:invalid', (model, errors) ->
       console.log(errors))
 
+
   defaults:
     title: ''
     content: ''
