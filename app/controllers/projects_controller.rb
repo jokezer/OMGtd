@@ -26,7 +26,8 @@ class ProjectsController < ApplicationController
   def filter
     @todos = @project.todos.filter(params[:type], params[:type_name])
     redirect_to root_path and return unless @todos
-    @todos = @todos.paginate(:page => params[:page])
+    @todos = @todos
+    # .paginate(:page => params[:page])
     render 'todos/list'
   end
 

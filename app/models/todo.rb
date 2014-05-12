@@ -19,7 +19,7 @@ class Todo < ActiveRecord::Base
   validate :user_project
   validate :user_context
 
-  self.per_page = 10
+  # self.per_page = 10
 
   #todo decouple filter and count_groups methods
   def self.filter(type, label)
