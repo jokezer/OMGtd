@@ -6,8 +6,6 @@ class TodosController < ApplicationController
 
   def index
     @todos = current_user.todos
-    .to_json(methods: [:schedule_label, :due_seconds, :updated_seconds,
-                       :can_increase_prior?, :can_decrease_prior?])
     respond_to do |format|
       format.html
       format.json   { render :json => @todos }
@@ -15,23 +13,23 @@ class TodosController < ApplicationController
   end
 
   def show
+    #dont use
+    respond_to do |format|
+      format.json   { render :json => @todo }
+    end
   end
 
-  def new
-    @todo = current_user.todos.new
-  end
+  # def new
+  #   @todo = current_user.todos.new
+  #   respond_to do |format|
+  #     format.json   { render :json => @todo }
+  #   end
+  # end
 
   def create
-    @todo = current_user.todos.build(todo_params)
-    render(new_todo_path) and return unless @todo.save
-    create_project and return if params[:make_project]
-    # todo_success('Todo created!')
+    @todo = current_user.todos.create(todo_params)
     respond_to do |format|
-      format.html
-      format.json   { render :json => @todo.to_json(methods: [:schedule_label,
-                                                              :due_seconds,
-                                                              :can_increase_prior?,
-                                                              :can_decrease_prior?]) }
+      format.json   { render :json => @todo }
     end
 
   end
@@ -39,15 +37,21 @@ class TodosController < ApplicationController
   def update
     @todo.update_attributes(todo_params)
     respond_to do |format|
-      format.json   { render :json => @todo.to_json(methods: [:schedule_label,
-                                                              :due_seconds,
-                                                              :can_increase_prior?,
-                                                              :can_decrease_prior?]) }
+      format.json   { render :json => @todo }
     end
   end
 
+  #todo refactor it
   def destroy
-    @todo.destroy if @todo.can_delete?
+    if @todo.can_delete?
+      @todo.destroy
+      response = 'true'
+    else
+      response = 'false'
+    end
+    respond_to do |format|
+      format.json   { render :json => response }
+    end
   end
 
   private

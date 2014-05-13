@@ -9,9 +9,9 @@
 .panel-body
   %span.pull-right
     .btn-group-vertical
-      %a.btn.btn-xs.inc-prior{name: 'increase_prior', disabled: !this['can_increase_prior?']}
+      %a.btn.btn-xs.inc-prior{name: 'increase_prior', disabled: !@can_increase_prior}
         %i.glyphicon.glyphicon-chevron-up
-      %a.btn.btn-xs.dec-prior{name: 'decrease_prior', disabled: !this['can_decrease_prior?']}
+      %a.btn.btn-xs.dec-prior{name: 'decrease_prior', disabled: !@can_decrease_prior}
         %i.glyphicon.glyphicon-chevron-down
   .textField
     .content.info

@@ -46,7 +46,8 @@ gem 'jquery-ui-rails'
 gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.2'
+# gem 'jbuilder', '~> 1.2'
+gem "active_model_serializers"
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.14.0'

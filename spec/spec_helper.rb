@@ -46,4 +46,5 @@ RSpec.configure do |config|
 
   # Added capybara
   config.include Capybara::DSL
+  config.include Requests::JsonHelpers, :type => :controller
 end

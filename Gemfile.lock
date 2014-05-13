@@ -23,6 +23,8 @@ GEM
       activesupport (= 4.1.0)
       builder (~> 3.1)
       erubis (~> 2.7.0)
+    active_model_serializers (0.8.1)
+      activemodel (>= 3.0)
     activemodel (4.1.0)
       activesupport (= 4.1.0)
       builder (~> 3.1)
@@ -110,9 +112,6 @@ GEM
       rack (>= 1.2.1)
       rake
     jasmine-core (2.0.0)
-    jbuilder (1.5.3)
-      activesupport (>= 3.0.0)
-      multi_json (>= 1.2.0)
     jquery-rails (3.1.0)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
@@ -222,6 +221,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_model_serializers
   backbone-on-rails
   bcrypt
   bootstrap-sass (~> 3.1.1)
@@ -237,7 +237,6 @@ DEPENDENCIES
   haml-rails
   haml_coffee_assets!
   jasmine
-  jbuilder (~> 1.2)
   jquery-rails
   jquery-ui-rails
   launchy (~> 2.3.0)

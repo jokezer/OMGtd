@@ -36,45 +36,42 @@ describe TodosController do
   end
 
   describe 'GET#index' do
-    render_views
     it 'render index template' do
       xhr :get, :index
       expect(response).to be_success
       expect(response).to render_template(:index)
     end
-    it 'json request respond with array of todos' do
+    it 'json request responds with array of todos' do
       FactoryGirl.create(:todo, user: @user)
       xhr :get, :index, format: 'json'
-      expect(response.body).to eq @user.todos.ordering.to_json(
-                                      methods: [:kind_label, :prior_name,
-                                                :schedule_label])
+      todos = json
+      expect(todos.count).to eq(@user.todos.count)
+      expect(todos.first.keys).to include('id', 'title', 'content', 'state')
+      expect(todos.first['id']).to eq(@user.todos.first.id)
     end
   end
 
   describe 'GET#show' do
-    it 'render show' do
-      xhr :get, :show, :id => todo.id
-      expect(response).to be_success
-      expect(response).to render_template(:show)
-    end
-    it 'get a todo object' do
-      xhr :get, :show, :id => todo.id
-      expect(assigns(:todo)).to eq todo
+    it 'returns a json todo object' do
+      xhr :get, :show, :id => todo.id, format: 'json'
+      json_todo = json
+      expect(json_todo['id']).to eq(todo.id)
+      expect(json_todo['title']).to eq(todo.title)
     end
   end
 
-  describe 'GET#new' do
-
-    it 'render new template' do
-      xhr :get, :new
-      expect(response).to be_success
-      expect(response).to render_template(:new)
-    end
-    it 'assigns a new Todo instance' do
-      xhr :get, :new
-      expect(assigns(:todo)).to be_a_new Todo
-    end
-  end
+  # describe 'GET#new' do
+  #
+  #   it 'render new template' do
+  #     xhr :get, :new
+  #     expect(response).to be_success
+  #     expect(response).to render_template(:new)
+  #   end
+  #   it 'assigns a new Todo instance' do
+  #     xhr :get, :new
+  #     expect(assigns(:todo)).to be_a_new Todo
+  #   end
+  # end
 
   describe "POST#create" do
 
@@ -88,7 +85,7 @@ describe TodosController do
         xhr :post, :create, format:'json',
             todo: FactoryGirl.attributes_for(:todo, user: @user)
         expect(response.status).to eq(200)
-        expect(response.body).to eq(@user.todos.last.to_json)
+        expect(json['id']).to eq(@user.todos.last.id)
       end
     end
     context 'with incorrect data' do
@@ -96,12 +93,14 @@ describe TodosController do
         expect { xhr :post, :create, :todo => {title: ''} }
         .not_to change(@user.todos, :count)
       end
-      it 'render the new template' do
+      it 'responds with todo with errors array' do
         xhr :post, :create, :todo => {title: ''}
-        expect(response).to render_template(:new)
+        errors = json['errors']
+        expect(errors).to include('title')
+        expect(errors.count).to eq(1)
       end
     end
-    context 'create project from todo' do
+    pending 'create project from todo' do
       before do
         @count = @user.todos.count
         @project_request = lambda { xhr :post, :create,
@@ -125,11 +124,10 @@ describe TodosController do
   describe 'PATCH#update' do
     before do
       @todo_update = FactoryGirl.create(:todo, user: @user)
-      @update_request = lambda { |todo_attr, submit = :submit|
-        xhr :patch, :update,
+      @update_request = lambda { |todo_attr|
+        xhr :patch, :update, format:'json',
             :id => @todo_update.id,
-            :todo => todo_attr,
-            submit => true
+            :todo => todo_attr
       }
     end
     context 'with correct data' do
@@ -137,15 +135,14 @@ describe TodosController do
         expect { @update_request.call(FactoryGirl.attributes_for(:next_todo, title: 'rspec updated statuses')) }
         .not_to change(@user.todos, :count)
       end
-      it 'redirects to next filter' do
+      it 'returns an updated todo' do
         @update_request.call(FactoryGirl.attributes_for(:next_todo, title: 'rspec updated statuses'))
-        expect(response.status).to eq(302)
-        expect(response).to redirect_to('http://test.host/todos/filter/kind/next')
+        expect(response.status).to eq(200)
+        expect(json['title']).to eq('rspec updated statuses')
       end
-      it 'todo becomes updated' do
+      it 'updates a todo in db' do
         @update_request.call(FactoryGirl.attributes_for(:next_todo, title: 'rspec updated statuses'))
-        expect(@user.todos.order('updated_at').last.title)
-        .to eq('rspec updated statuses')
+        expect(@user.todos.last.title).to eq('rspec updated statuses')
       end
     end
     context 'with incorrect data' do
@@ -153,12 +150,14 @@ describe TodosController do
         expect { @update_request.call(FactoryGirl.attributes_for(:next_todo, title: '')) }
         .not_to change(@user.todos, :count)
       end
-      it 'render show template' do
-        @update_request.call(FactoryGirl.attributes_for(:next_todo, title: ''))
-        expect(response).to render_template(:show)
+      it 'responds with todo with errors array' do
+        xhr :post, :create, :todo => {title: ''}
+        errors = json['errors']
+        expect(errors).to include('title')
+        expect(errors.count).to eq(1)
       end
     end
-    context 'create project from todo' do
+    pending 'create project from todo' do
 
       it 'create new project' do
         expect { @update_request.call(FactoryGirl.attributes_for(:next_todo), :make_project) }
@@ -174,7 +173,7 @@ describe TodosController do
         expect(response).to redirect_to(projects_path)
       end
     end
-    context 'move todo to trash' do
+    pending 'move todo to trash' do
       it 'move todo to trash' do
         expect { @update_request.call(FactoryGirl.attributes_for(:next_todo), :cancel) }
         .to change(@user.todos.with_state(:trash), :count).by(1)
@@ -188,23 +187,22 @@ describe TodosController do
   end
 
   describe 'DELETE#destroy' do
-    render_views
     before do
       @todo = FactoryGirl.create(:todo, user: @user)
       @todo_to_destroy = FactoryGirl.create(:todo, user: @user, state: :trash)
     end
     context 'if statuses inbox' do
-      subject { lambda { xhr :delete, :destroy, :id => @todo.id } }
+      subject { lambda { xhr :delete, :destroy, format:'json', :id => @todo.id } }
       it do
         should_not change(@user.todos, :count)
-        expect(response).to redirect_to(root_path)
+        expect(response.body).to eq('false')
       end
     end
     context 'if statuses trash' do
-      subject { lambda { xhr :delete, :destroy, :id => @todo_to_destroy.id } }
+      subject { lambda { xhr :delete, :destroy, format:'json', :id => @todo_to_destroy.id } }
       it do
         should change(@user.todos, :count).by(-1)
-        expect(response).to redirect_to(root_path)
+        expect(response.body).to eq('true')
       end
     end
   end
@@ -215,7 +213,7 @@ describe TodosController do
       @todo = FactoryGirl.create(:todo, user: @another_user, state: 'trash')
     end
     context 'one user try to delete another users todo' do
-      subject { lambda { xhr :delete, :destroy, :id => @todo.id } }
+      subject { lambda { xhr :delete, :destroy, format:'json', :id => @todo.id } }
       it do
         should_not change(Todo, :count)
         expect(response).to redirect_to(root_path)
@@ -223,21 +221,21 @@ describe TodosController do
     end
     context 'one user try to see another users todo' do
       it do
-        xhr :get, :show, :id => @todo.id
+        xhr :get, :show, format:'json', :id => @todo.id
         expect(response).to_not render_template(:list)
         expect(response).to redirect_to(root_path)
       end
     end
     context 'one user try to update another users todo' do
       it do
-        xhr :post, :update, :id => @todo.id
+        xhr :post, :update, format:'json', :id => @todo.id
         expect(response).to_not render_template('list')
         expect(response).to redirect_to(root_path)
       end
     end
   end
 
-  describe 'filter action' do
+  pending 'filter action' do
     before do
       FactoryGirl.create_list(:todo, 3, user: @user)
       FactoryGirl.create_list(:todo, 3, kind: 'next', user: @user)
@@ -261,7 +259,7 @@ describe TodosController do
     end
   end
 
-  describe 'change prior' do
+  pending 'change prior' do
     it 'should increase todos prior' do
       xhr :patch, :change_prior, id: todo.id, increase_prior: ''
       expect(todo.reload.prior_name).to eq :low
