@@ -19,12 +19,12 @@
 //= require backbone.virtual_collection
 //= require backbone.grouped_collection
 //= require jquery.autosize
-//= require gtd
+//= require oldbb/gtd.js.coffee
 //= require_tree ../templates
-//= require_tree ./models
-//= require_tree ./collections
-//= require_tree ./views
-//= require_tree ./routers
+//= require_tree ./oldbb/models
+//= require_tree ./oldbb/collections
+//= require_tree ./oldbb/views
+//= require_tree ./oldbb/routers
 //= require_tree .
 //= require jquery.ui.all
 //= require bootstrap

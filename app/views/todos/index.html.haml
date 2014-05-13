@@ -1,11 +1,4 @@
-#todos
-
 :javascript
   $( document ).ready(function() {
-    var todos = new Gtd.Collections.Todos();
-    var p = todos.fetch();
-    p.done(function () {
-      window.router = new Gtd.Routers.Todos({todos: todos});
-      Backbone.history.start();
-    });
+    console.log('welcome from a new application')
   });

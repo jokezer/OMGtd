@@ -8,7 +8,7 @@ Gtd::Application.routes.draw do
   end
 
   resources :todos, concerns: [:context]
-
+  match '/old', to: 'todos#old', via: 'get'
   resources :contexts, param: :name, only: [:new, :create, :edit, :update, :destroy, :index]
   resources :projects, param: :name, only: [:show, :edit, :update, :destroy, :index]
   match '/project/:name/change_state', to: 'projects#change_state', via: 'patch'

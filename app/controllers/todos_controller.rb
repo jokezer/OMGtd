@@ -1,8 +1,8 @@
 class TodosController < ApplicationController
   before_filter :authenticate_user!
   before_filter :get_todo, only: [:show, :update, :destroy, :change_prior]
-  layout 'loggedin'
-  layout 'single_page', only: [:index]
+  # layout 'loggedin'
+  layout 'single_page', only: [:index, :old]
 
   def index
     @todos = current_user.todos
@@ -17,6 +17,9 @@ class TodosController < ApplicationController
     respond_to do |format|
       format.json   { render :json => @todo }
     end
+  end
+
+  def old
   end
 
   # def new
