@@ -15,6 +15,7 @@
 //= require jquery.datetimepicker
 //= require underscore
 //= require backbone
+//= require marionette
 //= require backbone.validation
 //= require backbone.virtual_collection
 //= require backbone.grouped_collection
