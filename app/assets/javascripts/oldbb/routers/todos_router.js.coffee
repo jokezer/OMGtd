@@ -5,7 +5,7 @@ class Gtd.Routers.Todos extends Backbone.Router
 
   routes:
 #    "new"      : "newTodo"
-    "index"    : "index"
+    "old/index"    : "index"
 #    ":id/edit" : "edit"
 #    ":id"      : "show"
     ".*"       : "index"
@@ -37,4 +37,4 @@ class Gtd.Routers.Todos extends Backbone.Router
 
   renderLayout: () ->
     @layout = new Gtd.Views.Layout(todos: @todos)
-    $("#main-content").html(@layout.render().el)
+    $("#main-region").html(@layout.render().el)

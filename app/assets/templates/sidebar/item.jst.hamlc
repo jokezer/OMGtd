@@ -1,2 +1,2 @@
-%a.button.white{href: "/#/#{@href}"} #{@label}
+%a.button.white{href: "/old/#/#{@href}"} #{@label}
   %span.badge.pull-right #{@length}

@@ -19,6 +19,11 @@
 //= require backbone.validation
 //= require backbone.virtual_collection
 //= require backbone.grouped_collection
+//= require_tree ./backbone/config
+//= require backbone/app
+//= require_tree ./backbone/controllers
+//= require_tree ./backbone/entities
+//= require_tree ./backbone/apps
 //= require jquery.autosize
 //= require oldbb/gtd.js.coffee
 //= require_tree ../templates

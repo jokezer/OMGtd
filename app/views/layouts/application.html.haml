@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 %html
   %head
-    %title Gtd
+    %title OMGtd
   = stylesheet_link_tag :application, media: 'all', 'data-turbolinks-track' => true
   = javascript_include_tag :defaults
   = javascript_include_tag :application, 'data-turbolinks-track' => true
@@ -10,7 +10,7 @@
   %body
     #wrap
       #main.clear-top
-        %header
+        %header#header-region
           %nav.navbar.navbar-default(role='navigation')
             .container-fluid
               .navbar-header
@@ -25,9 +25,9 @@
                   = render 'shared/sign_in_link'
                 - if user_signed_in?
                   = render 'shared/add_search_form'
-        #main-content.container-fluid
+        #main-region.container-fluid
           = content_for?(:application) ? yield(:application) : yield
-    .footer
+    .footer#footer-region
       .panel.panel-default
         .panel-body
           One more GTD by jokezer 2014
