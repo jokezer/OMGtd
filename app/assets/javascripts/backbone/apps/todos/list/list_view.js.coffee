@@ -70,10 +70,13 @@
       @$el.find('.showMore').toggle()
       @$el.find('.hiddenContent').toggle()
 
-#    render: ->
-#      @_setPriorName()
-#      data = @model.toJSON()
-#      data.groupedContent = @_setContent()
+    serializeData: ->
+      data = @model.toJSON()
+      data.groupedContent = @_setContent()
+      data
+
+    onBeforeRender: ->
+      @_setPriorName()
 #      @$el.html(@template(data))
 #      return this
 
@@ -87,9 +90,16 @@
         success: (todo, jqXHR) =>
           @model.collection.sort()
           @render().$el.hide().show('slide', {}, 'fast')
+          @trigger('priorUpd')
         error: (todo, jqXHR) =>
           console.log(jqXHR.responseText)
       )
 
   class List.Collection extends Marionette.CollectionView
     itemView: List.Item
+    itemEvents:
+      'priorUpd': 'rerender'
+    rerender: (el, la) ->
+      @$el.html('')
+      @render()
+      console.log(la)
