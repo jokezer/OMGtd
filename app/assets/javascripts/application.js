@@ -23,6 +23,7 @@
 //= require backbone/app
 //= require_tree ./backbone/controllers
 //= require_tree ./backbone/entities
+//= require_tree ./backbone/components
 //= require_tree ./backbone/apps
 //= require jquery.autosize
 //= require oldbb/gtd.js.coffee

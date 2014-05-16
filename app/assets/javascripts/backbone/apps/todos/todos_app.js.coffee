@@ -11,12 +11,9 @@
       console.log('index page of application')
 
     filterState: (state, group=false, label=false) ->
-      console.log("filter by #{state} #{group} #{label}")
-      new TodosApp.List.Controller
+      new TodosApp.Filter.Controller
         region: App.centralRegion
-
-
-
+        todos: App.todos.getGroup(state, group, label)
 
   App.addInitializer ->
     new TodosApp.Router

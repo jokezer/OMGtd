@@ -1,8 +1,8 @@
-@OMGtd.module "TodosApp.List", (List, App, Backbone, Marionette, $, _) ->
+@OMGtd.module "Components.Todos.List", (List, App, Backbone, Marionette, $, _) ->
 
   class List.Item extends Marionette.ItemView
     tagName: 'li'
-    template: 'todos/list/templates/todo'
+    template: 'components/todos/list/templates/todo'
     events:
       "dblclick" : "edit"
       "focusout" : "close"
@@ -10,9 +10,14 @@
       "click .hideContent"   : "toggleContent"
       "click .inc-prior"   : "incPrior",
       "click .dec-prior"   : "decPrior",
+      "updated"            : "slideUp"
 
     tagName: "form"
     className: "draggable panel panel-default panel-todo"
+
+    slideUp: ->
+      console.log('updated')
+      @$el.hide().show('slide', {}, 'fast')
 
     incPrior: ->
       prior = @model.get('prior')
@@ -95,11 +100,15 @@
           console.log(jqXHR.responseText)
       )
 
+  class List.Empty extends Marionette.ItemView
+    template: 'components/todos/list/templates/empty'
+
   class List.Collection extends Marionette.CollectionView
     itemView: List.Item
+    emptyView: List.Empty
     itemEvents:
       'priorUpd': 'rerender'
     rerender: (el, la) ->
       @$el.html('')
       @render()
-      console.log(la)
+      console.log(la) #do something

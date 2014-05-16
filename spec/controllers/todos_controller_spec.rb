@@ -222,7 +222,7 @@ describe TodosController do
     context 'one user try to see another users todo' do
       it do
         xhr :get, :show, format:'json', :id => @todo.id
-        expect(response).to_not render_template(:list)
+        expect(response).to_not render_template(:filter)
         expect(response).to redirect_to(root_path)
       end
     end

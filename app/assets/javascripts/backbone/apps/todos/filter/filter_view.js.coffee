@@ -1,0 +1,1 @@
+@OMGtd.module "TodosApp.Filter", (Filter, App, Backbone, Marionette, $, _) ->

@@ -16,9 +16,12 @@
     App.mainRegion
 
   App.addInitializer ->
-    App.module("SidebarsApp").start()
+    @todos = App.request "todos:entities"
+    App.execute "when:fetched", @todos, =>
+      App.module("SidebarsApp").start()
+      App.trigger('todos:loaded')
 
 
-  App.on "initialize:after", ->
+  App.on "todos:loaded", ->
     @navigate(@rootRoute, trigger: true) unless @getCurrentRoute()
     @startHistory()
