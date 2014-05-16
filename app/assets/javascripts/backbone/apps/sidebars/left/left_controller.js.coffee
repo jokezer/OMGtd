@@ -13,8 +13,8 @@
 
     makeElements: (elements) ->
       prepared =  elements.map (el) ->
-        el.href = el.state
-        el.href = [el.state, el.group, el.label].join('/') if el.label
+        el.length = App.todos.getGroup(el.state, el.group, el.label).length
+        el.href = if el.label then [el.state, el.group, el.label].join('/') else el.state
         el.label = el.state unless el.label
         el
       @collection = new Backbone.Collection prepared
