@@ -1,3 +1,4 @@
+_.extend(Backbone.Model.prototype, Backbone.Validation.mixin)
 do (Backbone) ->
 	_sync = Backbone.sync
 
