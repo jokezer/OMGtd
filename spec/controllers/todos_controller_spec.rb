@@ -36,11 +36,6 @@ describe TodosController do
   end
 
   describe 'GET#index' do
-    it 'render index template' do
-      xhr :get, :index
-      expect(response).to be_success
-      expect(response).to render_template(:index)
-    end
     it 'json request responds with array of todos' do
       FactoryGirl.create(:todo, user: @user)
       xhr :get, :index, format: 'json'

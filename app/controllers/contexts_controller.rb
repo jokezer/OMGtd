@@ -1,50 +1,43 @@
 class ContextsController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :get_context, only: [:update, :destroy]
+  before_filter :get_context, only: [:show, :edit, :update, :destroy]
   layout 'loggedin'
 
   def index
     @contexts = current_user.contexts.ordering
     respond_to do |format|
-      format.html
-      format.json   { render :json => current_user.contexts.make_group }
+      format.json   { render :json => current_user.contexts }
     end
   end
 
-  def new
-    @context = current_user.contexts.new
-    render :edit
-  end
+  # def new
+  #   @context = current_user.contexts.new
+  #   render :edit
+  # end
 
   def create
-    @context = current_user.contexts.build(context_params)
-    if @context.save
-      flash[:success] = 'Context created!'
-      redirect_to contexts_path
-    else
-      render :edit
+    @context = current_user.contexts.create(context_params)
+    respond_to do |format|
+      format.json   { render :json => @context }
     end
   end
 
+
   def show
-    @context = current_user.contexts.by_name(params[:name])
-    redirect_to root_path and return unless @context #todo make it :before function?
-    @todos = @context.todos.active.ordering
-    # .paginate(:page => params[:page])
-    render 'todos/list'
+    respond_to do |format|
+      format.json   { render :json => @context }
+    end
   end
 
   def edit
-    @context = current_user.contexts.by_name(params[:name])
+    @context = current_user.contexts.find(params[:id])
     redirect_to root_path and return unless @context #todo make it :before function?
   end
 
   def update
-    if @context.update_attributes(context_params)
-      flash[:success] = 'Context updated!'
-      redirect_to contexts_path
-    else
-      render :edit
+    @context.update_attributes(context_params)
+    respond_to do |format|
+      format.json   { render :json => @context }
     end
   end
 
@@ -61,8 +54,8 @@ class ContextsController < ApplicationController
   end
 
   def get_context
-    @context = current_user.contexts.find(params[:name])
-    redirect_to '/todos/contexts/' unless @context
+    @context = current_user.contexts.find_by_id(params[:id])
+    redirect_to root_path unless @context
   end
 
 end
