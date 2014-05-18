@@ -2,17 +2,22 @@ class TodosController < ApplicationController
   before_filter :authenticate_user!
   before_filter :get_todo, only: [:show, :update, :destroy, :change_prior]
   # layout 'loggedin'
-  layout 'single_page', only: [:index, :old]
+  layout 'single_page', only: [:spa, :old]
 
   def index
+    sleep 2
     @todos = current_user.todos
     respond_to do |format|
-      format.html
+      # format.html
       format.json   { render :json => @todos }
     end
   end
 
+  def spa
+  end
+
   def show
+    sleep 2
     #dont use
     respond_to do |format|
       format.json   { render :json => @todo }
@@ -30,6 +35,7 @@ class TodosController < ApplicationController
   # end
 
   def create
+    sleep 2
     @todo = current_user.todos.create(todo_params)
     respond_to do |format|
       format.json   { render :json => @todo }
@@ -38,6 +44,7 @@ class TodosController < ApplicationController
   end
 
   def update
+    sleep 2
     @todo.update_attributes(todo_params)
     respond_to do |format|
       format.json   { render :json => @todo }

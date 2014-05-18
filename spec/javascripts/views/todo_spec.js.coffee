@@ -26,21 +26,21 @@ describe "Todo view", ->
       expect( @todoView.render().$el.find('a.inc-prior').length ).toBe(1)
       expect( @todoView.render().$el.find('a.dec-prior').length ).toBe(1)
     it 'buttons disabled from back-end', ->
-      todo.set({'can_increase_prior?': false, 'can_decrease_prior?': false })
+      todo.set({'can_increase_prior': false, 'can_decrease_prior': false })
       expect( @todoView.render().$el.find('a.inc-prior').attr('disabled')).toBe('disabled')
       expect( @todoView.render().$el.find('a.dec-prior').attr('disabled')).toBe('disabled')
     it 'buttons enabled from back-end', ->
-      todo.set({'can_increase_prior?': true, 'can_decrease_prior?': true})
+      todo.set({'can_increase_prior': true, 'can_decrease_prior': true})
       expect( @todoView.render().$el.find('a.inc-prior').attr('disabled')).toBe(undefined)
       expect( @todoView.render().$el.find('a.dec-prior').attr('disabled')).toBe(undefined)
     it 'run incPrior method', ->
-      todo.set({'can_increase_prior?': true, 'can_decrease_prior?': true})
+      todo.set({'can_increase_prior': true, 'can_decrease_prior': true})
       spyOn(@todoView, 'incPrior')
       @todoView.delegateEvents()
       @todoView.render().$el.find('a.inc-prior').trigger('click')
       expect(@todoView.incPrior).toHaveBeenCalled()
     it 'run incPrior method', ->
-      todo.set({'can_increase_prior?': true, 'can_decrease_prior?': true})
+      todo.set({'can_increase_prior': true, 'can_decrease_prior': true})
       spyOn(@todoView, 'decPrior')
       @todoView.delegateEvents()
       @todoView.render().$el.find('a.dec-prior').trigger('click')

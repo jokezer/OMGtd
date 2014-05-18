@@ -15,16 +15,10 @@
 //= require jquery.datetimepicker
 //= require underscore
 //= require backbone
-//= require marionette
 //= require backbone.validation
 //= require backbone.virtual_collection
 //= require backbone.grouped_collection
-//= require_tree ./backbone/config
-//= require backbone/app
-//= require_tree ./backbone/controllers
-//= require_tree ./backbone/entities
-//= require_tree ./backbone/components
-//= require_tree ./backbone/apps
+//= require marionette
 //= require jquery.autosize
 //= require oldbb/gtd.js.coffee
 //= require_tree ../templates
@@ -35,11 +29,9 @@
 //= require_tree .
 //= require jquery.ui.all
 //= require bootstrap
-
-// require underscore
-// require backbone
-// require backbone_rails_sync
-// require backbone_datalink
-// require backbone-old/gtd
-
-// require turbolinks
+//= require_tree ./backbone/config
+//= require backbone/app
+//= require_tree ./backbone/controllers
+//= require_tree ./backbone/entities
+//= require_tree ./backbone/components
+//= require_tree ./backbone/apps

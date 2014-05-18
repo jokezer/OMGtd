@@ -4,13 +4,13 @@
     tagName: 'li'
     template: 'components/todos/list/templates/todo'
     events:
-      "dblclick" : "edit"
-      "focusout" : "close"
+      "dblclick"          : "edit"
+      "focusout"          : "close"
       "click .showMore"   : "toggleContent"
-      "click .hideContent"   : "toggleContent"
-      "click .inc-prior"   : "incPrior",
-      "click .dec-prior"   : "decPrior",
-      "updated"            : "slideUp"
+      "click .hideContent": "toggleContent"
+      "click .inc-prior"  : "incPrior",
+      "click .dec-prior"  : "decPrior",
+      "updated"           : "slideUp"
 
     tagName: "form"
     className: "draggable panel panel-default panel-todo"
@@ -53,6 +53,7 @@
 
       @model.set(formData)
       if @model.isValid(true)
+        @render()
         @model.save({},
           success: (todo, jqXHR) =>
             @render()

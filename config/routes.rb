@@ -16,5 +16,5 @@ Gtd::Application.routes.draw do
 
   match '/about', to: 'static_pages#about', via: 'get'
 
-  root 'todos#index'
+  root 'todos#spa'
 end
