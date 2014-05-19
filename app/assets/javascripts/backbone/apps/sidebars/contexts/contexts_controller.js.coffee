@@ -13,9 +13,8 @@
 
     makeElements: (elements) ->
       prepared =  elements.map (el) ->
-        console.log el
         el.set({
           length: el.get('todos_count')
-          href:   "contexts/#{el.id}"
+          href:   "active/context/#{el.id}"
         })
       @collection = new Backbone.Collection prepared

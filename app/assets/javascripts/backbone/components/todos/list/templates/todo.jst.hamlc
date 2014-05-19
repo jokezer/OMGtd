@@ -40,6 +40,6 @@
         = @kind||@state
       -if @project_id
         Project #{@project_id}
-      -if @context_id
+      -if @context
         %span.label.label-default
-          Context #{@context.name}
+          Context #{@context}

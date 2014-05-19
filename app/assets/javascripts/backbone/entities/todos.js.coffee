@@ -72,6 +72,7 @@
       @groupedStates = @_groupByA(@, 'state')
       model.groupedKinds = @_groupByA(model.vc, 'kind') for model in @groupedStates.models
       model.groupedCalendars = @_groupByA(model.vc, 'schedule_label') for model in @groupedStates.models
+      model.groupedContexts = @_groupByA(model.vc, 'context_id') for model in @groupedStates.models
 
     getGroup: (state, group, label) =>
       todos = new Gtd.Collections.Todos()
@@ -81,7 +82,10 @@
           finalCollection = stateCollection.groupedKinds.get(label)
         when 'calendar'
           finalCollection = stateCollection.groupedCalendars.get(label)
+        when 'context'
+          finalCollection = stateCollection.groupedContexts.get(label)
         else
+          #todo return empty collection
           finalCollection = stateCollection
       todos = finalCollection.vc if finalCollection
       todos.href = @_makeHref([state, group, label])
