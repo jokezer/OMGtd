@@ -1,22 +1,22 @@
 describe "Todos collection", ->
 
-  todos = new Gtd.Collections.Todos
+  todos = new OMGtd.Entities.TodosCollection
 
   it "should exist", ->
-    expect(Gtd.Collections.Todos).toBeDefined()
+    expect(OMGtd.Entities.TodosCollection).toBeDefined()
 
   it "should use the Restaurant model", ->
-    expect(todos.model).toEqual Gtd.Models.Todo
+    expect(todos.model).toEqual OMGtd.Entities.Todo
 
   describe "filter", ->
     beforeEach ->
-      @collection = new Gtd.Collections.Todos()
-      @todo1 = new Gtd.Models.Todo(title:'First todo')
-      @todo2 = new Gtd.Models.Todo(title:'Second todo', kind:'next')
-      @todo3 = new Gtd.Models.Todo(title:'Third todo',  kind:'scheduled', schedule_label:'today')
-      @todo4 = new Gtd.Models.Todo(title:'Fourth todo', kind:'next',      schedule_label:'tomorrow')
-      @todo5 = new Gtd.Models.Todo(title:'Fifth todo',  kind:'someday')
-      @todo6 = new Gtd.Models.Todo(title:'Sixth todo',  kind:'someday')
+      @collection = new OMGtd.Entities.TodosCollection()
+      @todo1 = new OMGtd.Entities.Todo(title:'First todo')
+      @todo2 = new OMGtd.Entities.Todo(title:'Second todo', kind:'next')
+      @todo3 = new OMGtd.Entities.Todo(title:'Third todo',  kind:'scheduled', schedule_label:'today')
+      @todo4 = new OMGtd.Entities.Todo(title:'Fourth todo', kind:'next',      schedule_label:'tomorrow')
+      @todo5 = new OMGtd.Entities.Todo(title:'Fifth todo',  kind:'someday')
+      @todo6 = new OMGtd.Entities.Todo(title:'Sixth todo',  kind:'someday')
       @collection.reset([@todo1, @todo2, @todo3, @todo4, @todo5, @todo6])
 
     it "by state", ->
@@ -36,12 +36,12 @@ describe "Todos collection", ->
 
   describe "order", ->
     beforeEach ->
-      @collection = new Gtd.Collections.Todos()
-      @todo1 = new Gtd.Models.Todo(title:'First todo', prior:3, due_seconds:1111111111)
-      @todo2 = new Gtd.Models.Todo(title:'First todo', prior:3)
-      @todo3 = new Gtd.Models.Todo(title:'First todo', prior:2, due_seconds:1111111111)
-      @todo4 = new Gtd.Models.Todo(title:'First todo', prior:2, due_seconds:2222222222)
-      @todo5 = new Gtd.Models.Todo(title:'First todo', prior:0, due_seconds:1111111111)
+      @collection = new OMGtd.Entities.TodosCollection()
+      @todo1 = new OMGtd.Entities.Todo(title:'First todo', prior:3, due_seconds:1111111111)
+      @todo2 = new OMGtd.Entities.Todo(title:'First todo', prior:3)
+      @todo3 = new OMGtd.Entities.Todo(title:'First todo', prior:2, due_seconds:1111111111)
+      @todo4 = new OMGtd.Entities.Todo(title:'First todo', prior:2, due_seconds:2222222222)
+      @todo5 = new OMGtd.Entities.Todo(title:'First todo', prior:0, due_seconds:1111111111)
       @collection.reset([@todo2, @todo3, @todo1, @todo4, @todo5])
 
     it "check order", ->

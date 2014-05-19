@@ -1,10 +1,10 @@
 describe "Todo Model", ->
 
   it "should exist", ->
-    expect(Gtd.Models.Todo).toBeDefined()
+    expect(OMGtd.Entities.Todo).toBeDefined()
 
   describe "Attributes", ->
-    todo = new Gtd.Models.Todo
+    todo = new OMGtd.Entities.Todo
 
     it "should have default attributes", ->
       expect(todo.attributes.title).toBeDefined()
@@ -12,10 +12,10 @@ describe "Todo Model", ->
 
   describe "states and kinds", ->
     it "set state to active if kind is not inbox on create", ->
-      todo = new Gtd.Models.Todo {title:'Correct todo', kind:'next'}
+      todo = new OMGtd.Entities.Todo {title:'Correct todo', kind:'next'}
       expect(todo.attributes.state).toBe('active')
     it "set state to active if kind is not inbox on update", ->
-      todo = new Gtd.Models.Todo {title:'Correct todo'}
+      todo = new OMGtd.Entities.Todo {title:'Correct todo'}
       todo.set({kind:'next'})
       expect(todo.get('state')).toBe('active')
 
@@ -24,11 +24,11 @@ describe "Todo Model", ->
     describe "with correct data", ->
 
       it "is correct", ->
-        todo = new Gtd.Models.Todo {title:'Correct todo', kind:'next'}
+        todo = new OMGtd.Entities.Todo {title:'Correct todo', kind:'next'}
         expect(todo.isValid(true)).toBe(true)
 
       it "have state inbox and kind inbox by default", ->
-        todo = new Gtd.Models.Todo {title:'Correct todo'}
+        todo = new OMGtd.Entities.Todo {title:'Correct todo'}
         expect(todo.attributes.state).toBe('inbox')
         expect(todo.attributes.kind).toBe('')
 
@@ -41,7 +41,7 @@ describe "Todo Model", ->
           kind:     'next'
 
       afterEach ->
-        ritz = new Gtd.Models.Todo attrs
+        ritz = new OMGtd.Entities.Todo attrs
         expect(ritz.isValid(true)).toBe(false)
 
       it "should validate the presence of title", ->
