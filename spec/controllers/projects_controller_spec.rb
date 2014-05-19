@@ -11,11 +11,11 @@ describe ProjectsController do
       xhr :get, :index
       expect(response).to be_success
     end
-    # it 'new todo pass should render new template' do
-    #   xhr :get, :show, :name => project.name
-    #   expect(response).to be_success
-    #   expect(response).to render_template(:show)
-    # end
+    it 'responds with current user projects' do
+      xhr :get, :show, :name => project.name
+      expect(response).to be_success
+      expect(response).to render_template(:show)
+    end
     it "returns http success" do
       xhr :get, :edit, :name => project.name
       expect(response).to be_success

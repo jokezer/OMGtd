@@ -28,7 +28,7 @@ FactoryGirl.define do
   end
 
   factory :project do
-    title 'Factory girl project'
+    title Faker::Lorem.characters(char_count = 40)
     content Faker::Lorem.paragraph
     user
   end

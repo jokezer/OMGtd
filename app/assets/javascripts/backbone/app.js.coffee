@@ -2,6 +2,11 @@
 
   App = new Marionette.Application
 
+  App.loaded = {
+    todos:    false,
+    contexts: false
+  }
+
   App.addRegions
     headerRegion          : "#header-region"
     mainRegion            :	"#main-region"
@@ -16,12 +21,28 @@
     App.mainRegion
 
   App.addInitializer ->
+    @contexts = App.request "contexts:entities"
+    App.execute "when:fetched", @contexts, =>
+      App.trigger('loaded:contexts')
+
     @todos = App.request "todos:entities"
     App.execute "when:fetched", @todos, =>
-      App.module("SidebarsApp").start()
-      App.trigger('todos:loaded')
+      App.trigger('loaded:todos')
 
 
-  App.on "todos:loaded", ->
+  App.on "loaded:contexts", ->
+    App.loaded.contexts = true
+    App.trigger('loaded:something')
+
+  App.on "loaded:todos", ->
+    App.loaded.todos = true
+    App.trigger('loaded:something')
+
+  App.on "loaded:something", ->
+    if App.loaded.contexts && App.loaded.todos
+      App.trigger('loaded:finished')
+
+  App.on "loaded:finished", ->
+    App.module("SidebarsApp").start()
     @navigate(@rootRoute, trigger: true) unless @getCurrentRoute()
     @startHistory()

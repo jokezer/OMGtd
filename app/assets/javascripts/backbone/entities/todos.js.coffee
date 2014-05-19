@@ -116,7 +116,7 @@
       todos
 
     getTodo: (id) ->
-      todo = new Entities.Crew
+      todo = new Entities.Todo
         id: id
       todo.fetch()
       todo

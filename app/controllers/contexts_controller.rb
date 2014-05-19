@@ -4,6 +4,7 @@ class ContextsController < ApplicationController
   layout 'loggedin'
 
   def index
+    # sleep 3 if Rails.env.development?
     @contexts = current_user.contexts.ordering
     respond_to do |format|
       format.json   { render :json => current_user.contexts }

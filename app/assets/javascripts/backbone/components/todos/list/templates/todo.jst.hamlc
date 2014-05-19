@@ -35,8 +35,11 @@
       - if @content
         =@content
   %span
-    %small= @kind||@state
+    %small
+      %span.label.label-default
+        = @kind||@state
       -if @project_id
-        %small Project #{@project_id}
+        Project #{@project_id}
       -if @context_id
-        %small Context #{@context_id}
+        %span.label.label-default
+          Context #{@context.name}

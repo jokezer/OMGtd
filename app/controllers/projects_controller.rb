@@ -6,14 +6,10 @@ class ProjectsController < ApplicationController
   layout 'loggedin'
 
   def index
-    # @projects = {}
-    # @projects[:active] = current_user.projects.with_state(:active)
-    # @projects[:finished] = current_user.projects.with_state(:finished)
-    # @projects[:trash] = current_user.projects.with_state(:trash)
-    # respond_to do |format|
-    #   format.html
-    #   format.json   { render :json => current_user.projects.make_group }
-    # end
+    @projects = current_user.projects
+    respond_to do |format|
+      format.json   { render :json => current_user.projects }
+    end
   end
 
   def show
