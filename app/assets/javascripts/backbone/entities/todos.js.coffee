@@ -128,6 +128,24 @@
     newTodo: ->
       new Entities.Todo
 
+    getTodoKinds: ->
+      Entities.Todo.kinds
+
+    getTodoPriors: ->
+      Entities.Todo.priors
+
+    saveTodo: (model, collection) ->
+      if model.isValid(true)
+        model.save({},
+          success: (todo, jqXHR) =>
+            collection.add(model)
+          error: (todo, jqXHR) =>
+            console.log(jqXHR)
+        )
+      else
+        console.log('render huender')
+      model
+
   App.reqres.setHandler "todos:entities", ->
     API.getTodos()
 
@@ -136,3 +154,12 @@
 
   App.reqres.setHandler "new:todos:entity", ->
     API.newTodo()
+
+  App.reqres.setHandler "todos:entity:kinds", ->
+    API.getTodoKinds()
+
+  App.reqres.setHandler "todos:entity:priors", ->
+    API.getTodoPriors()
+
+  App.reqres.setHandler "create:todos:entity", (model, collection) ->
+    API.saveTodo(model, collection)

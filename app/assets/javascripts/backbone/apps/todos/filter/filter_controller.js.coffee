@@ -4,10 +4,10 @@
 
     initialize: (data) ->
       @layout = @getLayoutView()
-
       @listenTo @layout, "show", =>
         @showCollection(data.todos)
-        @showNew()
+#        @showNew(data.todos)
+        @showNew2()
 
       @show @layout
 
@@ -15,9 +15,13 @@
       collectionView = @getTodosView todos
       @layout.todosRegion.show collectionView
 
-    showNew: ->
-      newView = @getNewView()
+    showNew: (todos) ->
+      newView = @getNewView(todos)
       @layout.newRegion.show newView
+
+    showNew2: () ->
+      editView = App.request "todos:edit"
+      @layout.newRegion.show editView
 
     getLayoutView: ->
       new Filter.Layout()
@@ -25,6 +29,5 @@
     getTodosView: (todos) ->
       App.request "todos:list", todos
 
-    getNewView: ->
-      App.request "todos:new"
-
+    getNewView: (todos) ->
+      App.request "todos:new", collection: todos

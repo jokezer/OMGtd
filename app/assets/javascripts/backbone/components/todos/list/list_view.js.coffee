@@ -4,7 +4,8 @@
     tagName: 'li'
     template: 'components/todos/list/templates/todo'
     events:
-      "dblclick"          : "edit"
+#      "dblclick"          : "edit"
+      "dblclick"          : "testEdit"
       "focusout"          : "close"
       "click .showMore"   : "toggleContent"
       "click .hideContent": "toggleContent"
@@ -36,6 +37,11 @@
         @$el.addClass('editing')
         @$el.find('textarea').autosize().trigger('autosize.resize')
         @$el.find('input').focus()
+
+    testEdit: ->
+#      @$el.remove()
+      editView = App.request "todos:edit"
+      @$el.html(editView.render().el)
 
     close: ->
       saveTodo =  (view) ->

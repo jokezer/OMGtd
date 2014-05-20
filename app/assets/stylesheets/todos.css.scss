@@ -29,7 +29,9 @@
       height: 21px;
       font-size: 17px;
       line-height: 22px;
-      width: 70%;
+    }
+    .panel-title{
+      width: 75%;
     }
   }
   .edit {
@@ -58,7 +60,7 @@
 
 .panel-todo.editing {
   .edit {
-    display: block;
+    display: inline;
   }
   .glyphicon-pencil{
     display: block;

@@ -1,0 +1,23 @@
+%form#new-todo{name: 'todo'}
+  .panel.panel-default.panel-todo.editing
+    .panel-heading
+      %small.pull-right
+        %span.glyphicon.glyphicon-time
+        %input.todo-due.edit{type:'text', name:'todo[due]', placeholder:'____-__-__ __:__'}
+        -#%button.btn.btn-default.btn-xs{type: "button"} Go!
+      %input.panel-title.edit{type:'text', name:'todo[title]', placeholder:'New todo'}
+    .panel-body
+      %textarea.edit{name:'todo[content]', placeholder:'Content of new todo', rows:2, cols:90}
+      .prior-buttons.btn-group{'data-toggle' => "buttons"}
+        - for item in @kinds
+          %label.btn.btn-sm.btn-default
+            %input{name:"todo[kind]", value:item, type:"radio"}
+            =item
+      .prior-buttons.btn-group{'data-toggle' => "buttons"}
+        - for key, item of @priors
+          %label.btn.btn-sm.btn-default
+            %input{name:"todo[prior]", value:key, type:"radio"}
+            =item
+    .panel-body
+      %input{type:'submit', value:'Save'}
+      %a#closeForm.cancel{href:'#'} Close
