@@ -8,6 +8,7 @@
     events:
       'click .change-prior label': 'changePrior'
       'mouseleave'               : 'leaveElement'
+      'focusout'                 : 'leaveElement'
 
     initialize: (model, collection, opts) ->
       @model = model
@@ -17,7 +18,8 @@
       saveTodo =  (view) ->
         panel = $('.panel-todo', view.$el)
         unless $('.edit:focus', view.$el).length || panel.hasClass('saving') || view.$el.is(':hover')
-          panel.block message: 'loading'
+          panel.addClass 'saving'
+          panel.block message: null
           view.trigger('save')
 
       _.delay(saveTodo, 1500, @);
