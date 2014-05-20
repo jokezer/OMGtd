@@ -35,44 +35,37 @@
         @model.set({prior:prior-1})
         @_savePrior()
 
-#    edit: ->
-#      unless @$el.hasClass('editing')
-#        @$el.addClass('editing')
-#        @$el.find('textarea').autosize().trigger('autosize.resize')
-#        @$el.find('input').focus()
-
     edit: ->
       @undelegateEvents()
       editView = App.request "todos:edit", @model
       @$el.html(editView.render().el)
       $('textarea', @$el).trigger('autosize.resize')
 
-    close22: ->
-      saveTodo =  (view) ->
-        unless view.$el.find('.edit:focus').length
-          view.$el.removeClass('editing').addClass('saving')
-          view.$el.find('.textarea').trigger('autosize.destroy')
-          view.save()
-      _.delay(saveTodo, 1000, @);
+#    close22: ->
+#      saveTodo =  (view) ->
+#        unless view.$el.find('.edit:focus').length
+#          view.$el.removeClass('editing').addClass('saving')
+#          view.$el.find('.textarea').trigger('autosize.destroy')
+#          view.save()
+#      _.delay(saveTodo, 1000, @);
 
-    #todo merge with new_view?
-    save: ->
-      formData =
-        title: $('input.panel-title', @$el).val()
-        content: $('textarea.edit', @$el).val()
-
-      @model.set(formData)
-      if @model.isValid(true)
-        @render()
-        @model.save({},
-          success: (todo, jqXHR) =>
-            @render()
-            @$el.removeClass('saving')
-          error: (todo, jqXHR) =>
-            console.log(jqXHR.responseText)
-        )
-      else
-#        alert('dver zapilil')
+#    save: ->
+#      formData =
+#        title: $('input.panel-title', @$el).val()
+#        content: $('textarea.edit', @$el).val()
+#
+#      @model.set(formData)
+#      if @model.isValid(true)
+#        @render()
+#        @model.save({},
+#          success: (todo, jqXHR) =>
+#            @render()
+#            @$el.removeClass('saving')
+#          error: (todo, jqXHR) =>
+#            console.log(jqXHR.responseText)
+#        )
+#      else
+##        alert('dver zapilil')
 
     _setContent: ->
       content = @model.get('content')

@@ -16,12 +16,14 @@
       data = @model.toJSON()
       data.kinds =  App.request "todos:entity:kinds"
       data.priors = App.request "todos:entity:priors"
+      data.contexts = App.contexts.models
       data
 
     onRender: ->
       @setPriorClass @model.get('prior')
-      @selectRadio 'prior', @model.get('prior')
-      @selectRadio 'kind',  @model.get('kind')
+      @selectRadio 'prior',       @model.get('prior')
+      @selectRadio 'kind',        @model.get('kind')
+      @selectRadio 'context_id',  @model.get('context_id')
       $('textarea', @$el).autosize()
       $('input.todo-due', @$el).datetimepicker({format: 'Y-m-d H:i'})
 

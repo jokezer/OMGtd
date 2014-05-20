@@ -4,6 +4,6 @@ class TodoSerializer < ActiveModel::Serializer
              :updated_seconds, :can_increase_prior?, :can_decrease_prior?,
              :errors, :context
   def context
-    object.context.name if object.context_id
+    object.context.label if object.context_id
   end
 end
