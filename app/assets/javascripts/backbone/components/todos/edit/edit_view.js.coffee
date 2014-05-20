@@ -8,16 +8,28 @@
     events:
       'click .change-prior label': 'changePrior'
 
+    initialize: (model, collection, opts) ->
+      @model = model
+      @collection = collection
+
     serializeData: ->
-#      data = @model.toJSON()
-      data = {}
+      data = @model.toJSON()
       data.kinds =  App.request "todos:entity:kinds"
       data.priors = App.request "todos:entity:priors"
       data
 
     onRender: ->
-      @$el.find('#todoDue').datetimepicker({format: 'Y-m-d H:i'})
-      @setPriorClass(1) #todo @model.get('prior')
+      @setPriorClass @model.get('prior')
+      @selectRadio 'prior', @model.get('prior')
+      @selectRadio 'kind',  @model.get('kind')
+      $('textarea', @$el).autosize()
+      $('input.todo-due', @$el).datetimepicker({format: 'Y-m-d H:i'})
+
+    selectRadio: (name, value) ->
+      $("input[type='radio'][name='todo[#{name}]'][value=#{value}]", @$el)
+        .prop("checked", true)
+        .parent()
+        .addClass('active')
 
     changePrior: (a) ->
       key = $("input", $(a.target)).val()

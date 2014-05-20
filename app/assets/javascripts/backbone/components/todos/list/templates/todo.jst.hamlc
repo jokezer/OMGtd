@@ -5,7 +5,6 @@
         %span.glyphicon.glyphicon-time
         due  #{@jdue.toLocaleString() if @jdue}
     %h5.info.panel-title= @title
-    %span.glyphicon.glyphicon-pencil.pull-left
     -#%input.panel-title.edit{type:'text', name:'todo[title]', value:@title}
   .panel-body
     %span.pull-right

@@ -5,7 +5,6 @@
     initialize: (data) ->
       @model = App.request "new:todos:entity"
       @collection = data.collection
-      console.log @collection
       @layout = @getLayoutView()
 
       @listenTo @layout, 'show',        @loadLayout

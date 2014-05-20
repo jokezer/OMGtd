@@ -5,7 +5,7 @@
     template: 'components/todos/list/templates/todo'
     events:
       "click"             : "consolel"
-      "dblclick"          : "testEdit"
+      "dblclick"          : "edit"
 #      "focusout"          : "close"
       "click .showMore"   : "toggleContent"
       "click .hideContent": "toggleContent"
@@ -35,16 +35,17 @@
         @model.set({prior:prior-1})
         @_savePrior()
 
-    edit: ->
-      unless @$el.hasClass('editing')
-        @$el.addClass('editing')
-        @$el.find('textarea').autosize().trigger('autosize.resize')
-        @$el.find('input').focus()
+#    edit: ->
+#      unless @$el.hasClass('editing')
+#        @$el.addClass('editing')
+#        @$el.find('textarea').autosize().trigger('autosize.resize')
+#        @$el.find('input').focus()
 
-    testEdit: ->
+    edit: ->
       @undelegateEvents()
-      editView = App.request "todos:edit"
+      editView = App.request "todos:edit", @model
       @$el.html(editView.render().el)
+      $('textarea', @$el).trigger('autosize.resize')
 
     close22: ->
       saveTodo =  (view) ->
