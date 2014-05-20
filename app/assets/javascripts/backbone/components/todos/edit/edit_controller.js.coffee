@@ -3,6 +3,7 @@
   class Edit.Controller extends App.Controllers.Base
 
     initialize: () ->
+
       @form = @getFormView()
       @listenTo @form, "consoler", =>
         console.log('consoller')

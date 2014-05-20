@@ -6,8 +6,8 @@
       @layout = @getLayoutView()
       @listenTo @layout, "show", =>
         @showCollection(data.todos)
-#        @showNew(data.todos)
-        @showNew2()
+        @showNew(data.todos)
+#        @showNew2()
 
       @show @layout
 
@@ -19,9 +19,9 @@
       newView = @getNewView(todos)
       @layout.newRegion.show newView
 
-    showNew2: () ->
-      editView = App.request "todos:edit"
-      @layout.newRegion.show editView
+#    showNew2: () ->
+#      editView = App.request "todos:edit"
+#      @layout.newRegion.show editView
 
     getLayoutView: ->
       new Filter.Layout()

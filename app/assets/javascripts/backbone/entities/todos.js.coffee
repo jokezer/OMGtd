@@ -146,6 +146,9 @@
         console.log('render huender')
       model
 
+    getPriorLabel: (key) ->
+      Entities.Todo.priors[key]
+
   App.reqres.setHandler "todos:entities", ->
     API.getTodos()
 
@@ -160,6 +163,9 @@
 
   App.reqres.setHandler "todos:entity:priors", ->
     API.getTodoPriors()
+
+  App.reqres.setHandler "todos:entity:prior:label", (key) ->
+    API.getPriorLabel key
 
   App.reqres.setHandler "create:todos:entity", (model, collection) ->
     API.saveTodo(model, collection)

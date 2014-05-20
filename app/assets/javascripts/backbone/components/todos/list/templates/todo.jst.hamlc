@@ -1,45 +1,46 @@
-.panel-heading
-  -if @due
-    %small.pull-right
-      %span.glyphicon.glyphicon-time
-      due  #{@jdue.toLocaleString() if @jdue}
-  %h5.info.panel-title= @title
-  %span.glyphicon.glyphicon-pencil.pull-left
-  %input.panel-title.edit{type:'text', name:'todo[title]', value:@title}
-.panel-body
-  %span.pull-right
-    .btn-group-vertical
-      %a.btn.btn-xs.inc-prior{name: 'increase_prior', disabled: !@can_increase_prior}
-        %i.glyphicon.glyphicon-chevron-up
-      %a.btn.btn-xs.dec-prior{name: 'decrease_prior', disabled: !@can_decrease_prior}
-        %i.glyphicon.glyphicon-chevron-down
-  .textField
-    .content.info
-      - if @groupedContent
-        - for line in @groupedContent.visible
-          =line
-          %br
-        -if @groupedContent.hidden
-          %a.btn.btn-xs.btn-info.showMore
-            Show #{@groupedContent.hidden.length} more strings
-            %span.glyphicon.glyphicon-chevron-down
+.panel.panel-default.panel-todo
+  .panel-heading
+    -if @due
+      %small.pull-right
+        %span.glyphicon.glyphicon-time
+        due  #{@jdue.toLocaleString() if @jdue}
+    %h5.info.panel-title= @title
+    %span.glyphicon.glyphicon-pencil.pull-left
+    -#%input.panel-title.edit{type:'text', name:'todo[title]', value:@title}
+  .panel-body
+    %span.pull-right
+      .btn-group-vertical
+        %a.btn.btn-xs.inc-prior{name: 'increase_prior', disabled: !@can_increase_prior}
+          %i.glyphicon.glyphicon-chevron-up
+        %a.btn.btn-xs.dec-prior{name: 'decrease_prior', disabled: !@can_decrease_prior}
+          %i.glyphicon.glyphicon-chevron-down
+    .textField
+      .content.info
+        - if @groupedContent
+          - for line in @groupedContent.visible
+            =line
+            %br
+          -if @groupedContent.hidden
+            %a.btn.btn-xs.btn-info.showMore
+              Show #{@groupedContent.hidden.length} more strings
+              %span.glyphicon.glyphicon-chevron-down
 
-          .hiddenContent{style:'display: none;'}
-            - for hiddenLine in @groupedContent.hidden
-              =hiddenLine
-              %br
-            %a.btn.btn-xs.btn-info.hideContent
-              Hide content
-              %span.glyphicon.glyphicon-chevron-up
-    %textarea.edit{name:'todo[content]', placeholder:'Content of todo'}
-      - if @content
-        =@content
-  %span
-    %small
-      %span.label.label-default
-        = @kind||@state
-      -if @project_id
-        Project #{@project_id}
-      -if @context
+            .hiddenContent{style:'display: none;'}
+              - for hiddenLine in @groupedContent.hidden
+                =hiddenLine
+                %br
+              %a.btn.btn-xs.btn-info.hideContent
+                Hide content
+                %span.glyphicon.glyphicon-chevron-up
+      -#%textarea.edit{name:'todo[content]', placeholder:'Content of todo'}
+      -#  - if @content
+      -#    =@content
+    %span
+      %small
         %span.label.label-default
-          Context #{@context}
+          = @kind||@state
+        -if @project_id
+          Project #{@project_id}
+        -if @context
+          %span.label.label-default
+            Context #{@context}

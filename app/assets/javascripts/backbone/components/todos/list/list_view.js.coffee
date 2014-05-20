@@ -4,17 +4,20 @@
     tagName: 'li'
     template: 'components/todos/list/templates/todo'
     events:
-#      "dblclick"          : "edit"
+      "click"             : "consolel"
       "dblclick"          : "testEdit"
-      "focusout"          : "close"
+#      "focusout"          : "close"
       "click .showMore"   : "toggleContent"
       "click .hideContent": "toggleContent"
       "click .inc-prior"  : "incPrior",
       "click .dec-prior"  : "decPrior",
-      "updated"           : "slideUp"
+#      "updated"           : "slideUp"
 
     tagName: "form"
-    className: "draggable panel panel-default panel-todo"
+    className: ""
+
+    consolel: ->
+      console.log('dsfadsfasdfdsf')
 
     slideUp: ->
       console.log('updated')
@@ -39,11 +42,11 @@
         @$el.find('input').focus()
 
     testEdit: ->
-#      @$el.remove()
+      @undelegateEvents()
       editView = App.request "todos:edit"
       @$el.html(editView.render().el)
 
-    close: ->
+    close22: ->
       saveTodo =  (view) ->
         unless view.$el.find('.edit:focus').length
           view.$el.removeClass('editing').addClass('saving')
@@ -68,7 +71,7 @@
             console.log(jqXHR.responseText)
         )
       else
-        alert('dver zapilil')
+#        alert('dver zapilil')
 
     _setContent: ->
       content = @model.get('content')
@@ -87,15 +90,14 @@
       data.groupedContent = @_setContent()
       data
 
-    onBeforeRender: ->
+    onRender: ->
       @_setPriorName()
-#      @$el.html(@template(data))
-#      return this
 
     _setPriorName: ->
-      @$el.attr('class', (i, c) ->
-        c.replace(/\bprior-\S+/g, ''))
-      @$el.addClass("prior-#{Gtd.Models.Todo.priors[@model.get('prior')]}")
+#      $('.panel-todo', @$el).attr('class', (i, c) ->
+#        c?.replace(/\bprior-\S+/g, ''))
+      priorLabel = App.request "todos:entity:prior:label", @model.get('prior')
+      $('.panel-todo', @$el).addClass("prior-#{priorLabel}")
 
     _savePrior: ->
       @model.save({},
