@@ -1,20 +1,14 @@
 @OMGtd.module "Components.Todos.List", (List, App, Backbone, Marionette, $, _) ->
 
   class List.Item extends Marionette.ItemView
-    tagName: 'li'
     template: 'components/todos/list/templates/todo'
     events:
       "click"             : "consolel"
       "dblclick"          : "edit"
-#      "focusout"          : "close"
       "click .showMore"   : "toggleContent"
       "click .hideContent": "toggleContent"
       "click .inc-prior"  : "incPrior",
       "click .dec-prior"  : "decPrior",
-#      "updated"           : "slideUp"
-
-    tagName: "form"
-    className: ""
 
     consolel: ->
       console.log('dsfadsfasdfdsf')
@@ -38,12 +32,16 @@
     edit: ->
       @undelegateEvents()
       edit = App.request "todos:edit", @model
-      @listenTo edit.form, "cancel", @cancelEdit
+      @listenTo edit, "done", @cancelEdit
       @$el.html(edit.form.render().el)
       $('textarea', @$el).trigger('autosize.resize')
 
     cancelEdit: ->
       @render()
+      @listenTo @model, "successSave", ->
+        console.log 'sfsf'
+        @$el.find('.panel-todo').removeClass('saving')
+      @$el.find('.panel-todo').addClass('saving')
       @delegateEvents()
 
 #    close22: ->

@@ -21,11 +21,11 @@
           =item
     -if @contexts
       %br
-        .btn-group.change-prior{'data-toggle' => "buttons"}
+        .btn-group{'data-toggle' => "buttons"}
           - for item in @contexts
             %label.btn.btn-xs.btn-default
               %input{name:"todo[context_id]", value:item.get('id'), type:"radio"}
               =item.get('label')
   .panel-body
-    %input{type:'submit', value:'Save'}
-    %a.cancel{href:'#'} Cancel
+    %a.save.btn.btn-default.btn-sm Save
+    %a.cancel.btn.btn-info.btn-sm Cancel

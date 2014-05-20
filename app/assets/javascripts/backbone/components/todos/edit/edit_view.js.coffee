@@ -4,12 +4,13 @@
     template: 'components/todos/edit/templates/form'
     triggers:
       'dblclick'            : 'consoler'
-      'click a.cancel'      : 'cancel'
+      'click a.cancel'      : 'done'
 
     events:
       'click .change-prior label': 'changePrior'
       'mouseleave'               : 'leaveElement'
       'focusout'                 : 'leaveElement'
+      'click a.save'             : 'save'
 
     initialize: (model, collection, opts) ->
       @model = model
@@ -17,12 +18,16 @@
 
     leaveElement: ->
       saveTodo =  (view) ->
-        panel = $('.panel-todo', view.$el)
-        unless $('.edit:focus', view.$el).length || panel.hasClass('saving') || view.$el.is(':hover')
-          panel.addClass 'saving'
-          panel.block message: null
-          view.trigger('save')
-      _.delay(saveTodo, 1500, @);
+        unless $('.edit:focus', view.$el).length ||
+          $('.panel-todo', view.$el).hasClass('saving') ||
+          view.$el.is(':hover')
+            view.save()
+      _.delay(saveTodo, 1500, @)
+
+    save: ->
+      $('.panel-todo', @$el).addClass 'saving'
+      @$el.block message: null
+      @trigger('save')
 
     serializeData: ->
       data = @model.toJSON()
