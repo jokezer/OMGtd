@@ -9,6 +9,12 @@
       @listenTo @form, "consoler", =>
         console.log('consoller')
 
+      @listenTo @form, "save", =>
+        @save()
+
+    save: ->
+      console.log('saving . . .')
+
     getFormView: () ->
       new Edit.Form @model, @collection
 

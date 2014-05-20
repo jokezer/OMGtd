@@ -7,10 +7,20 @@
 
     events:
       'click .change-prior label': 'changePrior'
+      'mouseleave'               : 'leaveElement'
 
     initialize: (model, collection, opts) ->
       @model = model
       @collection = collection
+
+    leaveElement: ->
+      saveTodo =  (view) ->
+        panel = $('.panel-todo', view.$el)
+        unless $('.edit:focus', view.$el).length || panel.hasClass('saving') || view.$el.is(':hover')
+          panel.addClass('saving')
+          view.trigger('save')
+
+      _.delay(saveTodo, 1500, @);
 
     serializeData: ->
       data = @model.toJSON()
