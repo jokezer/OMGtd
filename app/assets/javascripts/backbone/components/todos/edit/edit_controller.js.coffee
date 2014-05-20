@@ -9,8 +9,7 @@
       @listenTo @form, "consoler", =>
         console.log('consoller')
 
-      @listenTo @form, "save", =>
-        @save()
+      @listenTo @form, "save", @save
 
     save: ->
       console.log('saving . . .')
@@ -20,4 +19,4 @@
 
   App.reqres.setHandler "todos:edit", (model, collection, opts={}) ->
     form = new Edit.Controller model, collection, opts
-    form.form
+    form

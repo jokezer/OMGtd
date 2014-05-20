@@ -37,9 +37,14 @@
 
     edit: ->
       @undelegateEvents()
-      editView = App.request "todos:edit", @model
-      @$el.html(editView.render().el)
+      edit = App.request "todos:edit", @model
+      @listenTo edit.form, "cancel", @cancelEdit
+      @$el.html(edit.form.render().el)
       $('textarea', @$el).trigger('autosize.resize')
+
+    cancelEdit: ->
+      @render()
+      @delegateEvents()
 
 #    close22: ->
 #      saveTodo =  (view) ->

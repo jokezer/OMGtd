@@ -28,4 +28,4 @@
               =item.get('label')
   .panel-body
     %input{type:'submit', value:'Save'}
-    %a#closeForm.cancel{href:'#'} Cancel
+    %a.cancel{href:'#'} Cancel

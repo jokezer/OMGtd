@@ -4,6 +4,7 @@
     template: 'components/todos/edit/templates/form'
     triggers:
       'dblclick'            : 'consoler'
+      'click a.cancel'      : 'cancel'
 
     events:
       'click .change-prior label': 'changePrior'
@@ -21,7 +22,6 @@
           panel.addClass 'saving'
           panel.block message: null
           view.trigger('save')
-
       _.delay(saveTodo, 1500, @);
 
     serializeData: ->
