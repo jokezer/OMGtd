@@ -11,19 +11,19 @@
       =@content
     .btn-group{'data-toggle' => "buttons"}
       - for item in @kinds
-        %label.btn.btn-sm.btn-default
+        %label.btn.btn-xs.btn-default
           %input{name:"todo[kind]", value:item, type:"radio"}
           =item
     .btn-group.change-prior{'data-toggle' => "buttons"}
       - for key, item of @priors
-        %label.btn.btn-sm.btn-default
+        %label.btn.btn-xs.btn-default
           %input{name:"todo[prior]", value:key, type:"radio"}
           =item
     -if @contexts
       %br
         .btn-group.change-prior{'data-toggle' => "buttons"}
           - for item in @contexts
-            %label.btn.btn-sm.btn-default
+            %label.btn.btn-xs.btn-default
               %input{name:"todo[context_id]", value:item.get('id'), type:"radio"}
               =item.get('label')
   .panel-body

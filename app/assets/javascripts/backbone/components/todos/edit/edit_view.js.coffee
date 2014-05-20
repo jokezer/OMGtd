@@ -17,7 +17,7 @@
       saveTodo =  (view) ->
         panel = $('.panel-todo', view.$el)
         unless $('.edit:focus', view.$el).length || panel.hasClass('saving') || view.$el.is(':hover')
-          panel.addClass('saving')
+          panel.block message: 'loading'
           view.trigger('save')
 
       _.delay(saveTodo, 1500, @);
