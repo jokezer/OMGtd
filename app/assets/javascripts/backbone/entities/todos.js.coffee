@@ -58,7 +58,7 @@
     model: Entities.Todo
     url: -> '/todos/'
     initialize: () ->
-      @on('sync', @makeGroups, @)
+      @on('change', @makeGroups, @)
       @on('reset', @makeGroups, @)
 
     comparator: (itemA, itemB) =>
@@ -68,6 +68,7 @@
       return 0
 
     makeGroups: =>
+      @sort()
       @groupedStates = @_groupByA(@, 'state')
       model.groupedKinds = @_groupByA(model.vc, 'kind') for model in @groupedStates.models
       model.groupedCalendars = @_groupByA(model.vc, 'schedule_label') for model in @groupedStates.models

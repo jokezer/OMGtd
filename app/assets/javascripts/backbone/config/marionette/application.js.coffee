@@ -11,6 +11,11 @@ do (Backbone) ->
       frag = Backbone.history.fragment
       if _.isEmpty(frag) then null else frag
 
+    reloadPage: ->
+      thisPath = Backbone.history.fragment
+      Backbone.history.fragment = null
+      Backbone.history.navigate(thisPath, true)
+
     startHistory: ->
       if Backbone.history
         Backbone.history.start()

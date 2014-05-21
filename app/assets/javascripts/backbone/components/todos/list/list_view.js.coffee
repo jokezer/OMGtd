@@ -6,24 +6,24 @@
       "dblclick"          : "edit"
       "click .showMore"   : "toggleContent"
       "click .hideContent": "toggleContent"
-      "click .inc-prior"  : "incPrior",
-      "click .dec-prior"  : "decPrior",
+#      "click .inc-prior"  : "incPrior",
+#      "click .dec-prior"  : "decPrior",
 
     slideUp: ->
       console.log('updated')
       @$el.hide().show('slide', {}, 'fast')
 
-    incPrior: ->
-      prior = @model.get('prior')
-      if prior < 3
-        @model.set({prior:++prior})
-        @_savePrior()
-
-    decPrior: ->
-      prior = @model.get('prior')
-      if prior >= 0
-        @model.set({prior:prior-1})
-        @_savePrior()
+#    incPrior: ->
+#      prior = @model.get('prior')
+#      if prior < 3
+#        @model.set({prior:++prior})
+#        @_savePrior()
+#
+#    decPrior: ->
+#      prior = @model.get('prior')
+#      if prior >= 0
+#        @model.set({prior:prior-1})
+#        @_savePrior()
 
     edit: ->
       unless @$el.find('.panel-todo').hasClass('saving')
@@ -43,7 +43,7 @@
       @cancelEdit()
       @$el.find('.panel-todo').addClass('saving')
       @listenTo @model, "successSave", ->
-        @$el.find('.panel-todo').removeClass('saving')
+        App.reloadPage()
 
     _setContent: ->
       content = @model.get('content')
@@ -73,15 +73,15 @@
       priorLabel = App.request "todos:entity:prior:label", @model.get('prior')
       $('.panel-todo', @$el).addClass("prior-#{priorLabel}")
 
-    _savePrior: ->
-      @model.save({},
-        success: (todo, jqXHR) =>
-          @model.collection.sort()
-          @render().$el.hide().show('slide', {}, 'fast')
-          @trigger('priorUpd')
-        error: (todo, jqXHR) =>
-          console.log(jqXHR.responseText)
-      )
+#    _savePrior: ->
+#      @model.save({},
+#        success: (todo, jqXHR) =>
+#          @model.collection.sort()
+#          @render().$el.hide().show('slide', {}, 'fast')
+#          @trigger('priorUpd')
+#        error: (todo, jqXHR) =>
+#          console.log(jqXHR.responseText)
+#      )
 
   class List.Empty extends Marionette.ItemView
     template: 'components/todos/list/templates/empty'
@@ -92,6 +92,6 @@
     itemEvents:
       'priorUpd': 'rerender'
     rerender: (el, la) ->
+      console.log(@collection)
       @$el.html('')
       @render()
-      console.log(la) #do something
