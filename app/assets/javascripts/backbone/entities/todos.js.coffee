@@ -18,6 +18,8 @@
       @on('change', @_setState, @)
       @on('save', @_setJdate, @)
       @on('change', @_setJdate, @)
+      @bind('validated:invalid', (model, errors) ->
+        console.log(errors))
 
     defaults:
       title: ''

@@ -2,6 +2,7 @@
 
   class Edit.Form extends Marionette.ItemView
     template: 'components/todos/edit/templates/form'
+    tagName: 'form'
     triggers:
       'dblclick'            : 'consoler'
       'click a.cancel'      : 'done'
@@ -45,7 +46,7 @@
       $('input.todo-due', @$el).datetimepicker({format: 'Y-m-d H:i'})
 
     selectRadio: (name, value) ->
-      $("input[type='radio'][name='todo[#{name}]'][value=#{value}]", @$el)
+      $("input[type='radio'][name='#{name}'][value=#{value}]", @$el)
         .prop("checked", true)
         .parent()
         .addClass('active')

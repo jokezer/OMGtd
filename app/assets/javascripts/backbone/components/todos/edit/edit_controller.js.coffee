@@ -1,7 +1,7 @@
 @OMGtd.module "Components.Todos.Edit", (Edit, App, Backbone, Marionette, $, _) ->
 
   class Edit.Controller extends App.Controllers.Base
-
+  #TODO todo dont save if click to edit another one before first saved
     initialize: (model, collection, opts) ->
       @model      = model
       @collection = collection
@@ -22,13 +22,7 @@
       @trigger("done") unless @model.validationError
 
     getFormData: ->
-      formData =
-        title:      $('input.panel-title',                                    @form.$el).val()
-        due:        $('input.todo-due',                                       @form.$el).val()
-        content:    $("textarea[name='todo[content]']",                       @form.$el).val()
-        kind:       $("input[type='radio'][name='todo[kind]']:checked",       @form.$el).val()
-        prior:      $("input[type='radio'][name='todo[prior]']:checked",      @form.$el).val()
-        context_id: $("input[type='radio'][name='todo[context_id]']:checked", @form.$el).val()
+      formData = Backbone.Syphon.serialize(@form)
       formData.context_id = parseInt(formData.context_id, 10)
       formData.prior      = parseInt(formData.prior, 10)
       formData

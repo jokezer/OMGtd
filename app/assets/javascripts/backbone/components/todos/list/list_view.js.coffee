@@ -39,7 +39,6 @@
     cancelEdit: ->
       @render()
       @listenTo @model, "successSave", ->
-        console.log 'sfsf'
         @$el.find('.panel-todo').removeClass('saving')
       @$el.find('.panel-todo').addClass('saving')
       @delegateEvents()
