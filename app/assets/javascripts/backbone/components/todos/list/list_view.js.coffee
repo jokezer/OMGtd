@@ -59,6 +59,8 @@
 
     serializeData: ->
       data = @model.toJSON()
+      context_id = @model.get('context_id')
+      data.context = App.request "context:label", context_id if context_id
       data.groupedContent = @_setContent()
       data
 

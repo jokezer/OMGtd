@@ -32,6 +32,12 @@
     newContext: ->
       new Entities.Context
 
+    getLoadedContexts: ->
+      App.contexts
+
+    getContextLabel: (id) ->
+      App.contexts.get(id).get('label')
+
   App.reqres.setHandler "contexts:entities", ->
     API.getContexts()
 
@@ -40,3 +46,9 @@
 
   App.reqres.setHandler "new:contexts:entity", ->
     API.newContext()
+
+  App.reqres.setHandler "contexts:loaded", ->
+    API.getLoadedContexts()
+
+  App.reqres.setHandler "context:label", (id) ->
+    API.getContextLabel(id)

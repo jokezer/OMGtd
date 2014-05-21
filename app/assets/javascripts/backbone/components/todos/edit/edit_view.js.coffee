@@ -38,7 +38,8 @@
       data = @model.toJSON()
       data.kinds =  App.request "todos:entity:kinds"
       data.priors = App.request "todos:entity:priors"
-      data.contexts = App.contexts.models
+      data.contexts = App.request "contexts:loaded"
+      data.contexts = data.contexts.models
       data
 
     onRender: ->
