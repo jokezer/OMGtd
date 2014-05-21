@@ -1,3 +1,6 @@
+-if @errors
+  - for field, message of @errors
+    #{field}: #{message}
 .panel.panel-default.panel-todo
   .panel-heading
     %small.pull-right

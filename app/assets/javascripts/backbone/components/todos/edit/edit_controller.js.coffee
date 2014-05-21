@@ -9,7 +9,6 @@
       @form = @getFormView()
       @listenTo @form, "consoler", =>
         console.log('consoller')
-
       @listenTo @form, "save", @save
       @listenTo @form, "cancel", ->
         @trigger "cancel"
@@ -22,7 +21,11 @@
         error: ->
           console.log 'errors'
       )
-      @trigger("done") unless @model.validationError
+      if @model.validationError
+        @form.render()
+        $('textarea', @form.$el).trigger('autosize.resize')
+      else
+        @trigger("done")
 
     getFormData: ->
       formData = Backbone.Syphon.serialize(@form)

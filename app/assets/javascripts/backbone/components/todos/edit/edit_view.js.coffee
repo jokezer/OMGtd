@@ -40,6 +40,7 @@
       data.priors = App.request "todos:entity:priors"
       data.contexts = App.request "contexts:loaded"
       data.contexts = data.contexts.models
+      data.errors = @model.validationError
       data
 
     onRender: ->
@@ -49,6 +50,9 @@
       @selectRadio 'context_id',  @model.get('context_id')
       $('textarea', @$el).autosize()
       $('input.todo-due', @$el).datetimepicker({format: 'Y-m-d H:i'})
+      focusInput = ($el) ->
+        $el.find('input.panel-title').focus()
+      @timer = _.delay(focusInput, 30, @$el)
 
     selectRadio: (name, value) ->
       $("input[type='radio'][name='#{name}'][value=#{value}]", @$el)
