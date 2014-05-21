@@ -5,13 +5,13 @@
     tagName: 'form'
     triggers:
       'dblclick'            : 'consoler'
-      'click a.cancel'      : 'cancel'
 
     events:
       'click .change-prior label': 'changePrior'
       'mouseleave'               : 'leaveElement'
       'focusout'                 : 'leaveElement'
       'click a.save'             : 'save'
+      'click a.cancel'           : 'cancelEdit'
 
     initialize: (model, collection, opts) ->
       @model = model
@@ -23,7 +23,11 @@
           $('.panel-todo', view.$el).hasClass('saving') ||
           view.$el.is(':hover')
             view.save()
-      _.delay(saveTodo, 1500, @)
+      @timer = _.delay(saveTodo, 1500, @)
+
+    cancelEdit: ->
+      clearTimeout(@timer)
+      @trigger 'cancel'
 
     save: ->
       $('.panel-todo', @$el).addClass 'saving'

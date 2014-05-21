@@ -35,6 +35,7 @@
         $('textarea', @$el).trigger('autosize.resize')
 
     cancelEdit: ->
+      @undelegateEvents()
       @render()
       @delegateEvents()
 
