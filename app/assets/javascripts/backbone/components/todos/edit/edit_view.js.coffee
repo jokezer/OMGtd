@@ -5,7 +5,7 @@
     tagName: 'form'
     triggers:
       'dblclick'            : 'consoler'
-      'click a.cancel'      : 'done'
+      'click a.cancel'      : 'cancel'
 
     events:
       'click .change-prior label': 'changePrior'

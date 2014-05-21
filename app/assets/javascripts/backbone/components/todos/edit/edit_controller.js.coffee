@@ -2,6 +2,7 @@
 
   class Edit.Controller extends App.Controllers.Base
   #TODO todo dont save if click to edit another one before first saved
+
     initialize: (model, collection, opts) ->
       @model      = model
       @collection = collection
@@ -10,14 +11,16 @@
         console.log('consoller')
 
       @listenTo @form, "save", @save
-      @listenTo @form, "done", ->
-        @trigger "done"
+      @listenTo @form, "cancel", ->
+        @trigger "cancel"
 
     save: ->
       @model.set(@getFormData())
       @model.save({},
         success: (todo) ->
           todo.trigger 'successSave'
+        error: ->
+          console.log 'errors'
       )
       @trigger("done") unless @model.validationError
 

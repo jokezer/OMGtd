@@ -3,15 +3,11 @@
   class List.Item extends Marionette.ItemView
     template: 'components/todos/list/templates/todo'
     events:
-      "click"             : "consolel"
       "dblclick"          : "edit"
       "click .showMore"   : "toggleContent"
       "click .hideContent": "toggleContent"
       "click .inc-prior"  : "incPrior",
       "click .dec-prior"  : "decPrior",
-
-    consolel: ->
-      console.log('dsfadsfasdfdsf')
 
     slideUp: ->
       console.log('updated')
@@ -30,44 +26,23 @@
         @_savePrior()
 
     edit: ->
-      @undelegateEvents()
-      edit = App.request "todos:edit", @model
-      @listenTo edit, "done", @cancelEdit
-      @$el.html(edit.form.render().el)
-      $('textarea', @$el).trigger('autosize.resize')
+      unless @$el.find('.panel-todo').hasClass('saving')
+        @undelegateEvents()
+        edit = App.request "todos:edit", @model
+        @listenTo edit, "cancel", @cancelEdit
+        @listenTo edit, "done",   @successEdit
+        @$el.html(edit.form.render().el)
+        $('textarea', @$el).trigger('autosize.resize')
 
     cancelEdit: ->
       @render()
-      @listenTo @model, "successSave", ->
-        @$el.find('.panel-todo').removeClass('saving')
-      @$el.find('.panel-todo').addClass('saving')
       @delegateEvents()
 
-#    close22: ->
-#      saveTodo =  (view) ->
-#        unless view.$el.find('.edit:focus').length
-#          view.$el.removeClass('editing').addClass('saving')
-#          view.$el.find('.textarea').trigger('autosize.destroy')
-#          view.save()
-#      _.delay(saveTodo, 1000, @);
-
-#    save: ->
-#      formData =
-#        title: $('input.panel-title', @$el).val()
-#        content: $('textarea.edit', @$el).val()
-#
-#      @model.set(formData)
-#      if @model.isValid(true)
-#        @render()
-#        @model.save({},
-#          success: (todo, jqXHR) =>
-#            @render()
-#            @$el.removeClass('saving')
-#          error: (todo, jqXHR) =>
-#            console.log(jqXHR.responseText)
-#        )
-#      else
-##        alert('dver zapilil')
+    successEdit: ->
+      @cancelEdit()
+      @$el.find('.panel-todo').addClass('saving')
+      @listenTo @model, "successSave", ->
+        @$el.find('.panel-todo').removeClass('saving')
 
     _setContent: ->
       content = @model.get('content')
