@@ -16,10 +16,14 @@
     save: ->
       @model.set(@getFormData())
       @model.save({},
-        success: (todo) ->
-          todo.trigger 'successSave'
+        success: (todo, resp) ->
+          if Object.keys(resp.errors).length
+            todo.validationError = resp.errors
+            todo.trigger 'validationError'
+          else
+            todo.trigger 'successSave'
         error: ->
-          console.log 'errors'
+          alert('Server error!')
       )
       if @model.validationError
         @form.render()

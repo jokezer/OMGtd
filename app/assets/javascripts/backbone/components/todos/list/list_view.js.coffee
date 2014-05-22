@@ -44,6 +44,9 @@
       @$el.find('.panel-todo').addClass('saving')
       @listenTo @model, "successSave", ->
         @$el.find('.panel-todo').removeClass('saving')
+      @listenTo @model, "validationError", ->
+        @$el.find('.panel-todo').removeClass('saving')
+        @edit()
 #        App.reloadPage()
 
     _setContent: ->
