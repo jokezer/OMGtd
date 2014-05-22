@@ -15,3 +15,6 @@
   SidebarsApp.on "start", ->
     API.showLeftSidebar()
     API.showContexts()
+    App.todos.on "validated:valid", ->
+      API.showLeftSidebar()
+      API.showContexts()

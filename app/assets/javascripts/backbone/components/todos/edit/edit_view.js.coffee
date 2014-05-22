@@ -23,7 +23,7 @@
           $('.panel-todo', view.$el).hasClass('saving') ||
           view.$el.is(':hover')
             view.save()
-      @timer = _.delay(saveTodo, 1500, @)
+      @timer = _.delay(saveTodo, 200, @)
 
     cancelEdit: ->
       clearTimeout(@timer)

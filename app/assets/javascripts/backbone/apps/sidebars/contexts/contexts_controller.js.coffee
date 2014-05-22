@@ -3,18 +3,23 @@
   class Contexts.Controller extends App.Controllers.Base
 
     initialize: () ->
-      @makeElements App.contexts
+      @render()
+
+
+    render: ->
+      @makeElements()
       contextsView = @getContextsView()
       @show contextsView
+
 
     getContextsView: ->
       new Contexts.Sidebar
         collection: @collection
 
-    makeElements: (elements) ->
-      prepared =  elements.map (el) ->
+    makeElements: () ->
+      prepared =   App.contexts.map (el) ->
         el.set({
-          length: el.get('todos_count')
+          length: App.todos.getGroup('active', 'context', el.id).length
           href:   "active/context/#{el.id}"
         })
       @collection = new Backbone.Collection prepared

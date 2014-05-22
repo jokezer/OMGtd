@@ -43,7 +43,8 @@
       @cancelEdit()
       @$el.find('.panel-todo').addClass('saving')
       @listenTo @model, "successSave", ->
-        App.reloadPage()
+        @$el.find('.panel-todo').removeClass('saving')
+#        App.reloadPage()
 
     _setContent: ->
       content = @model.get('content')
