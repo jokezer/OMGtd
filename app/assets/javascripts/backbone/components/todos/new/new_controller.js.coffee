@@ -7,6 +7,7 @@
       @layout = @getLayoutView()
       @listenTo @layout, 'show',        @loadLayout
       @listenTo @layout, 'show:form',   @showForm
+      @listenTo @layout, 'cancelEdit',   @closeForm
 
     showForm: ->
       @model = App.request "new:todos:entity"

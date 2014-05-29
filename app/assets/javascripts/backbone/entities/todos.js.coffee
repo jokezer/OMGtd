@@ -29,8 +29,8 @@
       prior: 0
 
     validation:
-#      title:
-#        required: true
+      title:
+        required: true
       kind:
         required: false
         oneOf: @kinds
@@ -68,7 +68,7 @@
       return 0
 
     makeGroups: =>
-      @sort()
+#      @sort()
       @groupedStates = @_groupByA(@, 'state')
       model.groupedKinds = @_groupByA(model.vc, 'kind') for model in @groupedStates.models
       model.groupedCalendars = @_groupByA(model.vc, 'schedule_label') for model in @groupedStates.models

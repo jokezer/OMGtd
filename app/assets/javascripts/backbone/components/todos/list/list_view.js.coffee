@@ -112,6 +112,3 @@
       console.log(@collection)
       @$el.html('')
       @render()
-#    onAfterItemAdded: (itemView) ->
-#      console.log('itemAdded')
-#      itemView.$el.find('.panel-todo').addClass('saving')
