@@ -6,15 +6,21 @@
       "dblclick"          : "edit"
       "click .showMore"   : "toggleContent"
       "click .hideContent": "toggleContent"
-#      "click .inc-prior"  : "incPrior",
-#      "click .dec-prior"  : "decPrior",
+      "click .inc-prior"  : "incPrior",
+      "click .dec-prior"  : "decPrior",
 
     initialize: ->
+      @listenTo @model, 'slideDown', @slideDown
       @listenTo @model, 'done', @successEdit
+      @listenTo @model, "server:saved", ->
+        @removeSavingClass()
+
+    slideDown: ->
+      @$el.hide().show('slide', {}, 'fast')
 
     slideUp: ->
-      console.log('updated')
-      @$el.hide().show('slide', {}, 'fast')
+      @$el.hide('slide', {}, 'fast', ->
+        $(this).css('visibility', 'hidden').show())
 
     addSavingClass: () ->
       @$el.find('.panel-todo').addClass('saving')
@@ -22,19 +28,19 @@
     removeSavingClass: () ->
       @$el.find('.panel-todo').removeClass('saving')
 
+    incPrior: ->
+      @slideUp()
+      prior = @model.get('prior')
+      if prior < 3
+        @model.set({prior:++prior})
+        @_savePrior()
 
-
-#    incPrior: ->
-#      prior = @model.get('prior')
-#      if prior < 3
-#        @model.set({prior:++prior})
-#        @_savePrior()
-#
-#    decPrior: ->
-#      prior = @model.get('prior')
-#      if prior >= 0
-#        @model.set({prior:prior-1})
-#        @_savePrior()
+    decPrior: ->
+      @slideUp()
+      prior = @model.get('prior')
+      if prior >= 0
+        @model.set({prior:prior-1})
+        @_savePrior()
 
     edit: ->
       unless @$el.find('.panel-todo').hasClass('saving')
@@ -43,7 +49,6 @@
           model:  @model
           action: 'edit'
         @listenTo edit, "cancel", @cancelEdit
-#        @listenTo @model, "done",   @successEdit
         @$el.html(edit.form.render().el)
         $('textarea', @$el).trigger('autosize.resize')
 
@@ -55,12 +60,9 @@
     successEdit: ->
       @cancelEdit()
       @addSavingClass()
-      @listenTo @model, "server:saved", ->
-        @removeSavingClass()
       @listenTo @model, "server:error", ->
         @removeSavingClass()
         @edit()
-#        App.reloadPage()
 
     _setContent: ->
       content = @model.get('content')
@@ -90,15 +92,12 @@
       priorLabel = App.request "todos:entity:prior:label", @model.get('prior')
       $('.panel-todo', @$el).addClass("prior-#{priorLabel}")
 
-#    _savePrior: ->
-#      @model.save({},
-#        success: (todo, jqXHR) =>
-#          @model.collection.sort()
-#          @render().$el.hide().show('slide', {}, 'fast')
-#          @trigger('priorUpd')
-#        error: (todo, jqXHR) =>
-#          console.log(jqXHR.responseText)
-#      )
+    _savePrior: ->
+      @model.save({},
+        success: (todo, jqXHR) =>
+          @trigger('priorUpd')
+          @model.trigger('slideDown')
+      )
 
   class List.Empty extends Marionette.ItemView
     template: 'components/todos/list/templates/empty'
@@ -108,7 +107,7 @@
     emptyView: List.Empty
     itemEvents:
       'priorUpd': 'rerender'
-    rerender: (el, la) ->
-      console.log(@collection)
+    rerender: () ->
+      @collection.sort()
       @$el.html('')
       @render()

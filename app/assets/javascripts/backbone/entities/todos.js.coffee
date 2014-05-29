@@ -68,7 +68,7 @@
       return 0
 
     makeGroups: =>
-#      @sort()
+      @sort()
       @groupedStates = @_groupByA(@, 'state')
       model.groupedKinds = @_groupByA(model.vc, 'kind') for model in @groupedStates.models
       model.groupedCalendars = @_groupByA(model.vc, 'schedule_label') for model in @groupedStates.models
@@ -88,18 +88,19 @@
           #todo return empty collection
           finalCollection = stateCollection
       todos = finalCollection.vc if finalCollection
-      todos.href = @_makeHref([state, group, label])
-      todos.label = @_makeLabel(state, label)
+#      todos.href = @_makeHref([state, group, label])
+#      todos.label = @_makeLabel(state, label)
+      todos.comparator = @comparator
       return todos
-
-    _makeHref: (arr) ->
-      newArr = arr.filter (item) -> item isnt undefined
-      'filter/' + newArr.join('/')
-
-
-    _makeLabel: (state, label=false) =>
-      label = state unless label
-      return label
+#
+#    _makeHref: (arr) ->
+#      newArr = arr.filter (item) -> item isnt undefined
+#      'filter/' + newArr.join('/')
+#
+#
+#    _makeLabel: (state, label=false) =>
+#      label = state unless label
+#      return label
 
 
     _groupByA: (collection, attr) =>
