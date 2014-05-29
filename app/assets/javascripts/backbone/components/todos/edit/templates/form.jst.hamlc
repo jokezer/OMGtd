@@ -5,7 +5,7 @@
   .panel-heading
     %small.pull-right
       %span.glyphicon.glyphicon-time
-      %input.todo-due.edit{type:'text', name:'due', placeholder:'____-__-__ __:__', value:@jdue?.toLocaleString()}
+      %input.todo-due.edit{type:'text', name:'due', placeholder:'____-__-__ __:__', value:@jdue}
       -#%button.btn.btn-default.btn-xs{type: "button"} Go!
     %span.glyphicon.glyphicon-pencil.pull-left
     %input.panel-title.edit{type:'text', name:'title', placeholder:'New todo', value: @title}

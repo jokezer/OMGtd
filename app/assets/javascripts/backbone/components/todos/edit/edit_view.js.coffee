@@ -3,8 +3,6 @@
   class Edit.Form extends Marionette.ItemView
     template: 'components/todos/edit/templates/form'
     tagName: 'form'
-    triggers:
-      'dblclick'            : 'consoler'
 
     events:
       'click .change-prior label': 'changePrior'

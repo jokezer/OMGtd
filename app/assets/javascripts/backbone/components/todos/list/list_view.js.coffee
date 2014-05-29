@@ -9,9 +9,20 @@
 #      "click .inc-prior"  : "incPrior",
 #      "click .dec-prior"  : "decPrior",
 
+    initialize: ->
+      @listenTo @model, 'done', @successEdit
+
     slideUp: ->
       console.log('updated')
       @$el.hide().show('slide', {}, 'fast')
+
+    addSavingClass: () ->
+      @$el.find('.panel-todo').addClass('saving')
+
+    removeSavingClass: () ->
+      @$el.find('.panel-todo').removeClass('saving')
+
+
 
 #    incPrior: ->
 #      prior = @model.get('prior')
@@ -28,9 +39,11 @@
     edit: ->
       unless @$el.find('.panel-todo').hasClass('saving')
         @undelegateEvents()
-        edit = App.request "todos:edit", @model
+        edit = App.request "todos:edit",
+          model:  @model
+          action: 'edit'
         @listenTo edit, "cancel", @cancelEdit
-        @listenTo edit, "done",   @successEdit
+#        @listenTo @model, "done",   @successEdit
         @$el.html(edit.form.render().el)
         $('textarea', @$el).trigger('autosize.resize')
 
@@ -41,11 +54,11 @@
 
     successEdit: ->
       @cancelEdit()
-      @$el.find('.panel-todo').addClass('saving')
-      @listenTo @model, "successSave", ->
-        @$el.find('.panel-todo').removeClass('saving')
-      @listenTo @model, "validationError", ->
-        @$el.find('.panel-todo').removeClass('saving')
+      @addSavingClass()
+      @listenTo @model, "server:saved", ->
+        @removeSavingClass()
+      @listenTo @model, "server:error", ->
+        @removeSavingClass()
         @edit()
 #        App.reloadPage()
 
@@ -99,3 +112,6 @@
       console.log(@collection)
       @$el.html('')
       @render()
+#    onAfterItemAdded: (itemView) ->
+#      console.log('itemAdded')
+#      itemView.$el.find('.panel-todo').addClass('saving')

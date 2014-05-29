@@ -3,25 +3,25 @@
   class Edit.Controller extends App.Controllers.Base
   #TODO todo dont save if click to edit another one before first saved
 
-    initialize: (model, collection, opts) ->
-      @model      = model
-      @collection = collection
+    initialize: (data) ->
+      @model      = data.model
+      @action     = data.action
       @form = @getFormView()
-      @listenTo @form, "consoler", =>
-        console.log('consoller')
       @listenTo @form, "save", @save
       @listenTo @form, "cancel", ->
         @trigger "cancel"
 
     save: ->
       @model.set(@getFormData())
+      if @action == 'new'
+        App.todos.add(@model)
       @model.save({},
         success: (todo, resp) ->
           if Object.keys(resp.errors).length
             todo.validationError = resp.errors
-            todo.trigger 'validationError'
+            todo.trigger 'server:error'
           else
-            todo.trigger 'successSave'
+            todo.trigger 'server:saved'
         error: ->
           alert('Server error!')
       )
@@ -29,7 +29,8 @@
         @form.render()
         $('textarea', @form.$el).trigger('autosize.resize')
       else
-        @trigger("done")
+#        @trigger("done")
+        @model.trigger("done")
 
     getFormData: ->
       formData = Backbone.Syphon.serialize(@form)
@@ -40,6 +41,6 @@
     getFormView: () ->
       new Edit.Form @model, @collection
 
-  App.reqres.setHandler "todos:edit", (model, collection, opts={}) ->
-    form = new Edit.Controller model, collection, opts
+  App.reqres.setHandler "todos:edit", (data) ->
+    form = new Edit.Controller(data)
     form

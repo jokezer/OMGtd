@@ -29,8 +29,8 @@
       prior: 0
 
     validation:
-      title:
-        required: true
+#      title:
+#        required: true
       kind:
         required: false
         oneOf: @kinds
