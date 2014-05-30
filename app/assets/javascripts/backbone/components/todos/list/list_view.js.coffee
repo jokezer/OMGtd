@@ -2,21 +2,25 @@
 
   class List.Item extends Marionette.ItemView
     template: 'components/todos/list/templates/todo'
-    move = false
+    move: false
     events:
       "dblclick"          : "edit"
       "click .showMore"   : "toggleContent"
       "click .hideContent": "toggleContent"
       "click .inc-prior"  : "incPrior",
       "click .dec-prior"  : "decPrior",
-
+    # on @model event server:saved run rerender if prior was changed
     initialize: ->
       @listenTo @model, 'slideDown', @slideDown
       @listenTo @model, 'done', @successEdit
       @listenTo @model, "server:saved", ->
-        @removeSavingClass()
-#      @listenTo @model, "change:prior", ->
-#        @move = true
+        @removeSavingClass() #or move
+        if @move
+          @model.trigger('move')
+          @model.trigger('slideDown')
+
+      @listenTo @model, "change:prior", ->
+        @move = true
 #      @listenTo @model, "change:due", ->
 #        @move = true
       @listenTo @model, "move", ->
@@ -101,13 +105,13 @@
       $('.panel-todo', @$el).addClass("prior-#{priorLabel}")
 
     _savePrior: ->
-#      @model = App.request "save:todos:entity",
-#        model: @model
-      @model.save({},
-        success: (todo, jqXHR) =>
-          @model.trigger('move')
-          @model.trigger('slideDown')
-      )
+      @model = App.request "save:todos:entity",
+        model: @model
+#      @model.save({},
+#        success: (todo, jqXHR) =>
+#          @model.trigger('move')
+#          @model.trigger('slideDown')
+#      )
 
   class List.Empty extends Marionette.ItemView
     template: 'components/todos/list/templates/empty'
