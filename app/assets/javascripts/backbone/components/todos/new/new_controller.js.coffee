@@ -7,14 +7,16 @@
       @layout = @getLayoutView()
       @listenTo @layout, 'show',        @loadLayout
       @listenTo @layout, 'show:form',   @showForm
-      @listenTo @layout, 'cancelEdit',   @closeForm
 
+    console: ->
+      console.log 'cancel eing'
     showForm: ->
       @model = App.request "new:todos:entity"
       @button.close()
       @form = @getFormView()
       @layout.createNewRegion.show @form.form
-      @listenTo @model,   'done',  @closeForm
+      @listenTo @form,    'cancel',       @closeForm
+      @listenTo @model,   'server:send',  @closeForm
 
     closeForm: ->
       @form.close()

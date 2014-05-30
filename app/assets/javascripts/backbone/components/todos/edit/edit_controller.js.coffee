@@ -10,18 +10,16 @@
       @listenTo @form, "save", @save
       @listenTo @form, "cancel", ->
         @trigger "cancel"
-    #      @listenTo @model, 'slideUp', @slideUp
-
 
     save: ->
       @model.set(@getFormData())
-      App.todos.add(@model) if @action == 'new'
       @model = App.request "save:todos:entity",
         model: @model
       if @model.validationError
         @form.render()
         $('textarea', @form.$el).trigger('autosize.resize')
       else
+        App.todos.add(@model) if @action == 'new'
         @model.trigger("server:send")
 
     getFormData: ->

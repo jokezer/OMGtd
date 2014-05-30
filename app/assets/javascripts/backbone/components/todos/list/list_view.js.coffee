@@ -111,11 +111,20 @@
     template: 'components/todos/list/templates/empty'
 
   class List.Collection extends Marionette.CollectionView
+
     itemView: List.Item
     emptyView: List.Empty
+
+    events:
+      click: 'rere'
+
     itemEvents:
       move: 'rerender'
+
     rerender: () ->
       @collection.sort()
       @$el.html('')
       @render()
+
+    rere: (ev, el) ->
+      console.log @collection

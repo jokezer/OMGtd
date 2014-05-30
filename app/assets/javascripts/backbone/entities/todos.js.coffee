@@ -75,8 +75,9 @@
       model.groupedContexts = @_groupByA(model.vc, 'context_id') for model in @groupedStates.models
 
     getGroup: (state, group, label) =>
-      todos = new Gtd.Collections.Todos()
+      todos = new OMGtd.Entities.TodosCollection
       stateCollection = @groupedStates.get(state)
+      return todos unless stateCollection
       switch group
         when 'kind'
           finalCollection = stateCollection.groupedKinds.get(label)
