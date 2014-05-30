@@ -8,8 +8,8 @@
         collection: @leftElements
     showContexts: ->
       new SidebarsApp.Contexts.Controller
-       region: App.rightSidebarRegion
-       collection: @leftElements
+        region: App.rightSidebarRegion
+        collection: @leftElements
 
 
   SidebarsApp.on "start", ->

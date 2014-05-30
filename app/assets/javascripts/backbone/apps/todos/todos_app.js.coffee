@@ -8,7 +8,9 @@
 
   API =
     index: ->
-      console.log('index page of application')
+      new TodosApp.Filter.Controller
+        region: App.centralRegion
+        todos: App.todos
 
     filterState: (state, group=false, label=false) ->
       new TodosApp.Filter.Controller

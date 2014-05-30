@@ -5,6 +5,7 @@
 
     initialize: (data) ->
       @model      = data.model
+      @collection = data.collection
       @action     = data.action
       @form = @getFormView()
       @listenTo @form, "save", @save
@@ -20,6 +21,7 @@
         $('textarea', @form.$el).trigger('autosize.resize')
       else
         App.todos.add(@model) if @action == 'new'
+        @collection.add(@model) if @collection #if first to_do in collection
         @model.trigger("server:send")
 
     getFormData: ->

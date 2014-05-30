@@ -30,6 +30,7 @@
     getFormView: () ->
       App.request "todos:edit",
         model:   @model,
+        collection: @collection
         action:  'new'
 
     getButtonView: () ->

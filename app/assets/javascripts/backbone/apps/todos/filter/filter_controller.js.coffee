@@ -3,31 +3,27 @@
   class Filter.Controller extends App.Controllers.Base
 
     initialize: (data) ->
+      @todos = data.todos
       @layout = @getLayoutView()
       @listenTo @layout, "show", =>
-        @showCollection(data.todos)
-        @showNew(data.todos)
+        @showCollection()
+        @showNew()
 #        @showNew2()
-
       @show @layout
 
-    showCollection: (todos) ->
-      collectionView = @getTodosView todos
+    showCollection: () ->
+      collectionView = @getTodosView()
       @layout.todosRegion.show collectionView
 
-    showNew: (todos) ->
-      newView = @getNewView(todos)
+    showNew: () ->
+      newView = @getNewView()
       @layout.newRegion.show newView
-
-#    showNew2: () ->
-#      editView = App.request "todos:edit"
-#      @layout.newRegion.show editView
 
     getLayoutView: ->
       new Filter.Layout()
 
-    getTodosView: (todos) ->
-      App.request "todos:list", todos
+    getTodosView: ->
+      App.request "todos:list", @todos
 
-    getNewView: (todos) ->
-      App.request "todos:new", collection: todos
+    getNewView: () ->
+      App.request "todos:new", collection: @todos
