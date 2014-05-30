@@ -135,16 +135,18 @@
     getTodoPriors: ->
       Entities.Todo.priors
 
-    saveTodo: (model, collection) ->
-      if model.isValid(true)
-        model.save({},
-          success: (todo, jqXHR) =>
-            collection.add(model)
-          error: (todo, jqXHR) =>
-            console.log(jqXHR)
-        )
-      else
-        console.log('render huender')
+    saveTodo: (data) ->
+      model = data.model
+      model.save({},
+        success: (todo, resp) ->
+          if Object.keys(resp.errors).length
+            todo.validationError = resp.errors
+            todo.trigger 'server:error'
+          else
+            todo.trigger 'server:saved'
+        error: ->
+          console.log('Server error!')
+      )
       model
 
     getPriorLabel: (key) ->
@@ -168,5 +170,6 @@
   App.reqres.setHandler "todos:entity:prior:label", (key) ->
     API.getPriorLabel key
 
-  App.reqres.setHandler "create:todos:entity", (model, collection) ->
-    API.saveTodo(model, collection)
+  App.reqres.setHandler "save:todos:entity", (data) ->
+    API.saveTodo
+      model:      data.model

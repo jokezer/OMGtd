@@ -13,23 +13,13 @@
 
     save: ->
       @model.set(@getFormData())
-      if @action == 'new'
-        App.todos.add(@model)
-      @model.save({},
-        success: (todo, resp) ->
-          if Object.keys(resp.errors).length
-            todo.validationError = resp.errors
-            todo.trigger 'server:error'
-          else
-            todo.trigger 'server:saved'
-        error: ->
-          alert('Server error!')
-      )
+      App.todos.add(@model) if @action == 'new'
+      @model = App.request "save:todos:entity",
+        model: @model
       if @model.validationError
         @form.render()
         $('textarea', @form.$el).trigger('autosize.resize')
       else
-#        @trigger("done")
         @model.trigger("done")
 
     getFormData: ->

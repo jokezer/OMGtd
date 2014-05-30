@@ -2,6 +2,7 @@
 
   class List.Item extends Marionette.ItemView
     template: 'components/todos/list/templates/todo'
+    move = false
     events:
       "dblclick"          : "edit"
       "click .showMore"   : "toggleContent"
@@ -14,12 +15,19 @@
       @listenTo @model, 'done', @successEdit
       @listenTo @model, "server:saved", ->
         @removeSavingClass()
+#      @listenTo @model, "change:prior", ->
+#        @move = true
+#      @listenTo @model, "change:due", ->
+#        @move = true
+      @listenTo @model, "move", ->
+        @trigger 'move'
+#        @slideDown()
 
     slideDown: ->
-      @$el.hide().show('slide', {}, 'fast')
+      @$el.find('.panel-todo').hide().show('slide', {}, 'fast')
 
     slideUp: ->
-      @$el.hide('slide', {}, 'fast', ->
+      @$el.find('.panel-todo').hide('slide', {}, 'fast', ->
         $(this).css('visibility', 'hidden').show())
 
     addSavingClass: () ->
@@ -93,9 +101,11 @@
       $('.panel-todo', @$el).addClass("prior-#{priorLabel}")
 
     _savePrior: ->
+#      @model = App.request "save:todos:entity",
+#        model: @model
       @model.save({},
         success: (todo, jqXHR) =>
-          @trigger('priorUpd')
+          @model.trigger('move')
           @model.trigger('slideDown')
       )
 
@@ -106,7 +116,7 @@
     itemView: List.Item
     emptyView: List.Empty
     itemEvents:
-      'priorUpd': 'rerender'
+      move: 'rerender'
     rerender: () ->
       @collection.sort()
       @$el.html('')
