@@ -29,7 +29,6 @@
 
     save: ->
       $('.panel-todo', @$el).addClass 'saving'
-      @$el.block message: null
       @trigger('save')
 
     serializeData: ->

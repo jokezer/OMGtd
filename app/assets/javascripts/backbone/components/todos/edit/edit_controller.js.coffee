@@ -10,6 +10,8 @@
       @listenTo @form, "save", @save
       @listenTo @form, "cancel", ->
         @trigger "cancel"
+    #      @listenTo @model, 'slideUp', @slideUp
+
 
     save: ->
       @model.set(@getFormData())
@@ -20,7 +22,7 @@
         @form.render()
         $('textarea', @form.$el).trigger('autosize.resize')
       else
-        @model.trigger("done")
+        @model.trigger("server:send")
 
     getFormData: ->
       formData = Backbone.Syphon.serialize(@form)
