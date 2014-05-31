@@ -59,7 +59,6 @@
     model: Entities.Todo
     url: -> '/todos/'
     initialize: () ->
-#      @on('change', @makeGroups, @)
       @on('reset', @makeGroups, @)
 
     comparator: (itemA, itemB) =>
@@ -76,14 +75,12 @@
         App.request 'todos:entity:kinds') for model in @groupedStates.models
       model.groupedCalendars = @_groupByA(model.vc, 'schedule_label',
         App.request 'todos:entity:calendars') for model in @groupedStates.models
+      contexts = App.contexts.pluck('id')
       model.groupedContexts = @_groupByA(model.vc, 'context_id',
-        App.contexts.pluck('id')) for model in @groupedStates.models
+        contexts) for model in @groupedStates.models
 
     getGroup: (state, group, label) =>
-#      todos = new OMGtd.Entities.TodosCollection #if empty - needs to refactor it
-#      todos = @groupedStates.get('test').vc
       stateCollection = @groupedStates.get(state)
-#      return todos unless stateCollection
       switch group
         when 'kind'
           finalCollection = stateCollection.groupedKinds.get(label)
@@ -94,9 +91,8 @@
         else
           #todo return empty collection
           finalCollection = stateCollection
+#      finalCollection = finalCollection || stateCollection
       todos = finalCollection.vc
-#      todos.href = @_makeHref([state, group, label])
-#      todos.label = @_makeLabel(state, label)
       todos.comparator = @comparator
       return todos
 #

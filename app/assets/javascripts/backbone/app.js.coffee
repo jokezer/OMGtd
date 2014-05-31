@@ -25,21 +25,9 @@
     App.execute "when:fetched", @contexts, =>
       App.trigger('loaded:contexts')
 
+  App.on "loaded:contexts", ->
     @todos = App.request "todos:entities"
     App.execute "when:fetched", @todos, =>
-      App.trigger('loaded:todos')
-
-
-  App.on "loaded:contexts", ->
-    App.loaded.contexts = true
-    App.trigger('loaded:something')
-
-  App.on "loaded:todos", ->
-    App.loaded.todos = true
-    App.trigger('loaded:something')
-
-  App.on "loaded:something", ->
-    if App.loaded.contexts && App.loaded.todos
       App.trigger('loaded:finished')
 
   App.on "loaded:finished", ->
