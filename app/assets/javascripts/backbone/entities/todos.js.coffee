@@ -9,6 +9,7 @@
 
     @kinds = ['next', 'someday', 'waiting', 'scheduled', 'cycled']
     @states = ['inbox', 'active', 'trash', 'completed']
+    @calendars = ['today', 'tomorrow', 'no']
     @priors = {0: 'none', 1: 'low', 2: 'medium', 3: 'high'}
 
     initialize: () ->
@@ -58,7 +59,7 @@
     model: Entities.Todo
     url: -> '/todos/'
     initialize: () ->
-      @on('change', @makeGroups, @)
+#      @on('change', @makeGroups, @)
       @on('reset', @makeGroups, @)
 
     comparator: (itemA, itemB) =>
@@ -69,15 +70,20 @@
 
     makeGroups: =>
       @sort()
-      @groupedStates = @_groupByA(@, 'state')
-      model.groupedKinds = @_groupByA(model.vc, 'kind') for model in @groupedStates.models
-      model.groupedCalendars = @_groupByA(model.vc, 'schedule_label') for model in @groupedStates.models
-      model.groupedContexts = @_groupByA(model.vc, 'context_id') for model in @groupedStates.models
+      @groupedStates = @_groupByA(@, 'state',
+        App.request 'todos:entity:states')
+      model.groupedKinds = @_groupByA(model.vc, 'kind',
+        App.request 'todos:entity:kinds') for model in @groupedStates.models
+      model.groupedCalendars = @_groupByA(model.vc, 'schedule_label',
+        App.request 'todos:entity:calendars') for model in @groupedStates.models
+      model.groupedContexts = @_groupByA(model.vc, 'context_id',
+        App.contexts.pluck('id')) for model in @groupedStates.models
 
     getGroup: (state, group, label) =>
-      todos = new OMGtd.Entities.TodosCollection
+#      todos = new OMGtd.Entities.TodosCollection #if empty - needs to refactor it
+#      todos = @groupedStates.get('test').vc
       stateCollection = @groupedStates.get(state)
-      return todos unless stateCollection
+#      return todos unless stateCollection
       switch group
         when 'kind'
           finalCollection = stateCollection.groupedKinds.get(label)
@@ -88,7 +94,7 @@
         else
           #todo return empty collection
           finalCollection = stateCollection
-      todos = finalCollection.vc if finalCollection
+      todos = finalCollection.vc
 #      todos.href = @_makeHref([state, group, label])
 #      todos.label = @_makeLabel(state, label)
       todos.comparator = @comparator
@@ -104,9 +110,10 @@
 #      return label
 
 
-    _groupByA: (collection, attr) =>
+    _groupByA: (collection, attr, ids) =>
       Backbone.buildGroupedCollection({
         collection: collection,
+        group_ids: ids,
         groupBy: (todo) =>
           return todo.get(attr)
       })
@@ -130,8 +137,14 @@
     newTodo: ->
       new Entities.Todo
 
+    getTodoStates: ->
+      Entities.Todo.states
+
     getTodoKinds: ->
       Entities.Todo.kinds
+
+    getTodoCalendars: ->
+      Entities.Todo.calendars
 
     getTodoPriors: ->
       Entities.Todo.priors
@@ -162,8 +175,14 @@
   App.reqres.setHandler "new:todos:entity", ->
     API.newTodo()
 
+  App.reqres.setHandler "todos:entity:states", ->
+    API.getTodoStates()
+
   App.reqres.setHandler "todos:entity:kinds", ->
     API.getTodoKinds()
+
+  App.reqres.setHandler "todos:entity:calendars", ->
+    API.getTodoCalendars()
 
   App.reqres.setHandler "todos:entity:priors", ->
     API.getTodoPriors()

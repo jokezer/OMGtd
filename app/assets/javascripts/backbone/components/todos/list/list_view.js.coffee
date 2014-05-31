@@ -75,8 +75,8 @@
         @model.trigger('move')
         @model.trigger('slideDown')
       else
-        App.reloadPage() #if filter collection is empty
 #        @removeSavingClass()
+        @render()
 
     _setContent: ->
       content = @model.get('content')
@@ -118,6 +118,9 @@
 
     itemEvents:
       move: 'rerender'
+#
+#    initialize: ->
+#      console.log @collection
 
     rerender: () ->
       @collection.sort()

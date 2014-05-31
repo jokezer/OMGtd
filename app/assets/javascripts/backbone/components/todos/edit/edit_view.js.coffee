@@ -11,9 +11,8 @@
       'click a.save'             : 'save'
       'click a.cancel'           : 'cancelEdit'
 
-    initialize: (model, collection, opts) ->
+    initialize: (model) ->
       @model = model
-      @collection = collection
 
     leaveElement: ->
       saveTodo =  (view) ->

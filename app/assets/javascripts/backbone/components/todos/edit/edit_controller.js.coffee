@@ -1,7 +1,6 @@
 @OMGtd.module "Components.Todos.Edit", (Edit, App, Backbone, Marionette, $, _) ->
 
   class Edit.Controller extends App.Controllers.Base
-  #TODO todo dont save if click to edit another one before first saved
 
     initialize: (data) ->
       @model      = data.model
@@ -21,7 +20,6 @@
         $('textarea', @form.$el).trigger('autosize.resize')
       else
         App.todos.add(@model) if @action == 'new'
-        @collection.add(@model) if @collection #if first to_do in collection
         @model.trigger("server:send")
 
     getFormData: ->
@@ -31,7 +29,7 @@
       formData
 
     getFormView: () ->
-      new Edit.Form @model, @collection
+      new Edit.Form @model
 
   App.reqres.setHandler "todos:edit", (data) ->
     form = new Edit.Controller(data)

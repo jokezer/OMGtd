@@ -3,7 +3,7 @@
   class New.Controller extends App.Controllers.Base
 
     initialize: (data) ->
-      @collection = data.collection
+#      @collection = data.collection
       @layout = @getLayoutView()
       @listenTo @layout, 'show',        @loadLayout
       @listenTo @layout, 'show:form',   @showForm
@@ -30,7 +30,6 @@
     getFormView: () ->
       App.request "todos:edit",
         model:   @model,
-        collection: @collection
         action:  'new'
 
     getButtonView: () ->

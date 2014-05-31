@@ -114,7 +114,7 @@
      * @param {Object} options
      */
     Lib._onReset = function (options) {
-        var group_ids = _.uniq(options.collection.map(options.groupBy));
+        var group_ids = options.group_ids || _.uniq(options.collection.map(options.groupBy));
         options.group_collection.reset(_.map(group_ids, _.partial(Lib._createGroup, options)));
     };
 
