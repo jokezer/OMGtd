@@ -74,7 +74,7 @@
         }});
         group = new Constructor({id: group_id, vc: vc});
         group.vc = vc;
-        vc.listenTo(vc, 'remove', _.partial(Lib._onVcRemove, options.group_collection, group));
+//        vc.listenTo(vc, 'remove', _.partial(Lib._onVcRemove, options.group_collection, group));
 
         return group;
     };
