@@ -94,6 +94,7 @@
 #      finalCollection = finalCollection || stateCollection
       todos = finalCollection.vc
       todos.comparator = @comparator
+      todos.sort()
       return todos
 #
 #    _makeHref: (arr) ->
