@@ -32,5 +32,5 @@
 
   App.on "loaded:finished", ->
     App.module("SidebarsApp").start()
-    @navigate(@rootRoute, trigger: true) unless @getCurrentRoute()
     @startHistory()
+    @navigate(@rootRoute, trigger: true) unless @getCurrentRoute()
