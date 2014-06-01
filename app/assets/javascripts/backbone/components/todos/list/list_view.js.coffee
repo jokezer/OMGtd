@@ -9,16 +9,20 @@
       "click .hideContent": "toggleContent"
       "click .inc-prior"  : "incPrior",
       "click .dec-prior"  : "decPrior",
+#      "click"             : "describe"
     initialize: ->
       @listenTo @model, 'slideDown', @slideDown
       @listenTo @model, 'server:send', @successEdit
       @listenTo @model, "server:saved", @successSync
       @listenTo @model, "change:prior", ->
         @move = true
-#      @listenTo @model, "change:due", ->
-#        @move = true
+      @listenTo @model, "change:due", ->
+        @move = true
       @listenTo @model, "reSort", ->
         @trigger 'reSort' #for collection view
+
+    describe: ->
+      console.log @model.attributes
 
     slideDown: ->
       @$el.find('.panel-todo').hide().show('slide', {}, 'fast')

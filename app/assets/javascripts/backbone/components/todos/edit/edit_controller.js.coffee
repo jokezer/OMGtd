@@ -26,7 +26,7 @@
 
     getFormData: ->
       formData = Backbone.Syphon.serialize(@form)
-      formData.context_id = parseInt(formData.context_id, 10)
+      formData.context_id = parseInt(formData.context_id, 10) if formData.context_id
       formData.prior      = parseInt(formData.prior, 10)
       formData
 

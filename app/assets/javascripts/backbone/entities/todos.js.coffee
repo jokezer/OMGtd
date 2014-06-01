@@ -17,10 +17,7 @@
       @_setState()
       @on('save', @_setState, @)
       @on('change', @_setState, @)
-      @on('save', @_setJdate, @)
-      @on('change', @_setJdate, @)
-      @bind('validated:invalid', (model, errors) ->
-        console.log(errors))
+      @on('change:due_seconds', @_setJdate, @)
 
     defaults:
       title: ''
@@ -28,6 +25,7 @@
       state: 'inbox'
       kind: ''
       prior: 0
+      due: ''
 
     validation:
       title:
@@ -48,12 +46,16 @@
 
     _setJdate: () ->
       jDate = @get('due_seconds')
-      if jDate
-        jDate = new Date(Number(jDate) * 1000);
-        @set({jdue:jDate}, silent:true) #todo set to due?
+      if jDate && jDate < 9999999999
+        d = new Date(Number(jDate) * 1000)
+        m = d.getMonth()+1
+        jDate = d.getFullYear()+'-'+@fd(m)+'-'+@fd(d.getDate())+' '+@fd(d.getHours())+':'+@fd(d.getMinutes())
+        @set({due:jDate}, silent:true) #todo set to due?
       else
         @set({due_seconds:9999999999}, silent:true) #use for sorting
 
+    fd: (m) ->
+      if m <=9 then '0' + m else m
 
   class Entities.TodosCollection extends App.Entities.Collection
     model: Entities.Todo

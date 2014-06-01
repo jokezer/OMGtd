@@ -8,7 +8,6 @@
       @listenTo @layout, "show", =>
         @showCollection()
         @showNew()
-#        @showNew2()
       @show @layout
 
     showCollection: () ->

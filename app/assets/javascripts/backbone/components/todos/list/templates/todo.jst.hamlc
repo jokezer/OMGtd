@@ -3,7 +3,7 @@
     -if @due
       %small.pull-right
         %span.glyphicon.glyphicon-time
-        due  #{@jdue.toLocaleString() if @jdue}
+        due  #{@due.toLocaleString() if @due}
     %h5.info.panel-title= @title
     -#%input.panel-title.edit{type:'text', name:'todo[title]', value:@title}
   .panel-body
