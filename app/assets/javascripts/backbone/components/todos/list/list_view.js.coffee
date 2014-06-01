@@ -17,8 +17,8 @@
         @move = true
 #      @listenTo @model, "change:due", ->
 #        @move = true
-      @listenTo @model, "move", ->
-        @trigger 'move' #for collection view
+      @listenTo @model, "reSort", ->
+        @trigger 'reSort' #for collection view
 
     slideDown: ->
       @$el.find('.panel-todo').hide().show('slide', {}, 'fast')
@@ -72,7 +72,7 @@
 
     successSync: ->
       if @move
-        @model.trigger('move')
+        @model.trigger('reSort')
         @model.trigger('slideDown')
       else
 #        @removeSavingClass()
@@ -117,12 +117,9 @@
     emptyView: List.Empty
 
     itemEvents:
-      move: 'rerender'
-#
-#    initialize: ->
-#      console.log @collection
+      reSort: 'reRender'
 
-    rerender: () ->
+    reRender: () ->
       @collection.sort()
       @$el.html('')
       @render()

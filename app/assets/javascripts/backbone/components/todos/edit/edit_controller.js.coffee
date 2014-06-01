@@ -19,7 +19,9 @@
         @form.render()
         $('textarea', @form.$el).trigger('autosize.resize')
       else
-        App.todos.add(@model) if @action == 'new'
+        if @action == 'new'
+          App.todos.add(@model)
+          @model.trigger 'reSort'
         @model.trigger("server:send")
 
     getFormData: ->
