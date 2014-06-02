@@ -161,6 +161,18 @@
       )
       model
 
+    destroyTodo: (data) ->
+      model = data.model
+      model.destroy(
+        success: (todo, resp) ->
+          if resp == true
+            todo.trigger 'server:destroyed'
+            console.log 'successful deleted'
+        error: ->
+          console.log('Server error!')
+      )
+
+
     getPriorLabel: (key) ->
       Entities.Todo.priors[key]
 
@@ -190,4 +202,8 @@
 
   App.reqres.setHandler "save:todos:entity", (data) ->
     API.saveTodo
+      model:      data.model
+
+  App.reqres.setHandler "destroy:todos:entity", (data) ->
+    API.destroyTodo
       model:      data.model

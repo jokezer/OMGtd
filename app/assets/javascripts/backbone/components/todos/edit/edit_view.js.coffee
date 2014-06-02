@@ -5,30 +5,39 @@
     tagName: 'form'
 
     events:
-      'click .change-prior label': 'changePrior'
-      'mouseleave'               : 'leaveElement'
-      'focusout'                 : 'leaveElement'
-      'click a.save'             : 'save'
-      'click a.cancel'           : 'cancelEdit'
-      'click a.trash'            : 'saveTrash'
-      'click a.complete'         : 'saveComplete'
-      'click a.activate'         : 'saveActivated'
+      'click .change-prior label'       : 'changePrior'
+      'mouseleave'                      : 'leaveElement'
+      'focusout'                        : 'leaveElement'
+      'click a.save'                    : 'save'
+      'click a.cancel'                  : 'cancelEdit'
+      'click a.trash'                   : 'saveTrash'
+      'click a.complete'                : 'saveComplete'
+      'click a.activate'                : 'saveActivated'
+      'click button.showConfirmDelete'  : 'showConfirmDelete'
+      'click button.hideConfirmDelete'  : 'hideConfirmDelete'
+      'click button.confirmDelete'      : 'destroy'
 
     initialize: (model) ->
       @model = model
 
+    destroy: ->
+      @trigger('destroy')
+
+    showConfirmDelete: ->
+      @$el.find('button.delCon').appendTo('.deleteGroup', @$el)
+
+    hideConfirmDelete: ->
+      @$el.find('button.delCon').appendTo('.confirmButtons', @$el)
+
     saveActivated: () ->
-#      clearTimeout(@timer)
       @model.moveTo = 'active'
       @save()
 
     saveTrash: () ->
-#      clearTimeout(@timer)
       @model.moveTo = 'trash'
       @save()
 
     saveComplete: () ->
-#      clearTimeout(@timer)
       @model.moveTo = 'completed'
       @save()
 

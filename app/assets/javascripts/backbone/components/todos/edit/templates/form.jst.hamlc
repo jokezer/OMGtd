@@ -49,3 +49,11 @@
         %a.activate.btn.btn-info.btn-sm
           %span.glyphicon.glyphicon-ok-sign
           Activate
+        .btn-group.deleteGroup
+          %button.showConfirmDelete.btn.btn-danger.btn-sm{type:'button'}
+            %span.glyphicon.glyphicon-fire
+            Delete
+        %span.confirmButtons{style:'display: none;'}
+          %button.confirmDelete.delCon.btn.btn-danger.btn-sm{type:'button'} Yes
+          %button.hideConfirmDelete.delCon.btn.btn-danger.btn-sm{type:'button'} No
+

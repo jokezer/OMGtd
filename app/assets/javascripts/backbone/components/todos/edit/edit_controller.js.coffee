@@ -10,6 +10,11 @@
       @listenTo @form, "save", @save
       @listenTo @form, "cancel", ->
         @trigger "cancel"
+      @listenTo @form, "destroy", @destroy
+
+    destroy: ->
+      App.request "destroy:todos:entity",
+        model: @model
 
     save: ->
       @model.set(@getFormData())
