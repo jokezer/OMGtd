@@ -52,7 +52,7 @@
         Lib._onReset(options);
         options.group_collection.listenTo(options.collection, 'add', _.partial(Lib._onAdd, options));
         options.group_collection.listenTo(options.collection, 'change', _.partial(Lib._onAdd, options));
-        options.group_collection.listenTo(options.collection, 'remove', _.partial(Lib._onRemove, options));
+//        options.group_collection.listenTo(options.collection, 'remove', _.partial(Lib._onRemove, options));
         options.group_collection.listenTo(options.collection, 'reset', _.partial(Lib._onReset, options));
 
         return options.group_collection;
@@ -99,14 +99,14 @@
      * @param {Object} options
      * @param {Model} model
      */
-    Lib._onRemove = function (options, model) {
-        var id = options.groupBy(model),
-            group = options.group_collection.get(id);
-
-        if (group && !group.vc.length) {
-            options.group_collection.remove(group);
-        }
-    };
+//    Lib._onRemove = function (options, model) {
+//        var id = options.groupBy(model),
+//            group = options.group_collection.get(id);
+//
+//        if (group && !group.vc.length) {
+//            options.group_collection.remove(group);
+//        }
+//    };
 
     /**
      * Handles the reset event on the base collection

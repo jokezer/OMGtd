@@ -10,9 +10,27 @@
       'focusout'                 : 'leaveElement'
       'click a.save'             : 'save'
       'click a.cancel'           : 'cancelEdit'
+      'click a.trash'            : 'saveTrash'
+      'click a.complete'         : 'saveComplete'
+      'click a.activate'         : 'saveActivated'
 
     initialize: (model) ->
       @model = model
+
+    saveActivated: () ->
+#      clearTimeout(@timer)
+      @model.moveTo = 'active'
+      @save()
+
+    saveTrash: () ->
+#      clearTimeout(@timer)
+      @model.moveTo = 'trash'
+      @save()
+
+    saveComplete: () ->
+#      clearTimeout(@timer)
+      @model.moveTo = 'completed'
+      @save()
 
     leaveElement: ->
       saveTodo =  (view) ->
@@ -45,7 +63,7 @@
       @selectRadio 'kind',        @model.get('kind')
       @selectRadio 'context_id',  @model.get('context_id')
       $('textarea', @$el).autosize()
-      $('input.todo-due', @$el).datetimepicker({format: 'Y-m-d H:i'})
+      $('input.todo-due', @$el).datetimepicker({format: 'Y-m-d H:i', firstDay: 1})
       focusInput = ($el) ->
         $el.find('input.panel-title').focus()
       @timer = _.delay(focusInput, 30, @$el)

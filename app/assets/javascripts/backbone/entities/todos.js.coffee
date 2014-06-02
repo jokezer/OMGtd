@@ -93,7 +93,6 @@
         else
           #todo return empty collection
           finalCollection = stateCollection
-#      finalCollection = finalCollection || stateCollection
       todos = finalCollection.vc
       todos.comparator = @comparator
       todos.sort()

@@ -4,7 +4,9 @@
       %small.pull-right
         %span.glyphicon.glyphicon-time
         due  #{@due.toLocaleString() if @due}
-    %h5.info.panel-title= @title
+    %h5.info.panel-title
+      = @title
+      = @state
     -#%input.panel-title.edit{type:'text', name:'todo[title]', value:@title}
   .panel-body
     %span.pull-right

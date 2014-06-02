@@ -13,6 +13,7 @@
 
     save: ->
       @model.set(@getFormData())
+      @model.set(state:@model.moveTo) if @model.moveTo
       @model = App.request "save:todos:entity",
         model: @model
       if @model.validationError

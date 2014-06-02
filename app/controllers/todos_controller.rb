@@ -66,7 +66,7 @@ class TodosController < ApplicationController
 
   def todo_params
     params.require(:todo).permit(:title, :kind, :prior, :project_id,
-                                 :content, :due, :context_id)
+                                 :content, :due, :context_id, :state)
   end
 
   def get_todo

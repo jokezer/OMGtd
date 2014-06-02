@@ -8,8 +8,6 @@
       @listenTo @layout, 'show',        @loadLayout
       @listenTo @layout, 'show:form',   @showForm
 
-    console: ->
-      console.log 'cancel eing'
     showForm: ->
       @model = App.request "new:todos:entity"
       @button.close()
