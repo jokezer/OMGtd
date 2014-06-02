@@ -15,6 +15,9 @@
   SidebarsApp.on "start", ->
     API.showLeftSidebar()
     API.showContexts()
-    App.todos.on "validated:valid", ->
+    App.todos.on "validated:valid remove", ->
       API.showLeftSidebar()
       API.showContexts()
+#    App.todos.on "remove", ->
+#      API.showLeftSidebar()
+#      API.showContexts()

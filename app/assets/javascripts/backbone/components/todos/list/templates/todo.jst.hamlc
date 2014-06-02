@@ -4,7 +4,8 @@
       %small.pull-right
         %span.glyphicon.glyphicon-time
         due  #{@due.toLocaleString() if @due}
-    %h5.info.panel-title= @title
+    %h5.info.panel-title
+      = @title
     -#%input.panel-title.edit{type:'text', name:'todo[title]', value:@title}
   .panel-body
     %span.pull-right
@@ -37,6 +38,10 @@
     %span
       %small
         %span.label.label-default
+          -if @state == 'trash'
+            %span.glyphicon.glyphicon-trash
+          -if @state == 'completed'
+            %span.glyphicon.glyphicon-ok-sign
           = @kind||@state
         -if @project_id
           Project #{@project_id}

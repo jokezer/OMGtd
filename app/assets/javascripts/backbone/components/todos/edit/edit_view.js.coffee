@@ -21,6 +21,7 @@
       @model = model
 
     destroy: ->
+      clearTimeout(@timer)
       @trigger('destroy')
 
     showConfirmDelete: ->

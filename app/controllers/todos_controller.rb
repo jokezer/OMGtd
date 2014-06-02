@@ -1,6 +1,10 @@
 class TodosController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :get_todo, only: [:show, :update, :destroy, :change_prior]
+  before_filter :get_todo, only: [
+                                  :show,
+                                  :update,
+                                  :destroy,
+                                  ]
   layout 'single_page', only: [:spa, :old]
 
   def index
@@ -51,6 +55,7 @@ class TodosController < ApplicationController
 
   #todo refactor it
   def destroy
+    logger.debug "Start to delete todo #{@todo.id}"
     if @todo.can_delete?
       @todo.destroy
       response = @todo
@@ -72,8 +77,6 @@ class TodosController < ApplicationController
   def get_todo
     @todo = current_user.todos.find_by_id(params[:id])
     redirect_to root_path unless @todo
-    logger.info @todo
-    logger.info '@todo'
   end
 
 end

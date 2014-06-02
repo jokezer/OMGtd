@@ -13,6 +13,7 @@
       @listenTo @form, "destroy", @destroy
 
     destroy: ->
+      App.todos.remove(@model)
       App.request "destroy:todos:entity",
         model: @model
 
