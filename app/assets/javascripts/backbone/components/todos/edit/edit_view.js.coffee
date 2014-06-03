@@ -46,7 +46,8 @@
       saveTodo =  (view) ->
         unless $('.edit:focus', view.$el).length ||
           $('.panel-todo', view.$el).hasClass('saving') ||
-          view.$el.is(':hover')
+          view.$el.is(':hover') ||
+          view.model.isNew()
             view.save()
       @timer = _.delay(saveTodo, 200, @)
 
@@ -55,6 +56,7 @@
       @trigger 'cancel'
 
     save: ->
+      @undelegateEvents()
       $('.panel-todo', @$el).addClass 'saving'
       @trigger('save')
 

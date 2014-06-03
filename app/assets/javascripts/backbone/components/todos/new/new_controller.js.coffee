@@ -17,6 +17,8 @@
       @listenTo @model,   'server:send',  @closeForm
 
     closeForm: ->
+      @stopListening(@form)
+      @stopListening(@model)
       @form.close()
       @button = @getButtonView()
       @layout.createNewRegion.show @button
