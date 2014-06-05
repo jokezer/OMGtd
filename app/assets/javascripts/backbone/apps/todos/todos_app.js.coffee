@@ -8,7 +8,7 @@
 
   API =
     index: ->
-      new TodosApp.Filter.Controller
+      new TodosApp.Index.Controller
         region: App.centralRegion
         todos: App.todos
 
@@ -16,6 +16,12 @@
       new TodosApp.Filter.Controller
         region: App.centralRegion
         todos: App.todos.getGroup(state, group, label)
+
+#     todos for project or context
+#       console.log context_models = App.todos.where(context_id:21)
+#       todos = new OMGtd.Entities.TodosCollection
+#       todos.reset(context_models)
+#       console.log todos
 
   App.addInitializer ->
     new TodosApp.Router

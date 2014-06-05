@@ -197,7 +197,7 @@ describe TodosController do
       subject { lambda { xhr :delete, :destroy, format:'json', :id => @todo_to_destroy.id } }
       it do
         should change(@user.todos, :count).by(-1)
-        expect(response.body).to eq('true')
+        expect(json['id']).to eq(@todo_to_destroy.id)
       end
     end
   end

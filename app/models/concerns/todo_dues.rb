@@ -8,7 +8,7 @@ module TodoDues
       ordering.where('due BETWEEN ? AND ?', DateTime.now.tomorrow.beginning_of_day,
                      DateTime.now.tomorrow.end_of_day)
     }
-    scope :seven_days, -> {
+    scope :weekly, -> {
       ordering.where('due BETWEEN ? AND ?', DateTime.now.tomorrow.end_of_day,
                      DateTime.now + 7.days) }
     scope :later_or_no_deadline, -> { ordering.where("due > ? or due is NULL",
@@ -26,7 +26,7 @@ module TodoDues
     return false unless due
     due > DateTime.now.tomorrow.beginning_of_day && due < DateTime.now.tomorrow.end_of_day
   end
-  def seven_days?
+  def weekly?
     return false unless due
     due > DateTime.now.tomorrow.end_of_day && due < DateTime.now + 7.days
   end
@@ -36,7 +36,7 @@ module TodoDues
     return 'no' if due.blank?
     return 'today' if today?
     return 'tomorrow' if tomorrow?
-    'seven_days' if seven_days?
+    'weekly' if weekly?
   end
 
   def due_seconds

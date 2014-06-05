@@ -39,6 +39,7 @@
      *
      * - {[Function]} GroupModel the group model
      * - {[Function]} GroupCollection the groups collection
+     * - {[Function]} GroupCollection the groups collection
      *
      * @return {Collection}
      */
@@ -78,6 +79,8 @@
 
         return group;
     };
+
+
 
     /**
      * Handles the add event on the base collection

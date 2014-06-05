@@ -9,7 +9,7 @@
 
     @kinds = ['next', 'someday', 'waiting', 'scheduled', 'cycled']
     @states = ['inbox', 'active', 'trash', 'completed']
-    @calendars = ['today', 'tomorrow', 'no']
+    @calendars = ['today', 'tomorrow', 'weekly', 'no']
     @priors = {0: 'none', 1: 'low', 2: 'medium', 3: 'high'}
 
     initialize: () ->
@@ -61,7 +61,8 @@
     model: Entities.Todo
     url: -> '/todos/'
     initialize: () ->
-      @on('reset', @makeGroups, @)
+#      @on('reset', @makeGroups, @)
+      @on('reset', @sort, @)
 
     comparator: (itemA, itemB) =>
       return 1 if itemA.get('prior') < itemB.get('prior')
@@ -70,7 +71,7 @@
       return 0
 
     makeGroups: =>
-      @sort()
+#      @sort()
       @groupedStates = @_groupByA(@, 'state',
         App.request 'todos:entity:states')
       model.groupedKinds = @_groupByA(model.vc, 'kind',
@@ -82,6 +83,7 @@
         contexts) for model in @groupedStates.models
 
     getGroup: (state, group, label) =>
+      @makeGroups()
       stateCollection = @groupedStates.get(state)
       switch group
         when 'kind'
@@ -95,6 +97,9 @@
           finalCollection = stateCollection
       todos = finalCollection.vc
       todos.comparator = @comparator
+      todos._groupByA = @_groupByA
+      todos.makeGroups = @makeGroups
+      todos.getGroup = @getGroup
       todos.sort()
       return todos
 #
@@ -112,6 +117,7 @@
       Backbone.buildGroupedCollection({
         collection: collection,
         group_ids: ids,
+        GroupCollection: Entities.TodosCollection,
         groupBy: (todo) =>
           return todo.get(attr)
       })

@@ -55,7 +55,6 @@ class TodosController < ApplicationController
 
   #todo refactor it
   def destroy
-    logger.debug "Start to delete todo #{@todo.id}"
     if @todo.can_delete?
       @todo.destroy
       response = @todo
