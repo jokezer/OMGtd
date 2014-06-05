@@ -32,7 +32,7 @@ module TodoDues
   end
 
   # for js mb delete after bb integration
-  def schedule_label
+  def calendar
     return 'no' if due.blank?
     return 'today' if today?
     return 'tomorrow' if tomorrow?

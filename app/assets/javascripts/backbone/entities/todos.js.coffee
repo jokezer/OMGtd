@@ -76,11 +76,19 @@
         App.request 'todos:entity:states')
       model.groupedKinds = @_groupByA(model.vc, 'kind',
         App.request 'todos:entity:kinds') for model in @groupedStates.models
-      model.groupedCalendars = @_groupByA(model.vc, 'schedule_label',
+      model.groupedCalendars = @_groupByA(model.vc, 'calendar',
         App.request 'todos:entity:calendars') for model in @groupedStates.models
       contexts = App.contexts.pluck('id')
       model.groupedContexts = @_groupByA(model.vc, 'context_id',
         contexts) for model in @groupedStates.models
+      model.groupedKinds = @_groupByA(model.vc, 'kind',
+        App.request 'todos:entity:kinds') for model in @groupedStates.get('active').groupedCalendars.models
+
+#    getWhere: (data) ->
+#      todos = @where(data)
+#      collection = new TodosCollection
+#      collection.reset(todos)
+#      collection
 
     getGroup: (state, group, label) =>
       @makeGroups()
@@ -92,14 +100,17 @@
           finalCollection = stateCollection.groupedCalendars.get(label)
         when 'context'
           finalCollection = stateCollection.groupedContexts.get(label)
+        when 'kindNoCalendar'
+          finalCollection = stateCollection.groupedCalendars.get('no').groupedKinds.get(label)
+          console.log finalCollection
         else
           #todo return empty collection
           finalCollection = stateCollection
       todos = finalCollection.vc
       todos.comparator = @comparator
-      todos._groupByA = @_groupByA
-      todos.makeGroups = @makeGroups
-      todos.getGroup = @getGroup
+#      todos._groupByA = @_groupByA
+#      todos.makeGroups = @makeGroups
+#      todos.getGroup = @getGroup
       todos.sort()
       return todos
 #

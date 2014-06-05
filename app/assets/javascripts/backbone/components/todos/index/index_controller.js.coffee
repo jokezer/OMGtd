@@ -5,14 +5,14 @@
       @todos = data.todos
       @groups = new Backbone.Collection(
         [
-          {label: 'Today todos',        todos: @todos.getGroup('active', 'calendar', 'today')},
-          {label: 'Tomorrow todos',     todos: @todos.getGroup('active', 'calendar', 'tomorrow')},
-          {label: 'Weekly todos',       todos: @todos.getGroup('active', 'calendar', 'weekly')},
-          {label: 'Next todos'},
-          {label: 'Scheduled todos'},
-          {label: 'Cycled todos'},
-          {label: 'Waiting todos'},
-          {label: 'Someday todos'},
+          {label: 'Today todos',        todos: @todos.getGroup('active', 'calendar', 'today'),            showed:3},
+          {label: 'Tomorrow todos',     todos: @todos.getGroup('active', 'calendar', 'tomorrow',          showed:3)},
+          {label: 'Weekly todos',       todos: @todos.getGroup('active', 'calendar', 'weekly',            showed:3)},
+          {label: 'Next todos',         todos: @todos.getGroup('active', 'kindNoCalendar', 'next'),       showed:3},
+          {label: 'Scheduled todos',    todos: @todos.getGroup('active', 'kindNoCalendar', 'scheduled',   showed:3)},
+          {label: 'Cycled todos',       todos: @todos.getGroup('active', 'kindNoCalendar', 'cycled',      showed:3)},
+          {label: 'Waiting todos',      todos: @todos.getGroup('active', 'kindNoCalendar', 'waiting',     showed:3)},
+          {label: 'Someday todos',      todos: @todos.getGroup('active', 'kindNoCalendar', 'someday',     showed:3)},
 #          {label: 'Trash todos'}, if project
 #          {label: 'Completed todos'}, if project
         ]
