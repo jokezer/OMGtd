@@ -1,4 +1,4 @@
-@OMGtd.module "Entities", (Entities, App, Backbone, Marionette, $, _) ->
+@OMGtd.module "Entities", (Entities, App, Backbone,  Marionette, $, _) ->
 
   class Entities.Todo extends App.Entities.Model
     url: ->
@@ -60,15 +60,12 @@
   class Entities.TodosCollection extends App.Entities.Collection
     model: Entities.Todo
     url: -> '/todos/'
-    initialize: () ->
-#      @on('reset', @makeGroups, @)
-      @on('reset', @sort, @)
 
     comparator: (itemA, itemB) =>
       return 1 if itemA.get('prior') < itemB.get('prior')
       if itemA.get('prior') == itemB.get('prior')
         return 1 if itemA.get('due_seconds') > itemB.get('due_seconds')
-      return 0
+      return -1
 
     makeGroups: =>
 #      @sort()
@@ -131,9 +128,6 @@
         groupBy: (todo) =>
           return todo.get(attr)
       })
-
-    consolelog: () ->
-      console.log('sorted')
 
   API =
     getTodos: ->
