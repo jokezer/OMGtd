@@ -5,7 +5,7 @@ class TodosController < ApplicationController
                                   :update,
                                   :destroy,
                                   ]
-  layout 'single_page', only: [:spa, :old]
+  layout 'single_page', only: [:spa]
 
   def index
     sleep(rand(0.5..2)) if Rails.env.development?
@@ -25,9 +25,6 @@ class TodosController < ApplicationController
     respond_to do |format|
       format.json   { render :json => @todo }
     end
-  end
-
-  def old
   end
 
   # def new

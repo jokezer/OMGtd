@@ -12,48 +12,51 @@
   .panel-body
     %textarea.edit{name:'content', placeholder:'Content of todo', cols:90}
       =@content
+    %span.layout Kind:
     .btn-group{'data-toggle' => "buttons"}
       - for item in @kinds
-        %label.btn.btn-xs.btn-default
+        %label.btn.btn-sm.btn-default
           %input{name:"kind", value:item, type:"radio"}
           =item
+    %span.layout Prior:
     .btn-group.change-prior{'data-toggle' => "buttons"}
       - for key, item of @priors
-        %label.btn.btn-xs.btn-default
+        %label.btn.btn-sm.btn-default
           %input{name:"prior", value:key, type:"radio"}
           =item
     -if @contexts
       %br
-        .btn-group{'data-toggle' => "buttons"}
-          - for item in @contexts
-            %label.btn.btn-xs.btn-default
-              %input{name:"context_id", value:item.get('id'), type:"radio"}
-              =item.get('label')
+      %span.layout Context:
+      .btn-group{'data-toggle' => "buttons"}
+        - for item in @contexts
+          %label.btn.btn-sm.btn-default
+            %input{name:"context_id", value:item.get('id'), type:"radio"}
+            =item.get('label')
   .panel-body
     .pull-right
-      %a.save.btn.btn-default.btn-sm
-        %span.glyphicon.glyphicon-ok-circle
-        Save
-      %a.cancel.btn.btn-info.btn-sm
+      %a.cancel.btn.btn-info
         %span.glyphicon.glyphicon-remove-circle
         Cancel
+      %a.save.btn.btn-default
+        %span.glyphicon.glyphicon-floppy-disk
+        Save
     -unless @state == 'trash'
-      %a.trash.btn.btn-default.btn-sm
+      %a.trash.btn.btn-default
         %span.glyphicon.glyphicon-trash
         To trash
     -unless @state == 'completed'
-      %a.complete.btn.btn-info.btn-sm
+      %a.complete.btn.btn-info
         %span.glyphicon.glyphicon-ok-sign
         Complete
     -if @state == 'trash' || @state == 'completed'
-      %a.activate.btn.btn-info.btn-sm
+      %a.activate.btn.btn-info
         %span.glyphicon.glyphicon-ok-sign
         Activate
       .btn-group.deleteGroup
-        %button.showConfirmDelete.btn.btn-danger.btn-sm{type:'button'}
+        %button.showConfirmDelete.btn.btn-danger{type:'button'}
           %span.glyphicon.glyphicon-fire
           Delete
       %span.confirmButtons{style:'display: none;'}
-        %button.confirmDelete.delCon.btn.btn-danger.btn-sm{type:'button'} Yes
-        %button.hideConfirmDelete.delCon.btn.btn-danger.btn-sm{type:'button'} No
+        %button.confirmDelete.delCon.btn.btn-danger{type:'button'} Yes
+        %button.hideConfirmDelete.delCon.btn.btn-danger{type:'button'} No
 

@@ -27,7 +27,7 @@
         $('textarea', @form.$el).trigger('autosize.resize')
       else
         if @action == 'new'
-          App.todos.add(@model)
+          App.todos.add(@model) #todo: dont add before sync
           @model.trigger 'reSort'
         @model.trigger("server:send")
 

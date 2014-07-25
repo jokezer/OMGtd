@@ -17,7 +17,6 @@
                 = link_to 'GTD', '/#/todos', class: 'navbar-brand'
               .collapse.navbar-collapse
                 %ul.nav.navbar-nav
-                  %li= link_to 'Old backbone', '/old/'
                   %li= link_to 'Contexts', contexts_path
                   %li= link_to 'Projects', projects_path
                   %li= link_to 'About', about_path
@@ -35,5 +34,5 @@
 
     .col-lg-12
       -if Rails.env.development?
-        = link_to 'Run Jasmine', 'http://localhost:8888'
+        = link_to 'Run Jasmine', "http://localhost:8888"
         = debug(params)
