@@ -30,30 +30,30 @@
               %input{name:"context_id", value:item.get('id'), type:"radio"}
               =item.get('label')
   .panel-body
-    %a.save.btn.btn-default.btn-sm
-      %span.glyphicon.glyphicon-ok-circle
-      Save
-    %a.cancel.btn.btn-info.btn-sm
-      %span.glyphicon.glyphicon-remove-circle
-      Cancel
     .pull-right
-      -unless @state == 'trash'
-        %a.trash.btn.btn-default.btn-sm
-          %span.glyphicon.glyphicon-trash
-          To trash
-      -unless @state == 'completed'
-        %a.complete.btn.btn-info.btn-sm
-          %span.glyphicon.glyphicon-ok-sign
-          Complete
-      -if @state == 'trash' || @state == 'completed'
-        %a.activate.btn.btn-info.btn-sm
-          %span.glyphicon.glyphicon-ok-sign
-          Activate
-        .btn-group.deleteGroup
-          %button.showConfirmDelete.btn.btn-danger.btn-sm{type:'button'}
-            %span.glyphicon.glyphicon-fire
-            Delete
-        %span.confirmButtons{style:'display: none;'}
-          %button.confirmDelete.delCon.btn.btn-danger.btn-sm{type:'button'} Yes
-          %button.hideConfirmDelete.delCon.btn.btn-danger.btn-sm{type:'button'} No
+      %a.save.btn.btn-default.btn-sm
+        %span.glyphicon.glyphicon-ok-circle
+        Save
+      %a.cancel.btn.btn-info.btn-sm
+        %span.glyphicon.glyphicon-remove-circle
+        Cancel
+    -unless @state == 'trash'
+      %a.trash.btn.btn-default.btn-sm
+        %span.glyphicon.glyphicon-trash
+        To trash
+    -unless @state == 'completed'
+      %a.complete.btn.btn-info.btn-sm
+        %span.glyphicon.glyphicon-ok-sign
+        Complete
+    -if @state == 'trash' || @state == 'completed'
+      %a.activate.btn.btn-info.btn-sm
+        %span.glyphicon.glyphicon-ok-sign
+        Activate
+      .btn-group.deleteGroup
+        %button.showConfirmDelete.btn.btn-danger.btn-sm{type:'button'}
+          %span.glyphicon.glyphicon-fire
+          Delete
+      %span.confirmButtons{style:'display: none;'}
+        %button.confirmDelete.delCon.btn.btn-danger.btn-sm{type:'button'} Yes
+        %button.hideConfirmDelete.delCon.btn.btn-danger.btn-sm{type:'button'} No
 

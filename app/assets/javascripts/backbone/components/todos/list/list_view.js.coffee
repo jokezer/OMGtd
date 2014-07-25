@@ -3,13 +3,14 @@
   class List.Item extends Marionette.ItemView
     template: 'components/todos/list/templates/todo'
     move: false
+    #TODO if edit another save previous
     events:
-      "dblclick"          : "edit"
-      "click .showMore"   : "toggleContent"
-      "click .hideContent": "toggleContent"
-      "click .inc-prior"  : "incPrior",
-      "click .dec-prior"  : "decPrior",
-#      "click"             : "describe"
+      "click button.editTodo" : "edit"
+      "click .showMore"       : "toggleContent"
+      "click .hideContent"    : "toggleContent"
+      "click .inc-prior"      : "incPrior",
+      "click .dec-prior"      : "decPrior",
+
     initialize: ->
       @listenTo @model, 'slideDown', @slideDown
       @listenTo @model, 'server:send', @successEdit
@@ -20,9 +21,6 @@
         @move = true
       @listenTo @model, "reSort", ->
         @trigger 'reSort' #for collection view
-
-    describe: ->
-      console.log @model.attributes
 
     slideDown: ->
       @$el.find('.panel-todo').hide().show('slide', {}, 'fast')

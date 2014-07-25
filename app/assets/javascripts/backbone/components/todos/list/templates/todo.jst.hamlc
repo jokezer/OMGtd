@@ -9,6 +9,9 @@
     -#%input.panel-title.edit{type:'text', name:'todo[title]', value:@title}
   .panel-body
     %span.pull-right
+      %button.btn.btn-default.editTodo
+        %span.glyphicon.glyphicon-pencil
+        Edit
       .btn-group-vertical
         %a.btn.btn-xs.inc-prior{name: 'increase_prior', disabled: !@can_increase_prior}
           %i.glyphicon.glyphicon-chevron-up
