@@ -56,7 +56,7 @@
       @trigger 'cancel'
 
     save: ->
-      @undelegateEvents()
+      @undelegateEvents() if @model.isValid()
       $('.panel-todo', @$el).addClass 'saving'
       @trigger('save')
 

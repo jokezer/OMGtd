@@ -68,7 +68,6 @@
       return -1
 
     makeGroups: =>
-#      @sort()
       @groupedStates = @_groupByA(@, 'state',
         App.request 'todos:entity:states')
       model.groupedKinds = @_groupByA(model.vc, 'kind',
