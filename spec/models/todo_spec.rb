@@ -73,11 +73,11 @@ describe Todo do
     end
     it 'This week scope' do
       FactoryGirl.create(:scheduled_todo,
-                         title: 'Tomorrow todo',
+                         title: 'Weekly todo',
                          user: user,
                          due: DateTime.now + 5.days)
-      expect(user.todos.seven_days.first.title).to eq('Tomorrow todo')
-      expect(user.todos.seven_days.count).to eq(1)
+      expect(user.todos.weekly.first.title).to eq('Weekly todo')
+      expect(user.todos.weekly.count).to eq(1)
     end
     it 'later or with no deadline' do
       FactoryGirl.create(:scheduled_todo,

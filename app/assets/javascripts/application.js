@@ -29,7 +29,7 @@
 //= require_tree ./backbone/apps
 //= require jquery.autosize
 //= require oldbb/gtd.js.coffee
-//= require_tree ../templates
+//  require_tree ../templates
 //= require_tree ./oldbb/models
 //= require_tree ./oldbb/collections
 //= require_tree ./oldbb/views

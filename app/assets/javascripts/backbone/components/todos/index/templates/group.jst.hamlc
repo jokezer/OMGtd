@@ -1,2 +1,4 @@
-%h3=@label
+%blockquote
+  %p
+    =@label
 .group-region

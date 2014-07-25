@@ -1,0 +1,4 @@
+-if @label
+  .panel.panel-default
+    .panel-body= @label
+%ul.nav.nav-pills.nav-stacked

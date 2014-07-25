@@ -13,13 +13,14 @@
 
 
     getContextsView: ->
-      new Contexts.Sidebar
+      new App.SidebarsApp.Sidebar
         collection: @collection
+        label:      'Contexts'
 
     makeElements: () ->
       prepared =   App.contexts.map (el) ->
         el.set({
-          length: App.todos.getGroup('active', 'context', el.id).length
+          length: App.todos.where(context_id:el.id, state: 'active').length
           href:   "active/context/#{el.id}"
         })
       @collection = new Backbone.Collection prepared

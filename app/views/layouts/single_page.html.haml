@@ -1,12 +1,13 @@
 - content_for :application do
-  #left-sidebar-region.col-lg-3.col-md-3.col-sm-3
+  .col-lg-3.col-md-3.col-sm-3
+    #left-sidebar-region
+    #contexts-sidebar-region
+    #projects-sidebar-region
   #central-region.col-lg-6.col-md-6.col-sm-6
     #loading
       .progress.progress-striped.active
         .progress-bar{role:"progressbar", 'aria-valuenow'=>"45", 'aria-valuemin'=>"0",
            'aria-valuemax'=>"100", style:"width: 100%"}
           %span.sr-only Loading . . .
-
-  #right-sidebar-region.col-lg-3.col-md-3.col-sm-3
   = yield
 = render template: 'layouts/application'

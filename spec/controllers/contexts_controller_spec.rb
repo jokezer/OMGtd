@@ -12,7 +12,7 @@ describe ContextsController do
     it 'render index template' do
       contexts = json
       expect(contexts.count).to eq(@user.contexts.count)
-      expect(contexts.first).to include('id', 'name', 'todos_count')
+      expect(contexts.first).to include('id', 'label', 'errors')
     end
   end
 
@@ -25,8 +25,7 @@ describe ContextsController do
         expect(response).to be_success
         context = json
         expect(context['id']).to eq(req_context.id)
-        expect(context['name']).to eq(req_context.name)
-        expect(context['todos_count']).to eq(req_context.todos.count)
+        expect(context['label']).to eq(req_context.label)
       end
     end
 
@@ -52,8 +51,7 @@ describe ContextsController do
         @new_context_request.call
         context = json
         expect(response).to be_success
-        expect(context['name']).to eq('context')
-        expect(context['todos_count']).to eq(0)
+        expect(context['label']).to eq('@context')
       end
     end
     context 'with incorrect data' do
@@ -89,7 +87,7 @@ describe ContextsController do
         updated_context = json
         expect(response).to be_success
         expect(updated_context['id']).to eq(@context['id'])
-        expect(updated_context['name']).to eq('Correct')
+        expect(updated_context['label']).to eq('@Correct')
       end
       it 'updates the db' do
         @context_request.call

@@ -5,84 +5,62 @@ describe ProjectsController do
   before do
     @user = FactoryGirl.create(:user)
     sign_in @user
+    FactoryGirl.create_list(:project, 3, user: @user)
+    FactoryGirl.create_list(:finished_project, 1, user: @user)
+    FactoryGirl.create_list(:trash_project, 1, user: @user)
   end
-  describe "GET index, show, edit, filter" do
-    it "returns http success" do
-      xhr :get, :index
-      expect(response).to be_success
+  describe 'GET#index' do
+    before { xhr :get, :index, format:'json' }
+    it 'responds with user projects' do
+      projects = json
+      expect(projects.count).to eq(5)
+      expect(projects.first).to include('id', 'label', 'title', 'content', 'state', 'errors')
     end
-    it 'responds with current user projects' do
-      xhr :get, :show, :name => project.name
-      expect(response).to be_success
-      expect(response).to render_template(:show)
-    end
-    it "returns http success" do
-      xhr :get, :edit, :name => project.name
-      expect(response).to be_success
-    end
-    # it "returns http success" do
-    #   xhr :get, :filter, :name => project.name, type:'kind', type_name:'next'
-    #   expect(response).to be_success
-    # end
   end
+
+  describe 'GET#show' do
+
+    context 'with correct id' do
+      it 'returns a context' do
+        req_project = @user.projects.first
+        xhr :get, :show, id: req_project.id, format:'json'
+        expect(response).to be_success
+        project = json
+        expect(project['id']).to eq(req_project.id)
+        expect(project['label']).to eq(req_project.label)
+      end
+    end
+
+    context 'with incorrect id' do
+      it 'redirects to root path' do
+        xhr :get, :show, :id => 'incorrect_context', format:'json'
+        expect(response).to redirect_to(root_path)
+      end
+    end
+  end
+
   describe 'update' do
     before do
       @project = project
     end
     context 'update the project' do
       subject { lambda { xhr :post, :update,
-                             name: @project.name,
+                             id: @project.id,
                              :project => {title: 'rspec title'} } }
       it do
         should_not change(@user.projects, :count)
-        expect(response).to redirect_to(project_path @project.name)
+        expect(json['title']).to eq('rspec title')
         expect(@project.reload.title).to eq('rspec title')
       end
     end
     context 'finish' do
       subject { lambda { xhr :patch, :change_state,
-                             name: @project.name,
-                             finish: true
+                             id: @project.id,
+                             :project => {state: 'finished'}
                              }}
       it do
         should change(@user.projects.with_state('finished'), :count).by(1)
         expect(response).to redirect_to(projects_path)
-      end
-    end
-    context 'cancel' do
-      subject { lambda { xhr :post, :change_state,
-                             name: @project.name,
-                             cancel: true
-                             } }
-      it do
-        should change(@user.projects.with_state('trash'), :count).by(1)
-        expect(response).to redirect_to(projects_path)
-      end
-    end
-    context 'activate' do
-      before do
-        @project.finish
-      end
-      subject { lambda { xhr :patch, :change_state,
-                             name: @project.name,
-                             activate: true
-                             } }
-      it do
-        should change(@user.projects.with_state('active'), :count).by(1)
-        expect(response).to redirect_to(projects_path)
-      end
-    end
-    context 'try to cancel finished' do
-      before do
-        @project.finish
-      end
-      subject { lambda { xhr :post, :change_state,
-                             name: @project.id,
-                             cancel: true
-                             } }
-      it do
-        should_not change(@user.projects.with_state('finished'), :count)
-        expect(response).to redirect_to(root_path)
       end
     end
   end

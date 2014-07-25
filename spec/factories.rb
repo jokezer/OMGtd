@@ -28,9 +28,15 @@ FactoryGirl.define do
   end
 
   factory :project do
-    title Faker::Lorem.characters(char_count = 40)
+    sequence(:title) { |n| "Project #{n}" }
     content Faker::Lorem.paragraph
     user
+    factory :finished_project do
+      state 'finished'
+    end
+    factory :trash_project do
+      state 'trash'
+    end
   end
 
 end

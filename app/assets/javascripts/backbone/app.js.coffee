@@ -13,7 +13,8 @@
     footerRegion          : "#footer-region"
     leftSidebarRegion     : "#left-sidebar-region"
     centralRegion         : "#central-region"
-    rightSidebarRegion    : "#right-sidebar-region"
+    contextsSidebarRegion : "#contexts-sidebar-region"
+    projectsSidebarRegion : "#projects-sidebar-region"
 
   App.rootRoute = "todos"
 
@@ -26,6 +27,11 @@
       App.trigger('loaded:contexts')
 
   App.on "loaded:contexts", ->
+    @projects = App.request "projects:entities"
+    App.execute "when:fetched", @projects, =>
+      App.trigger('loaded:projects')
+
+  App.on "loaded:projects", ->
     @todos = App.request "todos:entities"
     App.execute "when:fetched", @todos, =>
       App.trigger('loaded:finished')

@@ -8,7 +8,7 @@
       @show leftView
 
     getLeftView: ->
-      new Left.Sidebar
+      new App.SidebarsApp.Sidebar
         collection: @collection
 
     makeElements: (elements) ->

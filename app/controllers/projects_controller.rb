@@ -13,7 +13,9 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @todos = @project.todos.get_index
+    respond_to do |format|
+      format.json   { render :json => @project }
+    end
   end
 
   def edit
@@ -28,17 +30,11 @@ class ProjectsController < ApplicationController
   end
 
   def update
+    sleep(rand(0.5..2)) if Rails.env.development?
     @project.update_attributes(project_params)
-    flash.now[:success] = 'Project updated'
-    redirect_to project_path @project.name
-  end
-
-  def change_state
-    @project.finish if params[:finish] && @project.can_finish?
-    @project.cancel if params[:cancel] && @project.can_cancel?
-    @project.activate if params[:activate] && @project.can_activate?
-    flash.now[:success] = 'Project updated'
-    redirect_to projects_path
+    respond_to do |format|
+      format.json   { render :json => @project }
+    end
   end
 
   def destroy
@@ -54,7 +50,7 @@ class ProjectsController < ApplicationController
   end
 
   def get_project
-    @project = current_user.projects.by_name(params[:name])
+    @project = current_user.projects.find_by_id(params[:id])
     redirect_to root_path and return unless @project
   end
 end

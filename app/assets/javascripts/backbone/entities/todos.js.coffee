@@ -102,7 +102,6 @@
           finalCollection = stateCollection.groupedContexts.get(label)
         when 'kindNoCalendar'
           finalCollection = stateCollection.groupedCalendars.get('no').groupedKinds.get(label)
-          console.log finalCollection
         else
           #todo return empty collection
           finalCollection = stateCollection
