@@ -35,7 +35,7 @@
 //= require_tree ./oldbb/views
 //= require_tree ./oldbb/routers
 //= require_tree .
-//= require jquery.ui.all
+////= require jquery.ui.all
 //= require bootstrap
 
 // require underscore
