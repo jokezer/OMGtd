@@ -6,8 +6,8 @@
 
     events:
       'click .change-prior label'       : 'changePrior'
-#      'mouseleave'                      : 'leaveElement'
-#      'focusout'                        : 'leaveElement'
+      'mouseleave'                      : 'leaveElement'
+      'focusout'                        : 'leaveElement'
       'click a.save'                    : 'save'
       'click a.cancel'                  : 'cancelEdit'
       'click a.trash'                   : 'saveTrash'
