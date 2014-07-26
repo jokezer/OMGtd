@@ -160,9 +160,6 @@
     saveTodo: (data) ->
       model =   data.model
       action =  data.action
-      if action == 'new'
-        App.todos.add(model)
-        model.trigger 'reSort'
       model.save({},
         success: (todo, resp) ->
           if Object.keys(resp.errors).length
@@ -174,6 +171,9 @@
         error: (a, b) ->
           alert 'connection error'
       )
+      if action == 'new' and !model.validationError
+        App.todos.add(model)
+        model.trigger 'reSort'
       model
 
     destroyTodo: (data) ->
