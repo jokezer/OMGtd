@@ -6,8 +6,8 @@
 
     events:
       'click .change-prior label'       : 'changePrior'
-#      'mouseleave'                      : 'leaveElement'
-#      'focusout'                        : 'leaveElement'
+      'mouseleave'                      : 'leaveElement'
+      'focusout'                        : 'leaveElement'
       'click a.save'                    : 'save'
       'click a.cancel'                  : 'cancelEdit'
       'click a.trash'                   : 'saveTrash'
@@ -81,6 +81,7 @@
       @timer = _.delay(focusInput, 30, @$el)
 
     selectRadio: (name, value) ->
+      return unless value
       $("input[type='radio'][name='#{name}'][value=#{value}]", @$el)
         .prop("checked", true)
         .parent()

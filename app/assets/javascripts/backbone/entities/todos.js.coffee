@@ -23,7 +23,7 @@
       title: ''
       content: ''
       state: 'inbox'
-      kind: ''
+      kind: 'inbox'
       prior: 0
       due: ''
 
