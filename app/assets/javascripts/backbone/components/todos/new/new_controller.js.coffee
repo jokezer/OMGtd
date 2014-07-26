@@ -26,10 +26,6 @@
     successAdd: ->
       @closeForm()
       @listenTo @model, "server:error", ->
-<<<<<<< HEAD
-=======
-        App.todos.remove(@model)
->>>>>>> e56c8743fe3444bfa7193b6b272b1585bf7f8b29
         @showForm(false, @model)
 
     loadLayout: () ->

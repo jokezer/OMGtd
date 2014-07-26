@@ -158,29 +158,21 @@
       Entities.Todo.priors
 
     saveTodo: (data) ->
-<<<<<<< HEAD
       model =   data.model
       action =  data.action
       if action == 'new'
         App.todos.add(model)
         model.trigger 'reSort'
-=======
-      model = data.model
->>>>>>> e56c8743fe3444bfa7193b6b272b1585bf7f8b29
       model.save({},
         success: (todo, resp) ->
           if Object.keys(resp.errors).length
             todo.validationError = resp.errors
             todo.trigger 'server:error'
-<<<<<<< HEAD
-            if action == 'new'
-              App.todos.remove(model)
-=======
->>>>>>> e56c8743fe3444bfa7193b6b272b1585bf7f8b29
+            App.todos.remove(model) if action == 'new'
           else
             todo.trigger 'server:saved'
-#        error: (a, b) ->
-#          console.log b.responseText
+        error: (a, b) ->
+          alert 'connection error'
       )
       model
 
@@ -190,8 +182,8 @@
         success: (todo, resp) ->
           if resp == true
             todo.trigger 'server:destroyed'
-#        error: ->
-#          console.log('Server error!')
+        error: ->
+          alert 'connection error'
       )
 
 
