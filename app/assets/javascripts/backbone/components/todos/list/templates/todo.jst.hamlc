@@ -3,9 +3,10 @@
     -if @due
       %small.pull-right
         %span.glyphicon.glyphicon-time
-        due  #{@due.toLocaleString() if @due}
-    %h5.info.panel-title
-      = @title
+        %input.todo-due.edit{type:'text', value:@due, disabled:true}
+    -#%h5.info.panel-title.title.title-label
+    -#  = @title
+    %input.title.edit{type:'text', disabled:true, value: @title}
     -#%input.panel-title.edit{type:'text', name:'todo[title]', value:@title}
   .panel-body
     %span.pull-right

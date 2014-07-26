@@ -8,7 +8,7 @@
       %input.todo-due.edit{type:'text', name:'due', placeholder:'____-__-__ __:__', value:@due}
       -#%button.btn.btn-default.btn-xs{type: "button"} Go!
     %span.glyphicon.glyphicon-pencil.pull-left
-    %input.panel-title.edit{type:'text', name:'title', placeholder:'New todo', value: @title}
+    %input.title.edit{type:'text', name:'title', placeholder:'New todo', value: @title}
   .panel-body
     %textarea.edit{name:'content', placeholder:'Content of todo', cols:90}
       =@content
