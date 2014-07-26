@@ -104,7 +104,7 @@
 
     _setPriorName: ->
       priorLabel = App.request "todos:entity:prior:label", @model.get('prior')
-      $('.panel-todo', @$el).addClass("prior-#{priorLabel}")
+      $('.panel-todo', @$el).attr('prior', priorLabel)
 
     _savePrior: ->
       @model = App.request "save:todos:entity",

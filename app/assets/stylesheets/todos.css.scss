@@ -88,21 +88,21 @@
 //panel todo
 $prior_marker_width: 8px;
 
-.panel-todo.prior-none {
+.panel-todo[prior="none"] {
   .panel-body {
     border-left: $prior_marker_width solid white;
   }
-}.panel-todo.prior-low {
+}.panel-todo[prior="low"] {
    .panel-body {
      border-left: $prior_marker_width solid #699ded;
    }
  }
-.panel-todo.prior-medium {
+.panel-todo[prior="medium"] {
   .panel-body {
     border-left: $prior_marker_width solid rgba(228, 174, 61, 0.78);
   }
 }
-.panel-todo.prior-high {
+.panel-todo[prior="high"] {
   .panel-body {
     border-left: 8px solid #db705c;
   }
