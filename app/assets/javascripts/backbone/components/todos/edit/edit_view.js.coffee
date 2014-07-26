@@ -94,4 +94,3 @@
     setPriorClass: (key) ->
       priorLabel = App.request "todos:entity:prior:label", key
       $('.panel-todo', @$el).attr('prior', priorLabel)
-      alert $('.panel-todo', @$el).attr('prior')
