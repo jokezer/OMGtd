@@ -14,14 +14,20 @@
       @form = @getFormView()
       @layout.createNewRegion.show @form.form
       @listenTo @form,    'cancel',       @closeForm
-      @listenTo @model,   'server:send',  @closeForm
+      @listenTo @model,   'server:send',  @successAdd
 
     closeForm: ->
       @stopListening(@form)
-      @stopListening(@model)
+#      @stopListening(@model)
       @form.close()
       @button = @getButtonView()
       @layout.createNewRegion.show @button
+
+    successAdd: ->
+#      @listenTo @model, "server:error", ->
+#        @layout.createNewRegion.show @form.form
+#        alert 'server error'
+      @closeForm()
 
     loadLayout: () ->
       @button = @getButtonView()

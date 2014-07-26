@@ -47,4 +47,4 @@
           Project #{@project_id}
         -if @context
           %span.label.label-default
-            Context #{@context}
+            #{@context}

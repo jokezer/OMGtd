@@ -23,13 +23,13 @@
       title: ''
       content: ''
       state: 'inbox'
-      kind: 'inbox'
+      kind: ''
       prior: 0
       due: ''
 
     validation:
-      title:
-        required: true
+#      title:
+#        required: true
       kind:
         required: false
         oneOf: @kinds
@@ -74,9 +74,10 @@
         App.request 'todos:entity:kinds') for model in @groupedStates.models
       model.groupedCalendars = @_groupByA(model.vc, 'calendar',
         App.request 'todos:entity:calendars') for model in @groupedStates.models
-      contexts = App.contexts.pluck('id')
-      model.groupedContexts = @_groupByA(model.vc, 'context_id',
-        contexts) for model in @groupedStates.models
+      if App.contexts
+        contexts = App.contexts.pluck('id')
+        model.groupedContexts = @_groupByA(model.vc, 'context_id',
+          contexts) for model in @groupedStates.models
       model.groupedKinds = @_groupByA(model.vc, 'kind',
         App.request 'todos:entity:kinds') for model in @groupedStates.get('active').groupedCalendars.models
 
@@ -158,15 +159,17 @@
 
     saveTodo: (data) ->
       model = data.model
+      console.log model
       model.save({},
         success: (todo, resp) ->
           if Object.keys(resp.errors).length
             todo.validationError = resp.errors
             todo.trigger 'server:error'
+            alert 'validation error'
           else
             todo.trigger 'server:saved'
-        error: ->
-          console.log('Server error!')
+        error: (a, b) ->
+          console.log b.responseText
       )
       model
 

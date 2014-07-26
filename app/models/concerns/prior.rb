@@ -1,6 +1,7 @@
 module Prior
   extend ActiveSupport::Concern
   included do
+    before_validation { |t| t.prior = 0 unless Todo.state_machines[:prior].states.map { |n| n.value }.include? t.prior }
     state_machine :prior, initial: :none do
       state :none, value: 0
       state :low, value: 1

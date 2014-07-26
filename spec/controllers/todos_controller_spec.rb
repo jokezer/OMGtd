@@ -94,6 +94,12 @@ describe TodosController do
         expect(errors).to include('title')
         expect(errors.count).to eq(1)
       end
+      it 'with incorrect prior' do
+        todo = FactoryGirl.attributes_for(:todo, user: @user)
+        todo['prior'] = nil
+        xhr :post, :create, todo: todo
+        expect(json['prior']).to eq(0)
+      end
     end
     pending 'create project from todo' do
       before do

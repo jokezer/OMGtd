@@ -3,7 +3,6 @@
   class List.Item extends Marionette.ItemView
     template: 'components/todos/list/templates/todo'
     move: false
-    #TODO if edit another save previous
     events:
       "click button.editTodo" : "edit"
       "click .showMore"       : "toggleContent"
