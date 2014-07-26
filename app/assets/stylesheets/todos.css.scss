@@ -10,7 +10,7 @@
     padding: 5px;
   }
   .panel-body {
-    padding: 5px;
+    padding: 5px 10px;
   }
 }
 
@@ -28,7 +28,8 @@
       width: 65%;
     }
     .title[disabled]{
-      padding-left: 17.5px;
+      padding-left: 15px;
+      text-overflow: ellipsis;
     }
 //    .title-label{
 //      text-overflow: ellipsis;
@@ -50,7 +51,7 @@
   .edit {
 //    display: none;
     border: none;
-    padding: 0 0 0 2pt;
+    padding: 0 0 0 0;
 //    border: 1px solid red;
     background: none;
   }
