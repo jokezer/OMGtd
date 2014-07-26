@@ -28,8 +28,8 @@
       due: ''
 
     validation:
-#      title:
-#        required: true
+      title:
+        required: true
       kind:
         required: false
         oneOf: @kinds
@@ -158,18 +158,22 @@
       Entities.Todo.priors
 
     saveTodo: (data) ->
-      model = data.model
-      console.log model
+      model =   data.model
+      action =  data.action
+      if action == 'new'
+        App.todos.add(model)
+        model.trigger 'reSort'
       model.save({},
         success: (todo, resp) ->
           if Object.keys(resp.errors).length
             todo.validationError = resp.errors
             todo.trigger 'server:error'
-            alert 'validation error'
+            if action == 'new'
+              App.todos.remove(model)
           else
             todo.trigger 'server:saved'
-        error: (a, b) ->
-          console.log b.responseText
+#        error: (a, b) ->
+#          console.log b.responseText
       )
       model
 
@@ -179,9 +183,8 @@
         success: (todo, resp) ->
           if resp == true
             todo.trigger 'server:destroyed'
-            console.log 'successful deleted'
-        error: ->
-          console.log('Server error!')
+#        error: ->
+#          console.log('Server error!')
       )
 
 
@@ -215,6 +218,7 @@
   App.reqres.setHandler "save:todos:entity", (data) ->
     API.saveTodo
       model:      data.model
+      action:     data.action
 
   App.reqres.setHandler "destroy:todos:entity", (data) ->
     API.destroyTodo

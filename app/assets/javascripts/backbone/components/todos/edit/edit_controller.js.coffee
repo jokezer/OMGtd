@@ -22,13 +22,11 @@
       @model.set(state:@model.moveTo) if @model.moveTo
       @model = App.request "save:todos:entity",
         model: @model
+        action: @action
       if @model.validationError
         @form.render()
         $('textarea', @form.$el).trigger('autosize.resize')
       else
-        if @action == 'new'
-          App.todos.add(@model) #todo: dont add before sync
-          @model.trigger 'reSort'
         @model.trigger("server:send")
 
     getFormData: ->
