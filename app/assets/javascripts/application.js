@@ -36,7 +36,7 @@
 //= require_tree ./oldbb/routers
 //= require_tree .
 //= require jquery-ui
-//= require bootstrap
+//= require bootstrap-sprockets
 
 // require underscore
 // require backbone
