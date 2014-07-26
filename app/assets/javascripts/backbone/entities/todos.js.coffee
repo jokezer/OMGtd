@@ -159,17 +159,15 @@
 
     saveTodo: (data) ->
       model = data.model
-      console.log model
       model.save({},
         success: (todo, resp) ->
           if Object.keys(resp.errors).length
             todo.validationError = resp.errors
             todo.trigger 'server:error'
-            alert 'validation error'
           else
             todo.trigger 'server:saved'
-        error: (a, b) ->
-          console.log b.responseText
+#        error: (a, b) ->
+#          console.log b.responseText
       )
       model
 
@@ -179,9 +177,8 @@
         success: (todo, resp) ->
           if resp == true
             todo.trigger 'server:destroyed'
-            console.log 'successful deleted'
-        error: ->
-          console.log('Server error!')
+#        error: ->
+#          console.log('Server error!')
       )
 
 

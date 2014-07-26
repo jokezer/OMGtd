@@ -8,8 +8,8 @@
       @listenTo @layout, 'show',        @loadLayout
       @listenTo @layout, 'show:form',   @showForm
 
-    showForm: ->
-      @model = App.request "new:todos:entity"
+    showForm: (a, model=false) ->
+      if model then @model = model else @model = App.request "new:todos:entity"
       @button.close()
       @form = @getFormView()
       @layout.createNewRegion.show @form.form
@@ -18,16 +18,16 @@
 
     closeForm: ->
       @stopListening(@form)
-#      @stopListening(@model)
+      @stopListening(@model)
       @form.close()
       @button = @getButtonView()
       @layout.createNewRegion.show @button
 
     successAdd: ->
-#      @listenTo @model, "server:error", ->
-#        @layout.createNewRegion.show @form.form
-#        alert 'server error'
       @closeForm()
+      @listenTo @model, "server:error", ->
+        App.todos.remove(@model)
+        @showForm(false, @model)
 
     loadLayout: () ->
       @button = @getButtonView()
