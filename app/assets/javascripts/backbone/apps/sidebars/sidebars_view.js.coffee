@@ -13,6 +13,9 @@
       data.label = @label
       data
 
+    consoler: ->
+      alert('Show the left sidebar')
+
     itemView: SidebarsApp.Item
     template: 'apps/sidebars/templates/group'
     itemViewContainer: '.nav.nav-pills.nav-stacked'

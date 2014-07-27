@@ -11,7 +11,7 @@
     headerRegion          : "#header-region"
     mainRegion            :	"#main-region"
     footerRegion          : "#footer-region"
-    leftSidebarRegion     : "#left-sidebar-region"
+    leftSidebarRegion     : "#kinds-sidebar-region"
     centralRegion         : "#central-region"
     contextsSidebarRegion : "#contexts-sidebar-region"
     projectsSidebarRegion : "#projects-sidebar-region"

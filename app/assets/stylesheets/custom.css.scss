@@ -2,39 +2,30 @@
   margin-top: 10%;
 }
 
-$footer_height: 52px;
-
+//$footer_height: 52px;
 html, body {
   height: 100%;
 }
+//
+//#wrap {
+//  min-height: 100%;
+//}
+//
+//#main {
+//  overflow: auto;
+//  padding-bottom: $footer_height;
+//}
 
-#wrap {
-  min-height: 100%;
-}
-
-#main {
-  overflow: auto;
-  padding-bottom: $footer_height;
-}
-
-.footer {
-  position: relative;
-  margin-top: -$footer_height;
-  height: $footer_height;
-  clear: both;
-  padding-top: 20px;
-  .panel {
-    margin-bottom: 0;
-  }
-}
-
-.sidebar {
-  margin-bottom: 10px;
-  .panel {
-    margin-bottom: 10px;
-  }
-}
-
+//.footer {
+//  position: relative;
+//  margin-top: -$footer_height;
+//  height: $footer_height;
+//  clear: both;
+//  padding-top: 20px;
+//  .panel {
+//    margin-bottom: 0;
+//  }
+//}
 //devise views
 .panel-devise {
   .panel-heading {
@@ -104,4 +95,26 @@ $error_color: darkred;
 //elements
 blockquote{
   margin: 0px 0px 13px;
+}
+
+//left sidebar
+
+#left-sidebar-region{
+  position: absolute;
+  z-index: 3;
+  background: #ffed8b;
+  opacity: 0.94;
+  min-height: 94%;
+  overflow: auto;
+}
+nav.navbar.navbar-default{
+  margin-bottom: 0;
+}
+
+#main-region{
+  padding-left: 0;
+}
+
+#central-region{
+  margin-top: 12px;
 }

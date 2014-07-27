@@ -61,3 +61,10 @@
 #
 #$(document).ready(ready)
 #$(document).on('page:load', ready)
+
+ready = ->
+  jQuery ->
+    $('#showSidebar').on('click', ->
+      $('#left-sidebar-region').toggleClass('visible-lg-block'))
+$(document).ready(ready)
+$(document).on('page:load', ready)
