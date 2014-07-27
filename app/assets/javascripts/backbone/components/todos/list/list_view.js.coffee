@@ -21,12 +21,16 @@
       @listenTo @model, "reSort", ->
         @trigger 'reSort' #for collection view
 
-    slideDown: ->
-      $('.panel-todo', @$el).hide().show('slide', {}, 'fast')
+    slideDown: (callback=false) ->
+      $('.panel-todo', @$el).hide().show('slide', {}, 'fast', ->
+        callback() if callback
+      )
 
-    slideUp: ->
+    slideUp: (callback=false) ->
       $('.panel-todo', @$el).hide('slide', {}, 'fast', ->
-        $(this).css('visibility', 'hidden').show())
+        $(this).css('visibility', 'hidden').show()
+        callback() if callback
+      )
 
     addSavingClass: () ->
       @$el.find('.panel-todo').addClass('saving')
@@ -35,18 +39,23 @@
       @$el.find('.panel-todo').removeClass('saving')
 
     incPrior: ->
-      @slideUp()
       prior = @model.get('prior')
       if prior < 3
         @model.set({prior:++prior})
-        @_savePrior() #todo it slow down the animation
+        @_savePrior()
 
     decPrior: ->
-      @slideUp()
       prior = @model.get('prior')
       if prior >= 0
         @model.set({prior:prior-1})
-        @_savePrior() #todo it slow down the animation
+        @_savePrior()
+
+    _savePrior: () ->
+      model = @model
+      callback = ->
+        model = App.request "save:todos:entity",
+          model: model
+      @slideUp(-> callback(model))
 
     edit: ->
       unless @$el.find('.panel-todo').hasClass('saving')
@@ -74,9 +83,7 @@
     successSync: ->
       if @move
         @model.trigger('reSort')
-        @model.trigger('slideDown')
       else
-#        @removeSavingClass()
         @render()
 
     _setContent: ->
@@ -105,10 +112,6 @@
       priorLabel = App.request "todos:entity:prior:label", @model.get('prior')
       $('.panel-todo', @$el).attr('prior', priorLabel)
 
-    _savePrior: ->
-      @model = App.request "save:todos:entity",
-        model: @model
-
   class List.Empty extends Marionette.ItemView
     template: 'components/todos/list/templates/empty'
 
@@ -120,7 +123,8 @@
     itemEvents:
       reSort: 'reRender'
 
-    reRender: () ->
+    reRender: (action, view) ->
       @collection.sort()
       @$el.html('')
       @render()
+      view.model.trigger('slideDown')
