@@ -14,9 +14,7 @@
       @listenTo @model, 'slideDown', @slideDown
       @listenTo @model, 'server:send', @successEdit
       @listenTo @model, "server:saved", @successSync
-      @listenTo @model, "change:prior", ->
-        @move = true
-      @listenTo @model, "change:due", ->
+      @listenTo @model, "change:prior change:due", ->
         @move = true
       @listenTo @model, "reSort", ->
         @trigger 'reSort' #for collection view
@@ -75,7 +73,7 @@
     successEdit: ->
       @cancelEdit()
       @addSavingClass()
-      @slideUp() if @move
+#      @slideUp() if @move
       @listenTo @model, "server:error", ->
         @removeSavingClass()
         @edit()
