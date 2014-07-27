@@ -13,8 +13,11 @@
       data.label = @label
       data
 
-    consoler: ->
-      alert('Show the left sidebar')
+    events:
+      "click a.button.white" : "hideSidebar"
+
+    hideSidebar: ->
+      $('#left-sidebar-region').addClass('visible-lg-block')
 
     itemView: SidebarsApp.Item
     template: 'apps/sidebars/templates/group'
