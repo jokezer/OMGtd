@@ -7,8 +7,8 @@
       "click button.editTodo" : "edit"
       "click .showMore"       : "toggleContent"
       "click .hideContent"    : "toggleContent"
-      "click .inc-prior"      : "incPrior",
-      "click .dec-prior"      : "decPrior",
+      "click .inc-prior"      : "incPrior"
+      "click .dec-prior"      : "decPrior"
 
     initialize: ->
       @listenTo @model, 'slideDown', @slideDown
@@ -22,10 +22,10 @@
         @trigger 'reSort' #for collection view
 
     slideDown: ->
-      @$el.find('.panel-todo').hide().show('slide', {}, 'fast')
+      $('.panel-todo', @$el).hide().show('slide', {}, 'fast')
 
     slideUp: ->
-      @$el.find('.panel-todo').hide('slide', {}, 'fast', ->
+      $('.panel-todo', @$el).hide('slide', {}, 'fast', ->
         $(this).css('visibility', 'hidden').show())
 
     addSavingClass: () ->
@@ -39,14 +39,14 @@
       prior = @model.get('prior')
       if prior < 3
         @model.set({prior:++prior})
-        @_savePrior()
+        @_savePrior() #todo it slow down the animation
 
     decPrior: ->
       @slideUp()
       prior = @model.get('prior')
       if prior >= 0
         @model.set({prior:prior-1})
-        @_savePrior()
+        @_savePrior() #todo it slow down the animation
 
     edit: ->
       unless @$el.find('.panel-todo').hasClass('saving')

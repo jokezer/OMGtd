@@ -77,7 +77,7 @@
       $('textarea', @$el).autosize()
       $('input.todo-due', @$el).datetimepicker({format: 'Y-m-d H:i', firstDay: 1})
       focusInput = ($el) ->
-        $el.find('input.panel-title').focus()
+        $el.find('input.title').focus()
       @timer = _.delay(focusInput, 30, @$el)
 
     selectRadio: (name, value) ->
