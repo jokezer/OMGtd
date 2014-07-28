@@ -70,6 +70,6 @@ ready = ->
       sidebar.toggleClass('visible-lg-block'))
     $(document).mouseup((e) ->
       if (!sidebar.is(e.target)) && !showSidebar.is(e.target) && sidebar.has(e.target).length == 0
-        sidebar.removeClass('visible-lg-block'))
+        sidebar.addClass('visible-lg-block'))
 $(document).ready(ready)
 $(document).on('page:load', ready)
