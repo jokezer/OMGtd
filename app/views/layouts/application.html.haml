@@ -8,25 +8,24 @@
   = csrf_meta_tags
 
   %body
-    -##wrap
-    -#  #main.clear-top
-    %header#header-region
-      %nav.navbar.navbar-default(role='navigation')
-        .container-fluid
-          .navbar-header
-            = link_to 'GTD', '/#/todos', class: 'navbar-brand visible-lg-inline'
-            %a#showSidebar.navbar-brand.hidden-lg GTD >
-          .collapse.navbar-collapse
-            %ul.nav.navbar-nav
-              %li= link_to 'Contexts', contexts_path
-              %li= link_to 'Projects', projects_path
-              %li= link_to 'About', about_path
-            %ul.nav.navbar-nav.navbar-right
-              = render 'shared/sign_in_link'
-            - if user_signed_in?
-              = render 'shared/add_search_form'
-    #main-region.container-fluid
-      = content_for?(:application) ? yield(:application) : yield
+    #wrap
+      %header#header-region
+        %nav.navbar.navbar-default(role='navigation')
+          .container-fluid
+            .navbar-header
+              = link_to 'GTD', '/#/todos', class: 'navbar-brand visible-lg-inline'
+              %a#showSidebar.navbar-brand.hidden-lg GTD >
+            .collapse.navbar-collapse
+              %ul.nav.navbar-nav
+                -#%li= link_to 'Contexts', contexts_path
+                -#%li= link_to 'Projects', projects_path
+                %li= link_to 'About', about_path
+              %ul.nav.navbar-nav.navbar-right
+                = render 'shared/sign_in_link'
+              -#- if user_signed_in?
+              -#  = render 'shared/add_search_form'
+      #main-region.container-fluid
+        = content_for?(:application) ? yield(:application) : yield
     -#.footer#footer-region
     -#  .panel.panel-default
     -#    .panel-body

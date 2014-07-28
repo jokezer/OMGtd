@@ -1,66 +1,21 @@
 #modal {
   margin-top: 10%;
 }
-
-//$footer_height: 52px;
 html, body {
   height: 100%;
 }
-//
-//#wrap {
-//  min-height: 100%;
-//}
-//
-//#main {
-//  overflow: auto;
-//  padding-bottom: $footer_height;
-//}
+#wrap {
+  min-height: 100%;
+  position: relative;
+}
 
-//.footer {
-//  position: relative;
-//  margin-top: -$footer_height;
-//  height: $footer_height;
-//  clear: both;
-//  padding-top: 20px;
-//  .panel {
-//    margin-bottom: 0;
-//  }
-//}
 //devise views
 .panel-devise {
   .panel-heading {
     margin-bottom: 10px;
   }
 }
-
-//panel todo
-$prior_marker_width: 8px;
-
-.panel-todo{
-  h5{
-    padding-left: $prior_marker_width;
-  }
-}
-.panel-todo.prior-none {
-  .panel-body {
-    border-left: $prior_marker_width solid white;
-  }
-}.panel-todo.prior-low {
-   .panel-body {
-     border-left: $prior_marker_width solid #699ded;
-   }
- }
-.panel-todo.prior-medium {
-  .panel-body {
-    border-left: $prior_marker_width solid rgba(228, 174, 61, 0.78);
-  }
-}
-.panel-todo.prior-high {
-  .panel-body {
-    border-left: 8px solid #db705c;
-  }
-}
-
+$navbar_height: 65px;
 $error_color: darkred;
 
 .has-error{
@@ -104,10 +59,17 @@ blockquote{
   z-index: 3;
   background: #fff4ac;
   opacity: 0.90;
-  min-height: 94%;
-  overflow: auto;
+  top: $navbar_height;
+  bottom: 0;
+//  min-height: 625pt;
+}
+#left-sidebar-wrapper{
+  background: #fff4ac;
+  margin: 0 -15px;
+  padding: 5px 10px;
 }
 nav.navbar.navbar-default{
+  height: $navbar_height;
   margin-bottom: 0;
 }
 
