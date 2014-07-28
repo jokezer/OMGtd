@@ -81,12 +81,6 @@
       model.groupedKinds = @_groupByA(model.vc, 'kind',
         App.request 'todos:entity:kinds') for model in @groupedStates.get('active').groupedCalendars.models
 
-#    getWhere: (data) ->
-#      todos = @where(data)
-#      collection = new TodosCollection
-#      collection.reset(todos)
-#      collection
-
     getGroup: (state, group, label) =>
       @makeGroups()
       stateCollection = @groupedStates.get(state)
@@ -104,15 +98,10 @@
           finalCollection = stateCollection
       todos = finalCollection.vc
       todos.comparator = @comparator
-#      todos._groupByA = @_groupByA
-#      todos.makeGroups = @makeGroups
-#      todos.getGroup = @getGroup
       todos.sort()
       return todos
 #
-#    _makeHref: (arr) ->
-#      newArr = arr.filter (item) -> item isnt undefined
-#      'filter/' + newArr.join('/')
+
 #
 #
 #    _makeLabel: (state, label=false) =>
@@ -157,6 +146,9 @@
     getTodoPriors: ->
       Entities.Todo.priors
 
+    getGroup: (attr) ->
+      App.todos.getGroup(attr.state, attr.group, attr.label)
+
     saveTodo: (data) ->
       model =   data.model
       action =  data.action
@@ -192,6 +184,9 @@
 
   App.reqres.setHandler "todos:entities", ->
     API.getTodos()
+
+  App.reqres.setHandler "todos:entities:group", (attr) ->
+    API.getGroup attr
 
   App.reqres.setHandler "todos:entity", (id) ->
     API.getTodo id

@@ -3,12 +3,17 @@
   class Filter.Controller extends App.Controllers.Base
 
     initialize: (data) ->
-      @todos = data.todos
+      @todos = App.request "todos:entities:group", (
+        state: data.state,
+        group: data.group,
+        label: data.label,
+      )
       @layout = @getLayoutView()
       @listenTo @layout, "show", =>
         @showCollection()
         @showNew()
       @show @layout
+      App.request "todos:highlightLink", data
 
     showCollection: () ->
       collectionView = @getTodosView()

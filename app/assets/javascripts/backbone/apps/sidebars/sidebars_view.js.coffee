@@ -22,3 +22,12 @@
     itemView: SidebarsApp.Item
     template: 'apps/sidebars/templates/group'
     itemViewContainer: '.nav.nav-pills.nav-stacked'
+
+    #todo: put it to the view
+    App.reqres.setHandler "todos:highlightLink", (attr) ->
+      arr = [attr.state, attr.group, attr.label]
+      newArr = arr.filter (item) -> !!item
+      link = '/#/todos/filter/' + newArr.join('/')
+      sidebar = $("#left-sidebar-wrapper")
+      $('li', sidebar).removeClass('active')
+      $('a[href="' + link + '"]', sidebar).parent().addClass('active')

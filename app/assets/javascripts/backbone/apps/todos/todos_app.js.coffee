@@ -10,12 +10,15 @@
     index: ->
       new TodosApp.Index.Controller
         region: App.centralRegion
-        todos: App.todos
+        todos:  App.todos
 
     filterState: (state, group=false, label=false) ->
       new TodosApp.Filter.Controller
         region: App.centralRegion
-        todos: App.todos.getGroup(state, group, label)
+        state: state,
+        group: group,
+        label: label,
+#
 
 #     todos for project or context
 #       console.log context_models = App.todos.where(context_id:21)
