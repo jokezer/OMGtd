@@ -25,9 +25,8 @@
 
     #todo: put it to the view
     App.commands.setHandler "todos:highlightLink", (attr) ->
-      arr = [attr.state, attr.group, attr.label]
-      newArr = arr.filter (item) -> !!item
-      link = '/#/todos/filter/' + newArr.join('/')
+      href = App.request "todos:link", attr.state, attr.group, attr.label
+      link = '/#/todos/filter/' + href
       sidebar = $("#left-sidebar-wrapper")
       $('li', sidebar).removeClass('active')
       $('a[href="' + link + '"]', sidebar).parent().addClass('active')

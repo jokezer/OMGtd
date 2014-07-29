@@ -3,11 +3,7 @@
   class Filter.Controller extends App.Controllers.Base
 
     initialize: (data) ->
-      @todos = App.request "todos:entities:group", (
-        state: data.state,
-        group: data.group,
-        label: data.label,
-      )
+      @todos = App.request "todos:entities:group", data.state, data.group, data.label
       @layout = @getLayoutView()
       @listenTo @layout, "show", =>
         @showCollection()

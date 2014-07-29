@@ -123,6 +123,5 @@
 
     reRender: (action, view) ->
       @collection.sort()
-      @$el.html('')
       @render()
       view.model.trigger('slideDown')

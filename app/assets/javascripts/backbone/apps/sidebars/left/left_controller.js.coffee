@@ -13,8 +13,10 @@
 
     makeElements: (elements) ->
       prepared =  elements.map (el) ->
-        el.length = App.todos.getGroup(el.state, el.group, el.label).length
-        el.href = if el.group then [el.state, el.group, el.label].join('/') else el.state
+        el.length = App.request "todos:entities:group:count", el.state, el.group, el.label
+
+        el.href = App.request "todos:link", el.state, el.group, el.label
+
         el.label = el.state unless el.label
         el
       @collection = new Backbone.Collection prepared

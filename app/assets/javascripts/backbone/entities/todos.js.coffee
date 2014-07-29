@@ -61,12 +61,6 @@
     model: Entities.Todo
     url: -> '/todos/'
 
-    comparator: (itemA, itemB) =>
-      return 1 if itemA.get('prior') < itemB.get('prior')
-      if itemA.get('prior') == itemB.get('prior')
-        return 1 if itemA.get('due_seconds') > itemB.get('due_seconds')
-      return -1
-
     makeGroups: =>
       @groupedStates = @_groupByA(@, 'state',
         App.request 'todos:entity:states')
@@ -96,27 +90,33 @@
         else
           #todo return empty collection
           finalCollection = stateCollection
-      todos = finalCollection.vc
-      todos.comparator = @comparator
-      todos.sort()
-      return todos
-#
+      finalCollection.vc
 
-#
-#
 #    _makeLabel: (state, label=false) =>
 #      label = state unless label
 #      return label
-
 
     _groupByA: (collection, attr, ids) =>
       Backbone.buildGroupedCollection({
         collection: collection,
         group_ids: ids,
-        GroupCollection: Entities.TodosCollection,
+#        GroupCollection: Entities.TodosCollection,
         groupBy: (todo) =>
           return todo.get(attr)
       })
+
+  class TodosColletionShow extends Backbone.PageableCollection
+    model: Entities.Todo
+    mode: 'client'
+    state:
+      pageSize: 5
+
+    comparator: (itemA, itemB) =>
+      return 1 if itemA.get('prior') < itemB.get('prior')
+      if itemA.get('prior') == itemB.get('prior')
+        return 1 if itemA.get('due_seconds') > itemB.get('due_seconds')
+      return -1
+
 
   API =
     getTodos: ->
@@ -146,8 +146,14 @@
     getTodoPriors: ->
       Entities.Todo.priors
 
-    getGroup: (attr) ->
-      App.todos.getGroup(attr.state, attr.group, attr.label)
+    getGroup: (state, group, label) ->
+      vc = App.todos.getGroup(state, group, label)
+      todos = new TodosColletionShow vc.toArray() #todo: here i lost the advantages of virtual collection - DUPLICATION
+      todos.sort()
+      todos
+
+    getGroupCount: (state, group, label) ->
+      App.todos.getGroup(state, group, label).length
 
     saveTodo: (data) ->
       model =   data.model
@@ -178,6 +184,11 @@
           alert 'connection error'
       )
 
+    makeLink: (state, group, label) ->
+      arr = [state, group, label]
+      newArr = arr.filter (item) -> !!item
+      newArr.join('/')
+
 
     getPriorLabel: (key) ->
       Entities.Todo.priors[key]
@@ -185,14 +196,26 @@
   App.reqres.setHandler "todos:entities", ->
     API.getTodos()
 
-  App.reqres.setHandler "todos:entities:group", (attr) ->
-    API.getGroup attr
+  App.reqres.setHandler "todos:entities:group", (state, group, label) ->
+    API.getGroup state, group, label
+
+  App.reqres.setHandler "todos:entities:group:count", (state, group, label) ->
+    API.getGroupCount state, group, label
 
   App.reqres.setHandler "todos:entity", (id) ->
     API.getTodo id
 
   App.reqres.setHandler "new:todos:entity", ->
     API.newTodo()
+
+  App.reqres.setHandler "save:todos:entity", (data) ->
+    API.saveTodo
+      model:      data.model
+      action:     data.action
+
+  App.reqres.setHandler "destroy:todos:entity", (data) ->
+    API.destroyTodo
+      model:      data.model
 
   App.reqres.setHandler "todos:entity:states", ->
     API.getTodoStates()
@@ -209,11 +232,5 @@
   App.reqres.setHandler "todos:entity:prior:label", (key) ->
     API.getPriorLabel key
 
-  App.reqres.setHandler "save:todos:entity", (data) ->
-    API.saveTodo
-      model:      data.model
-      action:     data.action
-
-  App.reqres.setHandler "destroy:todos:entity", (data) ->
-    API.destroyTodo
-      model:      data.model
+  App.reqres.setHandler "todos:link", (state, group, label) ->
+    API.makeLink state, group, label
