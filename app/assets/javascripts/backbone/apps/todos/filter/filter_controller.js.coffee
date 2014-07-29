@@ -13,7 +13,7 @@
         @showCollection()
         @showNew()
       @show @layout
-      App.request "todos:highlightLink", data
+      App.execute("todos:highlightLink", data)
 
     showCollection: () ->
       collectionView = @getTodosView()

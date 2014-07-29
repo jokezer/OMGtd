@@ -20,6 +20,7 @@
 //= require backbone.grouped_collection
 //= require backbone.validation
 //= require backbone.syphon
+//= require backbone.paginator
 //= require marionette
 //= require_tree ./backbone/config
 //= require backbone/app

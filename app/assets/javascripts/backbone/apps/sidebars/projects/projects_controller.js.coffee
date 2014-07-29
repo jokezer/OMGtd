@@ -5,7 +5,6 @@
     initialize: () ->
       @render()
 
-
     render: ->
       @makeElements()
       ProjectsView = @getProjectsView()

@@ -24,7 +24,7 @@
     itemViewContainer: '.nav.nav-pills.nav-stacked'
 
     #todo: put it to the view
-    App.reqres.setHandler "todos:highlightLink", (attr) ->
+    App.commands.setHandler "todos:highlightLink", (attr) ->
       arr = [attr.state, attr.group, attr.label]
       newArr = arr.filter (item) -> !!item
       link = '/#/todos/filter/' + newArr.join('/')
