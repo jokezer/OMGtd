@@ -110,7 +110,6 @@
     mode: 'client'
     state:
       pageSize: 3
-
     comparator: (itemA, itemB) =>
       return 1 if itemA.get('prior') < itemB.get('prior')
       if itemA.get('prior') == itemB.get('prior')
@@ -147,13 +146,17 @@
       Entities.Todo.priors
 
     getGroup: (attr) ->
+      #fullCollection stays the same
       attr.todos = App.todos unless attr.todos
       attr.state = 'active' unless attr.state
       vc = App.todos.getGroup(attr.state, attr.group, attr.label)
       paginator = new TodosColletionShow vc.toArray()
-      _.extend(vc, paginator)
-      vc.fullCollection.comparator = vc.comparator
-      vc
+      paginator.listenTo vc, 'remove', (el) ->
+        paginator.fullCollection.remove(el)
+      paginator.listenTo vc, 'add', (el) ->
+        paginator.fullCollection.add(el)
+      paginator.fullCollection.comparator = paginator.comparator
+      paginator
 
     getGroupCount: (state, group, label) ->
       App.todos.getGroup(state, group, label).length

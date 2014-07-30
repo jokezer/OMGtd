@@ -14,7 +14,7 @@
       @listenTo @model, 'slideDown', @slideDown
       @listenTo @model, 'server:send', @successEdit
       @listenTo @model, "server:saved", @successSync
-      @listenTo @model, "change:prior change:due", ->
+      @listenTo @model, "change:prior change:due change:kind", ->
         @move = true
       @listenTo @model, "reSort", ->
         @trigger 'reSort' #for collection view
@@ -121,6 +121,10 @@
     itemEvents:
       reSort: 'reRender'
 
+    initialize: ->
+      @listenTo @collection.fullCollection, 'add', (el) ->
+#        el.trigger 'reSort'
+
     onRender: ->
       @addPaginator()
 
@@ -132,4 +136,5 @@
     reRender: (action, view) ->
       @collection.fullCollection.sort()
       @render()
+      console.log @collection.fullCollection
       view.model.trigger('slideDown')
