@@ -2,25 +2,35 @@
 
   class Index.Controller extends App.Controllers.Base
     initialize: (data) ->
-      @todos = data.todos
-      @groups = new Backbone.Collection(
-        [
-          {label: 'Today todos',        todos: @todos.getGroup('active', 'calendar', 'today'),            showed:3},
-          {label: 'Tomorrow todos',     todos: @todos.getGroup('active', 'calendar', 'tomorrow',          showed:3)},
-          {label: 'Weekly todos',       todos: @todos.getGroup('active', 'calendar', 'weekly',            showed:3)},
-          {label: 'Next todos',         todos: @todos.getGroup('active', 'kindNoCalendar', 'next'),       showed:3},
-          {label: 'Scheduled todos',    todos: @todos.getGroup('active', 'kindNoCalendar', 'scheduled',   showed:3)},
-          {label: 'Cycled todos',       todos: @todos.getGroup('active', 'kindNoCalendar', 'cycled',      showed:3)},
-          {label: 'Waiting todos',      todos: @todos.getGroup('active', 'kindNoCalendar', 'waiting',     showed:3)},
-          {label: 'Someday todos',      todos: @todos.getGroup('active', 'kindNoCalendar', 'someday',     showed:3)},
+      @data = data
+
+    groups:
+      [
+        {name: 'Today todos',        group: 'calendar',       label: 'today'},
+        {name: 'Tomorrow todos',     group: 'calendar',       label: 'tomorrow'},
+        {name: 'Weekly todos',       group: 'calendar',       label: 'weekly'},
+        {name: 'Next todos',         group: 'kindNoCalendar', label: 'next'},
+        {name: 'Scheduled todos',    group: 'kindNoCalendar', label: 'scheduled'},
+        {name: 'Cycled todos',       group: 'kindNoCalendar', label: 'cycled'},
+        {name: 'Waiting todos',      group: 'kindNoCalendar', label: 'waiting'},
+        {name: 'Someday todos',      group: 'kindNoCalendar', label: 'someday'},
 #          {label: 'Trash todos'}, if project
 #          {label: 'Completed todos'}, if project
-        ]
-      )
+      ]
+
+    makeCollection: ->
+      for group in @groups
+        group.todos = App.request "todos:entities:group",
+          group: group.group
+          label: group.label
+      new Backbone.Collection(@groups)
+
+
 
     getLayoutView: ->
+      collection = @makeCollection()
       new Index.Collection
-        collection: @groups
+        collection: collection
 
     getTodosView: ->
       App.request "todos:list", @todos

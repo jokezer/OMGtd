@@ -146,11 +146,13 @@
     getTodoPriors: ->
       Entities.Todo.priors
 
-    getGroup: (state, group, label) ->
-      vc = App.todos.getGroup(state, group, label)
-      todos = new TodosColletionShow vc.toArray() #todo: here i lost the advantages of virtual collection - DUPLICATION
-      todos.sort()
-      todos
+    getGroup: (attr) ->
+      attr.todos = App.todos unless attr.todos
+      attr.state = 'active' unless attr.state
+      vc = App.todos.getGroup(attr.state, attr.group, attr.label)
+      _.extend(vc, new TodosColletionShow vc.toArray())
+      vc.setPageSize(3)
+      vc
 
     getGroupCount: (state, group, label) ->
       App.todos.getGroup(state, group, label).length
@@ -196,8 +198,8 @@
   App.reqres.setHandler "todos:entities", ->
     API.getTodos()
 
-  App.reqres.setHandler "todos:entities:group", (state, group, label) ->
-    API.getGroup state, group, label
+  App.reqres.setHandler "todos:entities:group", (data) ->
+    API.getGroup data
 
   App.reqres.setHandler "todos:entities:group:count", (state, group, label) ->
     API.getGroupCount state, group, label

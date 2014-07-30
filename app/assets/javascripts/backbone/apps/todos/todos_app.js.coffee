@@ -10,7 +10,6 @@
     index: ->
       new TodosApp.Index.Controller
         region: App.centralRegion
-        todos:  App.todos
 
     filterState: (state, group=false, label=false) ->
       new TodosApp.Filter.Controller

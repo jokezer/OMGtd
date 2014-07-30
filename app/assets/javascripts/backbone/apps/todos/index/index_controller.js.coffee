@@ -3,7 +3,6 @@
   class Index.Controller extends App.Controllers.Base
 
     initialize: (data) ->
-      @todos = data.todos
       @layout = @getLayoutView()
       @listenTo @layout, "show", =>
         @showIndexLayout()
@@ -22,8 +21,7 @@
       new Index.Layout()
 
     getIndexLayout: ->
-      App.request "todos:index",
-        todos: @todos
-
-    getNewView: () ->
-      App.request "todos:new", collection: @todos
+      App.request "todos:index"
+#
+#    getNewView: () ->
+#      App.request "todos:new", collection: @todos
