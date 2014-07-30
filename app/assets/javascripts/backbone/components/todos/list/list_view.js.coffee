@@ -126,7 +126,7 @@
 #        el.trigger 'reSort'
 
     onRender: ->
-      @addPaginator()
+      @addPaginator() if @collection.state.totalPages > 1
 
     addPaginator: ->
       paginator = new Backgrid.Extension.Paginator
