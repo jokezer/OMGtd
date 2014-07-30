@@ -191,10 +191,9 @@
       )
 
     makeLink: (state, group, label) ->
-      arr = [state, group, label]
-      newArr = arr.filter (item) -> !!item
-      newArr.join('/')
-
+      href = state
+      href+= "/#{group}/#{label}" if !!group
+      href
 
     getPriorLabel: (key) ->
       Entities.Todo.priors[key]
