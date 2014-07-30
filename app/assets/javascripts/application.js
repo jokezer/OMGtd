@@ -17,6 +17,8 @@
 //= require underscore
 //= require backbone
 //= require backbone.paginator
+//= require backbone.backgrid
+//= require backbone.backgrid-paginator
 //= require backbone.virtual_collection
 //= require backbone.grouped_collection
 //= require backbone.validation

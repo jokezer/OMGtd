@@ -109,7 +109,7 @@
     model: Entities.Todo
     mode: 'client'
     state:
-      pageSize: 5
+      pageSize: 3
 
     comparator: (itemA, itemB) =>
       return 1 if itemA.get('prior') < itemB.get('prior')
@@ -150,8 +150,9 @@
       attr.todos = App.todos unless attr.todos
       attr.state = 'active' unless attr.state
       vc = App.todos.getGroup(attr.state, attr.group, attr.label)
-      _.extend(vc, new TodosColletionShow vc.toArray())
-      vc.setPageSize(3)
+      paginator = new TodosColletionShow vc.toArray()
+      _.extend(vc, paginator)
+      vc.fullCollection.comparator = vc.comparator
       vc
 
     getGroupCount: (state, group, label) ->

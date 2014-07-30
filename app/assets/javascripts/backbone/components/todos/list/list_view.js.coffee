@@ -113,15 +113,23 @@
   class List.Empty extends Marionette.ItemView
     template: 'components/todos/list/templates/empty'
 
-  class List.Collection extends Marionette.CollectionView
-
+  class List.Collection extends Marionette.CompositeView
+    template: 'components/todos/list/templates/collection'
     itemView: List.Item
     emptyView: List.Empty
-
+    itemViewContainer: '.todosRegion'
     itemEvents:
       reSort: 'reRender'
 
+    onRender: ->
+      @addPaginator()
+
+    addPaginator: ->
+      paginator = new Backgrid.Extension.Paginator
+        collection: @collection
+      $('.paginatorRegion', @$el).append(paginator.render().$el)
+
     reRender: (action, view) ->
-      @collection.sort()
+      @collection.fullCollection.sort()
       @render()
       view.model.trigger('slideDown')
