@@ -13,26 +13,18 @@
         %nav.navbar.navbar-default(role='navigation')
           .container-fluid
             .navbar-header
-              = link_to 'GTD', '/#/todos', class: 'navbar-brand visible-lg-inline'
-              %a#showSidebar.navbar-brand.hidden-lg GTD >
+              = link_to 'OMGtd', '/#/todos', class: 'navbar-brand visible-lg-inline'
+              %a#showSidebar.navbar-brand.hidden-lg
+                OMGtd
+                %span.glyphicon.glyphicon-th-list
             .collapse.navbar-collapse
               %ul.nav.navbar-nav
-                -#%li= link_to 'Contexts', contexts_path
+                %li= link_to 'All todos', '/#/todos', class: 'hidden-lg'
                 -#%li= link_to 'Projects', projects_path
-                %li= link_to 'About', about_path
+                -#%li= link_to 'About', about_path
               %ul.nav.navbar-nav.navbar-right
                 = render 'shared/sign_in_link'
               -#- if user_signed_in?
               -#  = render 'shared/add_search_form'
       #main-region.container-fluid
         = content_for?(:application) ? yield(:application) : yield
-    -#.footer#footer-region
-    -#  .panel.panel-default
-    -#    .panel-body
-    -#      One more GTD by jokezer 2014
-    -#      %span.pull-right jokezer@gmail.com
-
-    -#.col-lg-12
-    -#  -if Rails.env.development?
-    -#    = link_to 'Run Jasmine', "http://localhost:8888"
-    -#    = debug(params)
