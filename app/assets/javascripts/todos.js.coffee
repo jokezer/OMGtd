@@ -1,3 +1,4 @@
+##= require hamlcoffee
 ready = ->
   jQuery ->
     sidebar = $('#left-sidebar-region')

@@ -8,9 +8,6 @@
     initialize: (data) ->
       @label = data.label
 
-    onRender: ->
-      console.log 'render'
-
     serializeData: ->
       data = {}
       data.label = @label
@@ -33,6 +30,7 @@
       kindsSidebarRegion    : "#kinds-sidebar-region"
       contextsSidebarRegion : "#contexts-sidebar-region"
       projectsSidebarRegion : "#projects-sidebar-region"
+
     highlightLink: (link) ->
       $('li', @$el).removeClass('active')
       $('a[href="' + link + '"]', @$el).parent().addClass('active')
