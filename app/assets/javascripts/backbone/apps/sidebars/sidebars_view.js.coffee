@@ -8,6 +8,9 @@
     initialize: (data) ->
       @label = data.label
 
+    onRender: ->
+      console.log 'render'
+
     serializeData: ->
       data = {}
       data.label = @label
@@ -23,10 +26,14 @@
     template: 'apps/sidebars/templates/group'
     itemViewContainer: '.nav.nav-pills.nav-stacked'
 
-    #todo: put it to the view
-    App.commands.setHandler "todos:highlightLink", (attr) ->
-      href = App.request "todos:link", attr.state, attr.group, attr.label
-      link = '/#/todos/filter/' + href
-      sidebar = $("#left-sidebar-wrapper")
-      $('li', sidebar).removeClass('active')
-      $('a[href="' + link + '"]', sidebar).parent().addClass('active')
+  class SidebarsApp.Layout extends Marionette.Layout
+    template: 'apps/sidebars/templates/layout'
+    id:       'left-sidebar-wrapper'
+    regions:
+      kindsSidebarRegion    : "#kinds-sidebar-region"
+      contextsSidebarRegion : "#contexts-sidebar-region"
+      projectsSidebarRegion : "#projects-sidebar-region"
+
+    highlightLink: (link) ->
+      $('li', @$el).removeClass('active')
+      $('a[href="' + link + '"]', @$el).parent().addClass('active')

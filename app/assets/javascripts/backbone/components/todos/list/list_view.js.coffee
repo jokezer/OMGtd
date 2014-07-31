@@ -136,5 +136,4 @@
     reRender: (action, view) ->
       @collection.fullCollection.sort()
       @render()
-      console.log @collection.fullCollection
       view.model.trigger('slideDown')

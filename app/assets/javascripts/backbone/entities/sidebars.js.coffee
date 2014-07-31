@@ -1,4 +1,4 @@
-@OMGtd.module "SidebarsApp.Left", (Left, App, Backbone, Marionette, $, _) ->
+@OMGtd.module "SidebarsApp", (Left, App, Backbone, Marionette, $, _) ->
   @leftElements = [
     {state: 'inbox'},
     {state: 'active',     group: 'calendar',  label: 'today'},

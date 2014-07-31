@@ -2,28 +2,23 @@
   @startWithParent = false
 
   API =
-    startAll: ->
-      API.showLeftSidebar()
-      API.showContextsSidebar()
-      API.showProjectsSidebar()
-
-    showLeftSidebar: ->
-      new SidebarsApp.Left.Controller
+    showSidebar: ->
+      @controller = new SidebarsApp.SidebarController
         region: App.leftSidebarRegion
-        collection: @leftElements
 
-    showContextsSidebar: ->
-      new SidebarsApp.Contexts.Controller
-        region: App.contextsSidebarRegion
-        collection: @leftElements
-
-    showProjectsSidebar: ->
-      new SidebarsApp.Projects.Controller
-        region: App.projectsSidebarRegion
-#        collection: @leftElements
-
+    highlightLink: (link) ->
+      @controller.link = link
+      @controller.highlightLink()
 
   SidebarsApp.on "start", ->
-    API.startAll()
-    App.todos.on "validated:valid remove", ->
-      API.startAll()
+    API.showSidebar()
+#    App.todos.on "validated:valid remove", ->
+#      API.renderAll()
+
+  App.commands.setHandler "todos:highlightLink", (attr) ->
+    href = App.request "todos:link", attr.state, attr.group, attr.label
+    link = '/#/todos/filter/' + href
+    API.highlightLink link
+#    sidebar = $("#left-sidebar-wrapper")
+#    $('li', sidebar).removeClass('active')
+#    $('a[href="' + link + '"]', sidebar).parent().addClass('active')
