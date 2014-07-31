@@ -40,11 +40,11 @@
       %a.save.btn.btn-default
         %span.glyphicon.glyphicon-floppy-disk
         Save
-    -unless @state == 'trash'
+    -unless @state == 'trash' || @isNew
       %a.trash.btn.btn-default
         %span.glyphicon.glyphicon-trash
         To trash
-    -unless @state == 'completed'
+    -unless @state == 'completed' || @isNew
       %a.complete.btn.btn-info
         %span.glyphicon.glyphicon-ok-sign
         Complete

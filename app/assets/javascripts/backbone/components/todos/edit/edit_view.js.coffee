@@ -67,6 +67,7 @@
       data.contexts = App.request "contexts:loaded"
       data.contexts = data.contexts.models
       data.errors = @model.validationError
+      data.isNew = @model.isNew()
       data
 
     onRender: ->
