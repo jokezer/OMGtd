@@ -122,8 +122,8 @@
       reSort: 'reRender'
 
     initialize: ->
-      @listenTo @collection.fullCollection, 'add', (el) ->
-#        el.trigger 'reSort'
+      @listenTo @collection, 'all', (el) ->
+        console.log el
 
     onRender: ->
       @addPaginator() if @collection.state.totalPages > 1

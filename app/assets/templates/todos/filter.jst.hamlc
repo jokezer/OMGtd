@@ -1,3 +1,0 @@
-%h4 Filter: #{@label} todos (#{@todos.length}):
-#todos_collection
-%br
