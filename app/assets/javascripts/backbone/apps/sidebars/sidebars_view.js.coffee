@@ -33,7 +33,6 @@
       kindsSidebarRegion    : "#kinds-sidebar-region"
       contextsSidebarRegion : "#contexts-sidebar-region"
       projectsSidebarRegion : "#projects-sidebar-region"
-
     highlightLink: (link) ->
       $('li', @$el).removeClass('active')
       $('a[href="' + link + '"]', @$el).parent().addClass('active')

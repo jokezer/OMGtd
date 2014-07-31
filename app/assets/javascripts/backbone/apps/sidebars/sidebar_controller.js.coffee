@@ -6,6 +6,9 @@
       @layout = @getLayoutView()
       @show @layout
       @showAll()
+      #todo optimize it
+      @listenTo App.todos, 'validated:valid remove', (ev) ->
+        @showAll()
 
     getLayoutView: ->
       new SidebarsApp.Layout
