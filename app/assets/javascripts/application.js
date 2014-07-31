@@ -31,12 +31,6 @@
 //= require_tree ./backbone/components
 //= require_tree ./backbone/apps
 //= require jquery.autosize
-//= require oldbb/gtd.js.coffee
-//  require_tree ../templates
-//= require_tree ./oldbb/models
-//= require_tree ./oldbb/collections
-//= require_tree ./oldbb/views
-//= require_tree ./oldbb/routers
 //= require_tree .
 //= require jquery-ui
 //= require bootstrap-sprockets
