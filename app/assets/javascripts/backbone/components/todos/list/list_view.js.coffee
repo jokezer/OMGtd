@@ -66,6 +66,7 @@
         $('textarea', @$el).trigger('autosize.resize')
 
     cancelEdit: ->
+      @model.validationError = null
       @undelegateEvents()
       @render()
       @delegateEvents()
@@ -120,10 +121,6 @@
     itemViewContainer: '.todosRegion'
     itemEvents:
       reSort: 'reRender'
-
-    initialize: ->
-      @listenTo @collection, 'all', (el) ->
-        console.log el
 
     onRender: ->
       @addPaginator() if @collection.state.totalPages > 1

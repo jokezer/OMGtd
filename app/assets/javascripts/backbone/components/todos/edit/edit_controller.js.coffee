@@ -18,16 +18,19 @@
         model: @model
 
     save: ->
-      @model.set(@getFormData())
+      @model.set @getFormData(), validate:true
+      @model.set @getFormData()
       @model.set(state:@model.moveTo) if @model.moveTo
-      @model = App.request "save:todos:entity",
-        model: @model
-        action: @action
-      if @model.validationError
+      if !@model.validationError
+        @model.trigger("server:send")
+        @model = App.request "save:todos:entity",
+          model: @model
+          action: @action
+      else
+        @form.model = @model
         @form.render()
         $('textarea', @form.$el).trigger('autosize.resize')
-      else
-        @model.trigger("server:send")
+        @model.set @model.previousAttributes()
 
     getFormData: ->
       formData = Backbone.Syphon.serialize(@form)
@@ -40,5 +43,4 @@
       new Edit.Form @model
 
   App.reqres.setHandler "todos:edit", (data) ->
-    form = new Edit.Controller(data)
-    form
+    new Edit.Controller(data)

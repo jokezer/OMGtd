@@ -89,6 +89,7 @@
      * @param {Model} model
      */
     Lib._onAdd = function (options, model) {
+
         var id = options.groupBy(model);
 
         if (!options.group_collection.get(id)) {

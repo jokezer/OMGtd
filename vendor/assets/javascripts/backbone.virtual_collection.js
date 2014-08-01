@@ -54,6 +54,7 @@
         this.listenTo(this.collection, 'add', this._onAdd, this);
         this.listenTo(this.collection, 'remove', this._onRemove, this);
         this.listenTo(this.collection, 'change', this._onChange, this);
+//        this.listenTo(this.collection, 'change', this._onChange, this);
         this.listenTo(this.collection, 'reset', this._onReset, this);
 
         if (options.close_with) {
@@ -328,8 +329,10 @@
             }
         } else {
             if (already_here) {
-                this._indexRemove(model);
-                this.trigger('remove', model, this, options);
+                if(!model.validationError){
+                    this._indexRemove(model);
+                    this.trigger('remove', model, this, options);
+                }
             }
         }
     };
