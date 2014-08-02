@@ -2,7 +2,7 @@
 // They will automatically be included in application.css.scss.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 #createNew{
-  margin: 0 6px 9px 2px;
+  margin: 0 6px 9px 0;
 }
 .panel {
   margin-bottom: 15px;
@@ -111,14 +111,14 @@ $prior_marker_width: 8px;
       padding: 4px 9px;
   }
   .btn-group{
-    margin: 5px 15px 5px 0;
+    margin: 5px 8px 5px 0;
   }
   .layout{
     display: inline-block;
     vertical-align: middle;
     margin-top: 4px;
     padding: 3px;
-    background: #bbdeff;
+//    background: #bbdeff;
   }
 }
 
