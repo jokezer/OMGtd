@@ -207,7 +207,7 @@ describe Todo do
       expect(cycled_todo.interval).to eq('monthly')
     end
     it 'has nil interval if not cycled' do
-      scheduled_todo = FactoryGirl.create(:scheduled_todo, user: user)
+      scheduled_todo = FactoryGirl.create(:scheduled_todo, user: user, interval:'monthly')
       expect(scheduled_todo.interval).to be_nil
     end
     it 'reactivate todo when completed' do

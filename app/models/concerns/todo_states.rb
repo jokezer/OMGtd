@@ -82,17 +82,17 @@ module TodoIntervals
 
     before_validation {|todo| set_interval todo }
     before_update do |t|
-      if t.kind == 'cycled'
-        if t.state=='completed'
-          t.due   =  new_due
-          t.state = 'active'
-        end
+      if t.kind == 'cycled' && t.state=='completed'
+        t.due   =  new_due
+        t.state = 'active'
       end
     end
 
     def set_interval (t)
       if kind=='cycled'
         t.interval = 'monthly' unless ['monthly', 'weekly'].include? interval
+      else
+        t.interval = nil
       end
     end
     state_machine :interval do

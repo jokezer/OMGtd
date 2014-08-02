@@ -16,9 +16,16 @@
       'click button.showConfirmDelete'  : 'showConfirmDelete'
       'click button.hideConfirmDelete'  : 'hideConfirmDelete'
       'click button.confirmDelete'      : 'destroy'
+      'click label.kind'                : 'toggleInterval'
 
     initialize: (model) ->
       @model = model
+
+    toggleInterval: (el) ->
+      if el.target.children[0].value == 'cycled'
+        $('.interval', @$el).show()
+      else
+        $('.interval', @$el).hide()
 
     destroy: ->
       clearTimeout(@timer)
@@ -64,6 +71,7 @@
       data.priors = App.request "todos:entity:priors"
       data.contexts = App.request "contexts:loaded"
       data.contexts = data.contexts.models
+      data.intervals = App.request "todos:entity:intervals"
       data.errors = @model.validationError
       data.isNew = @model.isNew()
       data
@@ -73,6 +81,10 @@
       @selectRadio 'prior',       @model.get('prior')
       @selectRadio 'kind',        @model.get('kind')
       @selectRadio 'context_id',  @model.get('context_id')
+      intervalToSelect = @model.get('interval')
+      intervalToSelect = 'monthly' unless intervalToSelect
+      $('.interval', @$el).hide() unless @model.get('kind')=='cycled'
+      @selectRadio 'interval',  intervalToSelect
       $('textarea', @$el).autosize()
       $('input.todo-due', @$el).datetimepicker({format: 'Y-m-d H:i', firstDay: 1})
       focusInput = ($el) ->

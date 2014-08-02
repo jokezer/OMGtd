@@ -10,6 +10,7 @@
     @kinds = ['next', 'someday', 'waiting', 'scheduled', 'cycled']
     @states = ['inbox', 'active', 'trash', 'completed']
     @calendars = ['today', 'tomorrow', 'weekly', 'no']
+    @intervals = ['monthly', 'weekly']
     @priors = {0: 'none', 1: 'low', 2: 'medium', 3: 'high'}
 
     initialize: () ->
@@ -141,6 +142,9 @@
     getTodoKinds: ->
       Entities.Todo.kinds
 
+    getTodoIntervals: ->
+      Entities.Todo.intervals
+
     getTodoCalendars: ->
       Entities.Todo.calendars
 
@@ -229,6 +233,9 @@
 
   App.reqres.setHandler "todos:entity:kinds", ->
     API.getTodoKinds()
+
+  App.reqres.setHandler "todos:entity:intervals", ->
+    API.getTodoIntervals()
 
   App.reqres.setHandler "todos:entity:calendars", ->
     API.getTodoCalendars()
