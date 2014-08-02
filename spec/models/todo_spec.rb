@@ -14,6 +14,7 @@ describe Todo do
   it { should respond_to(:due) }
   it { should respond_to(:context) }
   it { should respond_to(:project) }
+  it { should respond_to(:interval) }
   it 'with correct data' do
     expect(todo).to be_valid
   end
@@ -183,57 +184,32 @@ describe Todo do
                             due: DateTime.now)
       expect(todo).to be_valid
     end
-
   end
 
-  # context 'move' do
-  #   it 'to correct context' do
-  #     todo.move 'context', user.contexts.first.name
-  #     expect(todo.context.name).to eq(user.contexts.first.name)
-  #   end
-  #   it 'to incorrect context' do
-  #     todo.move 'context', 'incorrect'
-  #     expect(todo.context).to be_nil
-  #   end
-  #   it 'to correct project' do
-  #     todo.move 'project', project.name
-  #     expect(todo.project.name).to eq(project.name)
-  #   end
-  #   it 'to incorrect project' do
-  #     todo.move 'project', 'incorrect'
-  #     expect(todo.project).to be_nil
-  #   end
-  #   it 'to calendar today' do
-  #     todo.move 'calendar', 'today'
-  #     expect(todo.today?).to be_true
-  #   end
-  #   it 'to calendar tomorrow' do
-  #     todo.move 'calendar', 'tomorrow'
-  #     expect(todo.tomorrow?).to be_true
-  #   end
-  #   it 'to calendar incorrect' do
-  #     todo.move 'calendar', 'false'
-  #     expect(todo.due).to be_nil
-  #     expect(todo).to be_valid
-  #   end
-  #   it 'to correct kind' do
-  #     todo.move 'kind', 'next'
-  #     expect(todo.next?).to be_true
-  #     expect(todo.active?).to be_true
-  #   end
-  #   it 'to incorrect kind' do
-  #     todo.move 'kind', 'incorrect'
-  #     expect(todo.next?).to be_false
-  #     expect(todo.inbox?).to be_true
-  #   end
-  #   it 'to correct state' do
-  #     todo.move 'state', 'trash'
-  #     expect(todo.trash?).to be_true
-  #   end
-  #   it 'to incorrect state' do
-  #     todo.move 'state', 'incorrect'
-  #     expect(todo.reload.inbox?).to be_true
-  #   end
-  # end
+  context 'Cycled todos intervals' do
+    it 'has the interval states' do
+      expect(Todo.state_machines[:interval].states.map { |n| n.name })
+      .to include(nil, :weekly, :monthly)
+    end
+    it 'sets interval to monthly if no interval inserted' do
+      cycled_todo = user.todos.new(title: 'Title of scheduled', kind: 'cycled',
+                                   due: DateTime.now)
+      expect(cycled_todo.interval).to eq('monthly')
+    end
+    it 'sets interval to inserted' do
+      cycled_todo = user.todos.new(title: 'Title of scheduled', kind: 'cycled',
+                                   due: DateTime.now, interval: 'weekly')
+      expect(cycled_todo.interval).to eq('weekly')
+    end
+    it 'sets interval to monthly if interval is incorrect' do
+      cycled_todo = user.todos.new(title: 'Title of scheduled', kind: 'cycled',
+                                   due: DateTime.now, interval: 'incorrect')
+      expect(cycled_todo.interval).to eq('monthly')
+    end
+    it 'has nil interval if not cycled' do
+      scheduled_todo = FactoryGirl.create(:scheduled_todo, user: user)
+      expect(scheduled_todo.interval).to be_nil
+    end
+  end
 
 end

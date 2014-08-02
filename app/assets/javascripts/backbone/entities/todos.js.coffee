@@ -105,7 +105,7 @@
           return todo.get(attr)
       })
 
-  class TodosColletionShow extends Backbone.PageableCollection
+  class Entities.TodosColletionShow extends Backbone.PageableCollection
     model: Entities.Todo
     mode: 'client'
     state:
@@ -151,7 +151,7 @@
       data.todos = App.todos unless data.todos
       data.state = 'active' unless data.state
       vc = App.todos.getGroup(data.state, data.group, data.label)
-      paginator = new TodosColletionShow vc.toArray()
+      paginator = new Entities.TodosColletionShow vc.toArray()
       paginator.listenTo vc, 'remove', (el) ->
         paginator.fullCollection.remove(el)
       paginator.listenTo vc, 'add', (el) ->
