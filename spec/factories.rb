@@ -17,7 +17,7 @@ FactoryGirl.define do
       kind 'scheduled'
       due DateTime.now
     end
-    factoy :cycled_todo do
+    factory :cycled_todo do
       kind 'scheduled'
       due DateTime.now
     end
