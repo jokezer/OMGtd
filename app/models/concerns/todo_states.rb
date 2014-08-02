@@ -76,3 +76,38 @@ module TodoTypes
     kind.blank? ? 'inbox' : kind
   end
 end
+module TodoIntervals
+  extend ActiveSupport::Concern
+  included do
+
+    before_validation {|todo| set_interval todo }
+    before_update do |t|
+      if t.kind == 'cycled'
+        if t.state=='completed'
+          t.due   =  new_due
+          t.state = 'active'
+        end
+      end
+    end
+
+    def set_interval (t)
+      if kind=='cycled'
+        t.interval = 'monthly' unless ['monthly', 'weekly'].include? interval
+      end
+    end
+    state_machine :interval do
+      state :weekly do
+        def new_due
+          due + 1.week
+        end
+      end
+      state :monthly do
+        def new_due
+          due + 1.month
+        end
+      end
+    end
+  end
+  module ClassMethods
+  end
+end

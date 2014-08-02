@@ -192,23 +192,30 @@ describe Todo do
       .to include(nil, :weekly, :monthly)
     end
     it 'sets interval to monthly if no interval inserted' do
-      cycled_todo = user.todos.new(title: 'Title of scheduled', kind: 'cycled',
+      cycled_todo = user.todos.create(title: 'Title of scheduled', kind: 'cycled',
                                    due: DateTime.now)
       expect(cycled_todo.interval).to eq('monthly')
     end
     it 'sets interval to inserted' do
-      cycled_todo = user.todos.new(title: 'Title of scheduled', kind: 'cycled',
+      cycled_todo = user.todos.create(title: 'Title of scheduled', kind: 'cycled',
                                    due: DateTime.now, interval: 'weekly')
       expect(cycled_todo.interval).to eq('weekly')
     end
     it 'sets interval to monthly if interval is incorrect' do
-      cycled_todo = user.todos.new(title: 'Title of scheduled', kind: 'cycled',
+      cycled_todo = user.todos.create(title: 'Title of scheduled', kind: 'cycled',
                                    due: DateTime.now, interval: 'incorrect')
       expect(cycled_todo.interval).to eq('monthly')
     end
     it 'has nil interval if not cycled' do
       scheduled_todo = FactoryGirl.create(:scheduled_todo, user: user)
       expect(scheduled_todo.interval).to be_nil
+    end
+    it 'reactivate todo when completed' do
+      due = DateTime.now
+      cycled_todo = FactoryGirl.create(:cycled_todo, user: user, due:due)
+      cycled_todo.update_attributes(state:'completed', kind:'cycled')
+      expect(cycled_todo.state).to eq('active')
+      expect(cycled_todo.due.month).to eq((due+1.month).month)
     end
   end
 

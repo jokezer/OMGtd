@@ -2,6 +2,7 @@ class Todo < ActiveRecord::Base
 
   include TodoStates
   include TodoTypes
+  include TodoIntervals
   include Prior
   include TodoDues
 
