@@ -9,6 +9,7 @@
       #todo optimize it
       @listenTo App.todos, 'validated:valid remove', (ev) ->
         @showAll()
+        @highlightLink()
 
     getLayoutView: ->
       new SidebarsApp.Layout
