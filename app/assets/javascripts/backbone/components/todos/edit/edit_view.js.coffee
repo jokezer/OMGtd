@@ -13,6 +13,7 @@
       'click a.trash'                   : 'saveTrash'
       'click a.complete'                : 'saveComplete'
       'click a.activate'                : 'saveActivated'
+      'click a.makeProject'             : 'saveMakeProject'
       'click button.showConfirmDelete'  : 'showConfirmDelete'
       'click button.hideConfirmDelete'  : 'hideConfirmDelete'
       'click button.confirmDelete'      : 'destroy'
@@ -49,6 +50,11 @@
       @model.moveTo = 'completed'
       @save()
 
+    saveMakeProject: () ->
+      @model.makeProject = true
+      @save()
+#      @model.on 'sync', redirectTo project id
+
     leaveElement: ->
       saveTodo =  (view) ->
         unless $('.edit:focus', view.$el).length ||
@@ -69,31 +75,36 @@
       data = @model.toJSON()
       data.kinds =  App.request "todos:entity:kinds"
       data.priors = App.request "todos:entity:priors"
-      data.contexts = App.request "contexts:loaded"
-      data.contexts = data.contexts.models
+      data.contexts = (App.request "contexts:loaded").models
       data.intervals = App.request "todos:entity:intervals"
+      data.projects = (App.request "projects:by_state", 'active').toArray()
       data.errors = @model.validationError
       data.isNew = @model.isNew()
       data
 
     onRender: ->
       @setPriorClass @model.get('prior')
-      @selectRadio 'prior',       @model.get('prior')
+      @selectRadio 'prior',       @model.get('prior'), true
       @selectRadio 'kind',        @model.get('kind')
       @selectRadio 'context_id',  @model.get('context_id')
       intervalToSelect = @model.get('interval')
       intervalToSelect = 'monthly' unless intervalToSelect
+      @selectRadio 'interval',    intervalToSelect
+      @selectRadio 'project_id',  @model.get('project_id'), true
       $('.interval', @$el).hide() unless @model.get('kind')=='cycled'
-      @selectRadio 'interval',  intervalToSelect
       $('textarea', @$el).autosize()
       $('input.todo-due', @$el).datetimepicker({format: 'Y-m-d H:i', firstDay: 1})
       focusInput = ($el) ->
         $el.find('input.title').focus()
       @timer = _.delay(focusInput, 30, @$el)
 
-    selectRadio: (name, value) ->
-      return unless value
-      $("input[type='radio'][name='#{name}'][value=#{value}]", @$el)
+    selectRadio: (name, value, setFirst) ->
+      return if !value && !setFirst
+      if value
+        el = $("input[type='radio'][name='#{name}'][value=#{value}]", @$el)
+      else
+        el = $("input[type='radio'][name='#{name}']", @$el).eq(0)
+      el
         .prop("checked", true)
         .parent()
         .addClass('active')

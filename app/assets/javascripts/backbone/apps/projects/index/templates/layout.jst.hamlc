@@ -1,0 +1,8 @@
+%h3 All projects
+#createProject
+%h4 Active projects:
+#activeProjectsRegion
+%h4 Finished projects:
+#finishedProjectsRegion
+%h4 Trash projects:
+#trashProjectsRegion

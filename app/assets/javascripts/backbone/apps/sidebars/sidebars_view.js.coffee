@@ -7,10 +7,12 @@
   class SidebarsApp.Sidebar extends Marionette.CompositeView
     initialize: (data) ->
       @label = data.label
+      @linkToEdit = data.linkToEdit
 
     serializeData: ->
       data = {}
       data.label = @label
+      data.linkToEdit = @linkToEdit
       data
 
     events:

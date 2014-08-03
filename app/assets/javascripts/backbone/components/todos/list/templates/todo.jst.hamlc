@@ -44,8 +44,9 @@
           -if @state == 'completed'
             %span.glyphicon.glyphicon-ok-sign
           = @kind||@state
-        -if @project_id
-          Project #{@project_id}
-        -if @context
+        -if @project_label
           %span.label.label-default
-            #{@context}
+            #{@project_label}
+        -if @context_label
+          %span.label.label-default
+            #{@context_label}

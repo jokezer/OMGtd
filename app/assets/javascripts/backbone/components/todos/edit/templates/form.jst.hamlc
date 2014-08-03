@@ -39,6 +39,17 @@
           %label.btn.btn-sm.btn-default
             %input{name:"context_id", value:item.get('id'), type:"radio"}
             =item.get('label')
+    -if @projects
+      %br
+        %span.layout Project:
+        .btn-group{'data-toggle' => "buttons"}
+          %label.btn.btn-sm.btn-default
+            %input{name:"project_id", value:null, type:"radio"}
+            none
+          - for item in @projects
+            %label.btn.btn-sm.btn-default
+              %input{name:"project_id", value:item.get('id'), type:"radio"}
+              =item.get('label')
   .panel-body
     .pull-right
       %a.cancel.btn.btn-info
@@ -55,6 +66,10 @@
       %a.complete.btn.btn-info
         %span.glyphicon.glyphicon-ok-sign
         Complete
+    -if (@state == 'active' || @state == 'inbox') && !@project_id
+      %a.makeProject.btn.btn-link
+        %span.glyphicon.glyphicon-share
+        Make project
     -if @state == 'trash' || @state == 'completed'
       %a.activate.btn.btn-info
         %span.glyphicon.glyphicon-ok-sign

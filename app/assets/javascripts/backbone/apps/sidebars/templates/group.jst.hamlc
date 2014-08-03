@@ -1,4 +1,8 @@
 -if @label
   .panel.panel-default
-    .panel-body= @label
+    .panel-body
+      = @label
+      -if @linkToEdit
+        %a.pull-right{href:"/#/#{@linkToEdit}"} All
+
 %ul.nav.nav-pills.nav-stacked

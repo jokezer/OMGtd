@@ -30,9 +30,8 @@
 
 
     getLayoutView: ->
-      collection = @makeCollection()
       new Index.Collection
-        collection: collection
+        collection: @makeCollection()
 
     getTodosView: ->
       App.request "todos:list", @todos

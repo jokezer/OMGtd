@@ -14,10 +14,11 @@
     getLayoutView: ->
       new SidebarsApp.Layout
 
-    getCollectionView: (collection, label=false) ->
+    getCollectionView: (collection, label=false, linkToEdit=false) ->
       new App.SidebarsApp.Sidebar
         collection: collection
         label:      label
+        linkToEdit: linkToEdit
 
     highlightLink: ->
       @layout.highlightLink @link
@@ -39,7 +40,7 @@
 
     showProjects: ->
       collection = @getCollection 'project'
-      collectionView = @getCollectionView(collection, 'Project')
+      collectionView = @getCollectionView(collection, 'Project', 'projects')
       @layout.projectsSidebarRegion.show collectionView
 
     getCollection: (label) ->

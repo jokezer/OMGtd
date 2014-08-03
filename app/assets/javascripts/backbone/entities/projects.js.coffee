@@ -35,7 +35,8 @@
       })
 
     withState: (state) ->
-      @groupedStates.get('active').vc
+      group = @groupedStates.get(state)
+      group.vc if group
 
 
   API =
@@ -55,13 +56,29 @@
       new Entities.Project
 
     getLoadedProjects: ->
-      App.Projects
+      App.projects
 
     getProjectLabel: (id) ->
-      App.Projects.get(id).get('label')
+      App.projects.get(id).get('label')
+
+    getAllProjectsByStates: ->
+      output =
+        active:   App.projects.withState 'active'
+        finished: App.projects.withState 'finished'
+        trash:    App.projects.withState 'trash'
+      output
+
+    getProjectsByState: (state) ->
+      App.projects.withState state
 
   App.reqres.setHandler "projects:entities", ->
     API.getProjects()
+
+  App.reqres.setHandler "projects:by_state", (state) ->
+    API.getProjectsByState state
+
+  App.reqres.setHandler "projects:by_state:all", ->
+    API.getAllProjectsByStates()
 
   App.reqres.setHandler "projects:entity", (id) ->
     API.getProject id
