@@ -5,20 +5,28 @@
       @data = data
       @model     = data.project
       @layout      = @getLayoutView()
+      @getTodos()
       @projectView = @getItemView()
       @listenTo @projectView, 'save', @save
-      @getTodos()
       @show @layout
       @showAll()
-      @highlightLink(data.project.id)
+      @highlightLink()
 
     getTodos: ->
       #todo: initialize project todos once
       @todos = new App.Entities.TodosCollection( App.todos.where(project_id: @model.id) )
       @todos.makeGroups()
 
-    highlightLink: (id) ->
-      App.execute("todos:highlightLink", "/#/project/#{id}")
+    highlightLink: () ->
+      App.execute("left_sidebar:highlightLink", "/#/project/#{@data.project.id}")
+
+    getLink: ->
+      baseLink = "/#/project/#{@data.project.id}"
+      if @data.state
+        link = App.request "todos:link", @data.state, @data.group, @data.label
+        link = "#{baseLink}/filter/#{link}"
+      else link=baseLink
+      link
 
     showAll: ->
       @layout.projectRegion.show @projectView
@@ -53,6 +61,7 @@
       new Show.Navs
         todos:   @todos
         project: @model
+        link:    @getLink()
 
     save: ->
       @model.set @getFormData(), validate:true

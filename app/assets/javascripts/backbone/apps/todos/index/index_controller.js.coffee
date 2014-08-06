@@ -8,7 +8,7 @@
         @showIndexLayout()
 #        @showNew()
       @show @layout
-      App.execute("todos:highlightLink", '/#/todos')
+      App.execute("left_sidebar:highlightLink", '/#/todos')
 
     showIndexLayout: () ->
       indexLayout = @getIndexLayout()

@@ -43,6 +43,10 @@
     initialize: (data) ->
       @data = data
       @collection = @makeCollection()
+      @link = data.link
+
+    onRender: ->
+      @highlightLink @link
 
     makeCollection: ->
       baseLink = "/#/project/#{@data.project.id}"
@@ -54,3 +58,7 @@
         else
           group.link = baseLink
       new Backbone.Collection(@menus)
+
+    highlightLink: (link) ->
+      $('li', @$el).removeClass('active')
+      $('a[href="' + link + '"]', @$el).parent().addClass('active')

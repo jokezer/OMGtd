@@ -14,5 +14,5 @@
   SidebarsApp.on "start", ->
     API.showSidebar()
     
-  App.commands.setHandler "todos:highlightLink", (link) ->
+  App.commands.setHandler "left_sidebar:highlightLink", (link) ->
     API.highlightLink link
