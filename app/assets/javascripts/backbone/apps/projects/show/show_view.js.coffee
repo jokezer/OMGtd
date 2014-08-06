@@ -4,6 +4,7 @@
     template: 'apps/projects/show/templates/layout'
     regions:
       projectRegion       : "#projectRegion"
+      projectNavsRegion   : "#projectNavsRegion"
       createNewRegion     : "#createNewRegion"
       projectTodosRegion  : "#projectTodosRegion"
 
@@ -17,3 +18,39 @@
 
     save: ->
       @trigger('save')
+
+
+  class Show.NavItem extends Marionette.ItemView
+    template: 'apps/projects/show/templates/nav_item'
+    tagName: 'li'
+
+
+
+  class Show.Navs extends Marionette.CollectionView
+    itemView: Show.NavItem
+    tagName: 'ul'
+    className: 'nav nav-pills'
+    menus: [
+      {name: 'Next',       state: 'active',  group:'kind',     label:'next'},
+      {name: 'Scheduled',  state: 'active',  group:'kind',     label:'scheduled'},
+      {name: 'Cycled',     state: 'active',  group:'kind',     label:'cycled'},
+      {name: 'Waiting',    state: 'active',  group:'kind',     label:'waiting'},
+      {name: 'Someday',    state: 'active',  group:'kind',     label:'someday'},
+      {name: 'Trash',      state: 'trash'},
+      {name: 'Completed',  state: 'completed'},
+    ]
+    initialize: (data) ->
+      @data = data
+      @makeCollection()
+      @collection = new Backbone.Collection (@menus)
+
+    makeCollection: ->
+      baseLink = "/#/project/#{@data.project.id}/"
+      for group in @menus
+        group.count = @data.todos.getGroup(group.state, group.group, group.label).length
+        link  = App.request "todos:link", group.state, group.group, group.label
+        group.link = baseLink + link
+      @menus.unshift name:'Index', link:baseLink
+      new Backbone.Collection(@menus)
+
+

@@ -16,6 +16,7 @@
 
     showAll: ->
       @layout.projectRegion.show @projectView
+      @layout.projectNavsRegion.show @getNavs()
       @layout.projectTodosRegion.show @getTodosIndex()
 
     getItemView: ->
@@ -29,9 +30,10 @@
       App.request "todos:index",
         todos: @todos
 
-    getTodosList: ->
-      new Show.TodosList
-        todos: @todos
+    getNavs: ->
+      new Show.Navs
+        todos:   @todos
+        project: @model
 
     save: ->
       @model.set @getFormData(), validate:true
