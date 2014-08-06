@@ -1,6 +1,6 @@
 @OMGtd.module "ProjectsApp.Show", (Show, App, Backbone, Marionette, $, _) ->
 
-  class Show.Layout extends Marionette.Layout
+  class Show.Layout extends Marionette.LayoutView
     template: 'apps/projects/show/templates/layout'
     regions:
       projectRegion       : "#projectRegion"
@@ -27,7 +27,7 @@
 
 
   class Show.Navs extends Marionette.CollectionView
-    itemView: Show.NavItem
+    childView: Show.NavItem
     tagName: 'ul'
     className: 'nav nav-pills'
     menus: [

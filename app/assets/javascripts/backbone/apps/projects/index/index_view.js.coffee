@@ -1,6 +1,6 @@
 @OMGtd.module "ProjectsApp.Index", (Index, App, Backbone, Marionette, $, _) ->
 
-  class Index.Layout extends Marionette.Layout
+  class Index.Layout extends Marionette.LayoutView
     template: 'apps/projects/index/templates/layout'
     regions:
       createProjectRegion     : "#createProjectRegion"
@@ -15,5 +15,5 @@
     template: 'apps/projects/index/templates/empty'
 
   class Index.Collection extends Marionette.CollectionView
-    itemView:   Index.Item
+    childView:   Index.Item
     emptyView:  Index.Empty

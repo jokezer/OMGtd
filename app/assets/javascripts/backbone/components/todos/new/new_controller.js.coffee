@@ -10,21 +10,21 @@
 
     showForm: (a, model=false) ->
       if model then @model = model else @model = App.request "new:todos:entity"
-      @button.close()
+      @button.destroy()
       @form = @getFormView()
       @layout.createNewRegion.show @form.form
-      @listenTo @form,    'cancel',       @closeForm
+      @listenTo @form,    'cancel',       @destroyForm
       @listenTo @model,   'server:send',  @successAdd
 
-    closeForm: ->
+    destroyForm: ->
       @stopListening(@form)
       @stopListening(@model)
-      @form.close()
+      @form.destroy()
       @button = @getButtonView()
       @layout.createNewRegion.show @button
 
     successAdd: ->
-      @closeForm()
+      @destroyForm()
       @listenTo @model, "server:error", ->
         @showForm(false, @model)
 

@@ -6,7 +6,7 @@
       @model     = data.project
       @layout      = @getLayoutView()
       @getTodos()
-      @projectView = @getItemView()
+      @projectView = @getProjectView()
       @listenTo @projectView, 'save', @save
       @show @layout
       @showAll()
@@ -37,7 +37,7 @@
         @layout.projectTodosRegion.show @getTodosIndex()
 
 
-    getItemView: ->
+    getProjectView: ->
       new Show.Item
         model: @model
 

@@ -115,10 +115,10 @@
 
   class List.Collection extends Marionette.CompositeView
     template: 'components/todos/list/templates/collection'
-    itemView: List.Item
+    childView: List.Item
     emptyView: List.Empty
-    itemViewContainer: '.todosRegion'
-    itemEvents:
+    childViewContainer: '.todosRegion'
+    childEvents:
       reSort: 'reRender'
 
     onRender: ->

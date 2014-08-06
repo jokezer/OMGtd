@@ -3,7 +3,7 @@
   class New.Button extends Marionette.ItemView
     template: 'components/todos/new/templates/button'
 
-  class New.Layout extends Marionette.Layout
+  class New.Layout extends Marionette.LayoutView
     template: 'components/todos/new/templates/layout'
     regions:
       createNewRegion: "#createNew-region"

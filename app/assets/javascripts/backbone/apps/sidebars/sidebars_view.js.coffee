@@ -21,11 +21,11 @@
     hideSidebar: ->
       $('#left-sidebar-region').addClass('visible-lg-block')
 
-    itemView: SidebarsApp.Item
+    childView: SidebarsApp.Item
     template: 'apps/sidebars/templates/group'
-    itemViewContainer: '.nav.nav-pills.nav-stacked'
+    childViewContainer: '.nav.nav-pills.nav-stacked'
 
-  class SidebarsApp.Layout extends Marionette.Layout
+  class SidebarsApp.Layout extends Marionette.LayoutView
     template: 'apps/sidebars/templates/layout'
     id:       'left-sidebar-wrapper'
     regions:
