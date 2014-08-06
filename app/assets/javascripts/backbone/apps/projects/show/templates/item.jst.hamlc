@@ -7,4 +7,4 @@
     =@content
   %a.save.btn.btn-default
     %span.glyphicon.glyphicon-floppy-disk
-    Save
+    Update

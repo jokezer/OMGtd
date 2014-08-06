@@ -9,6 +9,10 @@
       @listenTo @projectView, 'save', @save
       @show @layout
       @showAll()
+      @highlightLink(data.project.id)
+
+    highlightLink: (id) ->
+      App.execute("todos:highlightLink", "/#/project/#{id}")
 
     showAll: ->
       @layout.projectRegion.show @projectView
@@ -23,6 +27,10 @@
 
     getTodosIndex: ->
       App.request "todos:index",
+        todos: @todos
+
+    getTodosList: ->
+      new Show.TodosList
         todos: @todos
 
     save: ->

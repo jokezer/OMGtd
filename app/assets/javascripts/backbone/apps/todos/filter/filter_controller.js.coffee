@@ -9,7 +9,12 @@
         @showCollection()
         @showNew()
       @show @layout
-      App.execute("todos:highlightLink", data)
+      @highlightLink(data)
+
+    highlightLink: (data) ->
+      href = App.request "todos:link", data.state, data.group, data.label
+      link = '/#/todos/filter/' + href
+      App.execute("todos:highlightLink", link)
 
     showCollection: () ->
       collectionView = @getTodosView()

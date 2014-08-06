@@ -151,7 +151,7 @@
     getTodoPriors: ->
       Entities.Todo.priors
 
-    getGroup: (data) ->
+    getPaginatedGroup: (data) ->
       if data.todos then todos = data.todos else todos = App.todos
       data.state = 'active' unless data.state
       vc = todos.getGroup(data.state, data.group, data.label)
@@ -208,7 +208,7 @@
     API.getTodos()
 
   App.reqres.setHandler "todos:entities:group", (data) ->
-    API.getGroup data
+    API.getPaginatedGroup data
 
   App.reqres.setHandler "todos:entities:group:count", (state, group, label) ->
     API.getGroupCount state, group, label

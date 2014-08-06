@@ -14,7 +14,5 @@
   SidebarsApp.on "start", ->
     API.showSidebar()
     
-  App.commands.setHandler "todos:highlightLink", (attr) ->
-    href = App.request "todos:link", attr.state, attr.group, attr.label
-    link = '/#/todos/filter/' + href
+  App.commands.setHandler "todos:highlightLink", (link) ->
     API.highlightLink link
