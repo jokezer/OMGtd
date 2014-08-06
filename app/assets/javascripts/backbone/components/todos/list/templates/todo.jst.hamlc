@@ -14,9 +14,9 @@
         %span.glyphicon.glyphicon-pencil
         Edit
       .btn-group-vertical
-        %a.btn.btn-sm.inc-prior.btn-default{name: 'increase_prior', disabled: !@can_increase_prior}
+        %button.btn.btn-sm.inc-prior.btn-default{name: 'increase_prior', disabled: !@can_increase_prior}
           %i.glyphicon.glyphicon-chevron-up
-        %a.btn.btn-sm.dec-prior.btn-default{name: 'decrease_prior', disabled: !@can_decrease_prior}
+        %button.btn.btn-sm.dec-prior.btn-default{name: 'decrease_prior', disabled: !@can_decrease_prior}
           %i.glyphicon.glyphicon-chevron-down
     .textField
       .content.info
@@ -25,7 +25,7 @@
             =line
             %br
           -if @groupedContent.hidden
-            %a.btn.btn-xs.btn-info.showMore
+            %button.btn.btn-xs.btn-info.showMore
               Show #{@groupedContent.hidden.length} more strings
               %span.glyphicon.glyphicon-chevron-down
 
@@ -33,7 +33,7 @@
               - for hiddenLine in @groupedContent.hidden
                 =hiddenLine
                 %br
-              %a.btn.btn-xs.btn-info.hideContent
+              %button.btn.btn-xs.btn-info.hideContent
                 Hide content
                 %span.glyphicon.glyphicon-chevron-up
     %span

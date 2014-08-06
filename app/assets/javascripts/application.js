@@ -36,11 +36,3 @@
 //= require_tree .
 //= require jquery-ui
 //= require bootstrap-sprockets
-
-// require underscore
-// require backbone
-// require backbone_rails_sync
-// require backbone_datalink
-// require backbone-old/gtd
-
-// require turbolinks
