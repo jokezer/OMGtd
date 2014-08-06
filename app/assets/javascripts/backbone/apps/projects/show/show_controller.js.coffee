@@ -2,14 +2,20 @@
 
   class Show.Controller extends App.Controllers.Base
     initialize: (data) ->
+      @data = data
       @model     = data.project
-      @todos       = data.todos
       @layout      = @getLayoutView()
       @projectView = @getItemView()
       @listenTo @projectView, 'save', @save
+      @getTodos()
       @show @layout
       @showAll()
       @highlightLink(data.project.id)
+
+    getTodos: ->
+      #todo: initialize project todos once
+      @todos = new App.Entities.TodosCollection( App.todos.where(project_id: @model.id) )
+      @todos.makeGroups()
 
     highlightLink: (id) ->
       App.execute("todos:highlightLink", "/#/project/#{id}")
@@ -17,7 +23,11 @@
     showAll: ->
       @layout.projectRegion.show @projectView
       @layout.projectNavsRegion.show @getNavs()
-      @layout.projectTodosRegion.show @getTodosIndex()
+      if @data.state
+        @layout.projectTodosRegion.show @getTodosList(@data.state, @data.group, @data.label)
+      else
+        @layout.projectTodosRegion.show @getTodosIndex()
+
 
     getItemView: ->
       new Show.Item
@@ -29,6 +39,15 @@
     getTodosIndex: ->
       App.request "todos:index",
         todos: @todos
+
+    getTodosList: (state, group, label) ->
+      todos = App.request "todos:entities:group",
+        state: state,
+        group: group,
+        label: label,
+        todos: @todos
+      App.request "todos:list", todos
+
 
     getNavs: ->
       new Show.Navs

@@ -2,8 +2,10 @@
 
   class ProjectsApp.Router extends Marionette.AppRouter
     appRoutes:
-      "projects"	                            : "index"
-      "project/:id"	                          : "showProject"
+      "projects"	                              : "index"
+      "project/:id"	                            : "showProject"
+      "project/:id/filter/:state"             	: "showProject"
+      "project/:id/filter/:state/:group/:label"	: "showProject"
 
   API =
     index: ->
@@ -11,12 +13,14 @@
         region:    App.centralRegion
         projects:  App.request "projects:by_state:all"
 
-    showProject: (id) ->
+    showProject: (id, state=false, group=false, label=false) ->
       id = parseInt(id)
       new ProjectsApp.Show.Controller
         region:   App.centralRegion
         project:  App.request "projects:entity", id
-        todos:    new App.Entities.TodosCollection( App.todos.where(project_id: id) )
+        state:    state
+        group:    group
+        label:    label
 
   App.addInitializer ->
     new ProjectsApp.Router

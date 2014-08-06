@@ -31,6 +31,7 @@
     tagName: 'ul'
     className: 'nav nav-pills'
     menus: [
+      {name: 'Index'},
       {name: 'Next',       state: 'active',  group:'kind',     label:'next'},
       {name: 'Scheduled',  state: 'active',  group:'kind',     label:'scheduled'},
       {name: 'Cycled',     state: 'active',  group:'kind',     label:'cycled'},
@@ -41,16 +42,15 @@
     ]
     initialize: (data) ->
       @data = data
-      @makeCollection()
-      @collection = new Backbone.Collection (@menus)
+      @collection = @makeCollection()
 
     makeCollection: ->
-      baseLink = "/#/project/#{@data.project.id}/"
+      baseLink = "/#/project/#{@data.project.id}"
       for group in @menus
-        group.count = @data.todos.getGroup(group.state, group.group, group.label).length
-        link  = App.request "todos:link", group.state, group.group, group.label
-        group.link = baseLink + link
-      @menus.unshift name:'Index', link:baseLink
+        if group.state
+          group.count = @data.todos.getGroup(group.state, group.group, group.label).length
+          link  = App.request "todos:link", group.state, group.group, group.label
+          group.link = baseLink + '/filter/' + link
+        else
+          group.link = baseLink
       new Backbone.Collection(@menus)
-
-

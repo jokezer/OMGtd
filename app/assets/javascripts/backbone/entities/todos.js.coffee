@@ -59,6 +59,7 @@
       if m <=9 then '0' + m else m
 
   class Entities.TodosCollection extends App.Entities.Collection
+
     model: Entities.Todo
     url: -> '/todos/'
 
@@ -77,7 +78,7 @@
         App.request 'todos:entity:kinds') for model in @groupedStates.get('active').groupedCalendars.models
 
     getGroup: (state, group, label) =>
-      @makeGroups()
+#      @makeGroups()
       stateCollection = @groupedStates.get(state)
       switch group
         when 'kind'
@@ -91,7 +92,8 @@
         else
           #todo return empty collection
           finalCollection = stateCollection
-      finalCollection.vc
+      return finalCollection.vc if finalCollection
+      []
 
 #    _makeLabel: (state, label=false) =>
 #      label = state unless label

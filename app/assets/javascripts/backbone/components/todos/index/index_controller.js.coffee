@@ -28,14 +28,9 @@
           perPage:  group.perPage
       new Backbone.Collection(@groups)
 
-
-
     getLayoutView: ->
       new Index.Collection
         collection: @makeCollection()
-
-    getTodosView: ->
-      App.request "todos:list", @todos
 
   App.reqres.setHandler "todos:index", (data) ->
     collection = new Index.Controller(data)
