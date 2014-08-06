@@ -1,1 +1,1 @@
-%h5= @label
+%a{href:"/#/project/#{@id}"}= @label

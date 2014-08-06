@@ -152,9 +152,9 @@
       Entities.Todo.priors
 
     getGroup: (data) ->
-      data.todos = App.todos unless data.todos
+      if data.todos then todos = data.todos else todos = App.todos
       data.state = 'active' unless data.state
-      vc = App.todos.getGroup(data.state, data.group, data.label)
+      vc = todos.getGroup(data.state, data.group, data.label)
       paginator = new Entities.TodosColletionShow vc.toArray()
       paginator.listenTo vc, 'remove', (el) ->
         paginator.fullCollection.remove(el)

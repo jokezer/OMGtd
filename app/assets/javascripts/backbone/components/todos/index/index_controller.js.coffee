@@ -22,6 +22,7 @@
       for group in @groups
         group.perPage = 5 unless group.perPage
         group.todos = App.request "todos:entities:group",
+          todos:    @data.todos
           group:    group.group
           label:    group.label
           perPage:  group.perPage

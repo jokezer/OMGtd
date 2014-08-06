@@ -14,6 +14,7 @@ class Project < ActiveRecord::Base
     c.name = c.name.tr(' ', '_')
     c.name = c.name.tr('.', '_')
     c.name = c.name[0..19]
+    c.title = c.title
   end
 
   def prefix

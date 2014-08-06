@@ -63,7 +63,7 @@
           action: 'edit'
         @listenTo edit, "cancel", @cancelEdit
         @$el.html(edit.form.render().el)
-        $('textarea', @$el).trigger('autosize.resize')
+        $('textarea', @$el).trigger('autosize.resize') #todo: need it?
 
     cancelEdit: ->
       @model.validationError = null

@@ -1,2 +1,2 @@
-%a.button.white{href: "/#/todos/filter/#{@href}"} #{@label}
+%a.button.white{href: "/#/#{@href}"} #{@label}
   %span.badge.pull-right #{@length}

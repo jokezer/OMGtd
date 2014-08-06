@@ -19,9 +19,9 @@
 
     save: ->
       @model.set @getFormData(), validate:true
-      @model.set @getFormData()
       @model.set(state:@model.moveTo) if @model.moveTo
       @model.set(make_project:true) if @model.makeProject
+      @model.set @getFormData()
       if !@model.validationError
         @model.trigger("server:send")
         @model = App.request "save:todos:entity",

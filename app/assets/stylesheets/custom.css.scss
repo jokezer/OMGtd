@@ -67,6 +67,9 @@ blockquote{
   background: #fff4ac;
   margin: 0 -15px;
   padding: 5px 10px;
+  .panel-default{
+    margin: 8px 0 10px
+  }
 }
 nav.navbar.navbar-default{
   height: $navbar_height;

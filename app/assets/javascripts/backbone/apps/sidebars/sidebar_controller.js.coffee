@@ -30,7 +30,7 @@
 
     showKinds: ->
       collection = @getCollection 'kinds'
-      collectionView = @getCollectionView(collection, 'Kinds')
+      collectionView = @getCollectionView(collection)
       @layout.kindsSidebarRegion.show collectionView
 
     showContexts: ->
@@ -47,17 +47,17 @@
       if label=='kinds'
         prepared =  SidebarsApp.leftElements.map (el) ->
           el.length = App.request "todos:entities:group:count", el.state, el.group, el.label
-          el.href =   App.request "todos:link", el.state, el.group, el.label
+          el.href =   'todos/filter/' + App.request "todos:link", el.state, el.group, el.label
           el.label =  el.state unless el.label
           el
       else if label=='project'
         prepared =   App.projects.withState('active').map (el) ->
           el.set
             length: App.todos.where(project_id:el.id, state: 'active').length
-            href:   "active/project/#{el.id}"
+            href:   "project/#{el.id}"
       else if label=='context'
         prepared =   App.contexts.map (el) ->
           el.set
             length: App.todos.where(context_id:el.id, state: 'active').length
-            href:   "active/context/#{el.id}"
+            href:   "todos/filter/active/context/#{el.id}"
       new Backbone.Collection prepared

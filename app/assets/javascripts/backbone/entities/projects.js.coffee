@@ -28,8 +28,6 @@
     makeGroups: ->
       @groupedStates =  Backbone.buildGroupedCollection({
         collection: @,
-#        group_ids: ids,
-        GroupCollection: Entities.TodosCollection,
         groupBy: (project) =>
           return project.get('state')
       })
@@ -46,11 +44,16 @@
         reset: true
       Projects
 
+    saveProject: (model) ->
+      console.log 'save project'
+      model.save({},
+        error: (a, b) ->
+          alert 'connection error'
+      )
+      model
+
     getProject: (id) ->
-      Project = new Entities.Project
-        id: id
-      Project.fetch()
-      Project
+      App.projects.get id
 
     newProject: ->
       new Entities.Project
@@ -73,6 +76,9 @@
 
   App.reqres.setHandler "projects:entities", ->
     API.getProjects()
+
+  App.reqres.setHandler "save:projects:entity", (model) ->
+    API.saveProject model
 
   App.reqres.setHandler "projects:by_state", (state) ->
     API.getProjectsByState state
