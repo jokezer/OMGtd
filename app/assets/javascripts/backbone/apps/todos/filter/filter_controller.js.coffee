@@ -7,7 +7,7 @@
       @layout = @getLayoutView()
       @listenTo @layout, "show", =>
         @showCollection()
-        @showNew()
+        @showNew(data)
       @show @layout
       @highlightLink(data)
 
@@ -20,8 +20,8 @@
       collectionView = @getTodosView()
       @layout.todosRegion.show collectionView
 
-    showNew: () ->
-      newView = @getNewView()
+    showNew: (data) ->
+      newView = @getNewView(data)
       @layout.newRegion.show newView
 
     getLayoutView: ->
@@ -30,5 +30,7 @@
     getTodosView: ->
       App.request "todos:list", @todos
 
-    getNewView: () ->
-      App.request "todos:new", collection: @todos
+    getNewView: (data) ->
+      preload = {}
+      preload[data.group] = data.label
+      App.request "todos:new", preload: preload

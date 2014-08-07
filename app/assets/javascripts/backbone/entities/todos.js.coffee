@@ -135,8 +135,10 @@
       todo.fetch()
       todo
 
-    newTodo: ->
-      new Entities.Todo
+    newTodo: (preload) ->
+      preload.calendar = false
+      preload.context_id = preload.context
+      new Entities.Todo preload
 
     getTodoStates: ->
       Entities.Todo.states
@@ -218,8 +220,8 @@
   App.reqres.setHandler "todos:entity", (id) ->
     API.getTodo id
 
-  App.reqres.setHandler "new:todos:entity", ->
-    API.newTodo()
+  App.reqres.setHandler "new:todos:entity", (preload={}) ->
+    API.newTodo(preload)
 
   App.reqres.setHandler "save:todos:entity", (data) ->
     API.saveTodo

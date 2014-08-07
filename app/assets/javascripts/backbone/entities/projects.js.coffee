@@ -79,6 +79,9 @@
         App.currentProject =
           todos: new App.Entities.TodosCollection( App.todos.where(project_id: id) )
           id:    id
+        App.currentProject.todos.listenTo App.todos, 'add', (el) ->
+          if el.get('project_id') == App.currentProject.id
+            App.currentProject.todos.add el
       App.currentProject.todos
 
   App.reqres.setHandler "projects:entities", ->

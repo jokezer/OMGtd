@@ -3,13 +3,13 @@
   class New.Controller extends App.Controllers.Base
 
     initialize: (data) ->
-#      @collection = data.collection
+      @preload = data.preload
       @layout = @getLayoutView()
       @listenTo @layout, 'show',        @loadLayout
       @listenTo @layout, 'show:form',   @showForm
 
     showForm: (a, model=false) ->
-      if model then @model = model else @model = App.request "new:todos:entity"
+      if model then @model = model else @model = App.request "new:todos:entity", @preload
       @button.destroy()
       @form = @getFormView()
       @layout.createNewRegion.show @form.form

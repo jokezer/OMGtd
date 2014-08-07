@@ -32,6 +32,7 @@
     showAll: ->
       @layout.projectRegion.show @projectView
       @layout.projectNavsRegion.show @getNavs()
+      @layout.createNewRegion.show @getNewView()
       if @data.state
         @layout.projectTodosRegion.show @getTodosList(@data.state, @data.group, @data.label)
       else
@@ -48,6 +49,13 @@
     getTodosIndex: ->
       App.request "todos:index",
         todos: @todos
+
+    getNewView: ->
+      preload = project_id: @model.id
+      preload[@data.group] = @data.label
+      App.request "todos:new",
+        preload: preload
+
 
     getTodosList: (state, group, label) ->
       todos = App.request "todos:entities:group",

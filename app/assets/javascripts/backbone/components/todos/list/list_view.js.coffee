@@ -129,7 +129,7 @@
         collection: @collection
       $('.paginatorRegion', @$el).append(paginator.render().$el)
 
-    reRender: (action, view) ->
+    reRender: (view) ->
       @collection.fullCollection.sort()
       @render()
       view.model.trigger('slideDown')

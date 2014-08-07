@@ -4,7 +4,7 @@
 
     initialize: (data) ->
       @model      = data.model
-      @collection = data.collection
+#      @collection = data.collection
       @action     = data.action
       @form = @getFormView()
       @listenTo @form, "save", @save
@@ -21,12 +21,13 @@
       @model.set @getFormData(), validate:true
       @model.set(state:@model.moveTo) if @model.moveTo
       @model.set(make_project:true) if @model.makeProject
-      @model.set @getFormData()
+      @model.set @getFormData() #todo dont validate it
       if !@model.validationError
         @model.trigger("server:send")
         @model = App.request "save:todos:entity",
           model: @model
           action: @action
+#          todos:  @collection
       else
         @form.model = @model
         @form.render()
