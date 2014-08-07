@@ -35,7 +35,6 @@
       App.trigger('loaded:finished')
 
   App.on "loaded:finished", ->
-    @todos.makeGroups()
     App.module("SidebarsApp").start()
     @startHistory()
     @navigate(@rootRoute, trigger: true) unless @getCurrentRoute()

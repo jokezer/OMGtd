@@ -74,8 +74,18 @@
     getProjectsByState: (state) ->
       App.projects.withState state
 
+    getProjectTodos: (id) ->
+      if !App.currentProject || App.currentProject.id != id
+        App.currentProject =
+          todos: new App.Entities.TodosCollection( App.todos.where(project_id: id) )
+          id:    id
+      App.currentProject.todos
+
   App.reqres.setHandler "projects:entities", ->
     API.getProjects()
+
+  App.reqres.setHandler "project:todos", (id) ->
+    API.getProjectTodos(id)
 
   App.reqres.setHandler "save:projects:entity", (model) ->
     API.saveProject model

@@ -42,8 +42,11 @@
     ]
     initialize: (data) ->
       @data = data
-      @collection = @makeCollection()
+      @makeCollection()
       @link = data.link
+      @listenTo @data.todos, 'change remove', ->
+        @makeCollection()
+        @render()
 
     onRender: ->
       @highlightLink @link
@@ -57,7 +60,7 @@
           group.link = baseLink + '/filter/' + link
         else
           group.link = baseLink
-      new Backbone.Collection(@menus)
+      @collection = new Backbone.Collection(@menus)
 
     highlightLink: (link) ->
       $('li', @$el).removeClass('active')

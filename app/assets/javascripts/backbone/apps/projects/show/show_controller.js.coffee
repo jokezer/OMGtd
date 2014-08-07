@@ -6,6 +6,8 @@
       @model     = data.project
       @layout      = @getLayoutView()
       @getTodos()
+      @listenTo @todos, 'change:project_id', (e, l) ->
+        @todos.remove(e) if l!=@model.id
       @projectView = @getProjectView()
       @listenTo @projectView, 'save', @save
       @show @layout
@@ -13,9 +15,8 @@
       @highlightLink()
 
     getTodos: ->
-      #todo: initialize project todos once
-      @todos = new App.Entities.TodosCollection( App.todos.where(project_id: @model.id) )
-      @todos.makeGroups()
+      @todos = App.request "project:todos", @model.id
+
 
     highlightLink: () ->
       App.execute("left_sidebar:highlightLink", "/#/project/#{@data.project.id}")

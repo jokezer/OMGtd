@@ -78,7 +78,7 @@
         App.request 'todos:entity:kinds') for model in @groupedStates.get('active').groupedCalendars.models
 
     getGroup: (state, group, label) =>
-#      @makeGroups()
+      @makeGroups() unless @groupedStates
       stateCollection = @groupedStates.get(state)
       switch group
         when 'kind'
