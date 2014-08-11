@@ -16,3 +16,6 @@
     
   App.commands.setHandler "left_sidebar:highlightLink", (link) ->
     API.highlightLink link
+
+  App.commands.setHandler "left_sidebar:update", ->
+    API.showSidebar()

@@ -1,10 +1,18 @@
-%form
-  .input-group
-    .input-group-addon #
-    %input.form-control.input-lg{name:'title', value:@title, type:'text',
+-if @errorsLength
+  - for field, message of @errors
+    #{field}: #{message}
+%form.panel.panel-default
+  .panel-heading
+    %span.projectSym #
+    %input.edit{name:'title', value:@title, type:'text',
       placeholder: "Title of project"}
-  %textarea.edit{name:'content', placeholder:'Content of project', cols:90}
-    =@content
-  %a.save.btn.btn-default
-    %span.glyphicon.glyphicon-floppy-disk
-    Update
+  .panel-body
+    %textarea.edit{name:'content', placeholder:'Content of project', cols:90}
+      =@content
+    .save.btn.btn-default
+      %span.glyphicon.glyphicon-floppy-disk
+      Update
+    -#-if @errorsLength
+    -#  .cancel.btn.btn-info
+    -#    %span.glyphicon.glyphicon-remove-circle
+    -#    Cancel

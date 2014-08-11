@@ -52,26 +52,26 @@
               =item.get('label')
   .panel-body
     .pull-right
-      %a.cancel.btn.btn-info
+      .cancel.btn.btn-info
         %span.glyphicon.glyphicon-remove-circle
         Cancel
-      %a.save.btn.btn-default
+      .save.btn.btn-default
         %span.glyphicon.glyphicon-floppy-disk
         Save
     -unless @state == 'trash' || @isNew
-      %a.trash.btn.btn-default
+      .trash.btn.btn-default
         %span.glyphicon.glyphicon-trash
         To trash
     -unless @state == 'completed' || @isNew
-      %a.complete.btn.btn-info
+      .complete.btn.btn-info
         %span.glyphicon.glyphicon-ok-sign
         Complete
     -if (@state == 'active' || @state == 'inbox') && !@project_id
-      %a.makeProject.btn.btn-link
+      .makeProject.btn.btn-link
         %span.glyphicon.glyphicon-share
         Make project
     -if @state == 'trash' || @state == 'completed'
-      %a.activate.btn.btn-info
+      .activate.btn.btn-info
         %span.glyphicon.glyphicon-ok-sign
         Activate
       .btn-group.deleteGroup

@@ -45,8 +45,13 @@
       Projects
 
     saveProject: (model) ->
-      console.log 'save project'
       model.save({},
+        success: (project, resp) ->
+          if Object.keys(resp.errors).length
+            model.validationError = resp.errors
+            model.trigger 'server:error'
+          else
+            model.trigger 'server:saved'
         error: (a, b) ->
           alert 'connection error'
       )

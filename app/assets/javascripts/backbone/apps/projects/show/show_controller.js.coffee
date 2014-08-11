@@ -73,7 +73,6 @@
         link:    @getLink()
 
     save: ->
-      @model.set @getFormData(), validate:true
       @model.set @getFormData()
       if !@model.validationError
         @model = App.request "save:projects:entity", @model

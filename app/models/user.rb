@@ -26,22 +26,27 @@ class User < ActiveRecord::Base
                        {name: 'Computer'}])
       unless test_user
         todos.create(title: 'Welcome to One More GTD',
-                     content: "This is GTD style task manager\n"+
-                         "Click to \"Create new\" to create new task.",
+                     content: "This is GTD-style task manager\n"+
+                         "Click to the \"Edit button\" to edit this task.",
                      kind: 'next',
                      prior: 3)
-        todos.create(title: 'Drag and Drop',
-                     content: "Drag and drop todos with mouse to manage them",
+        todos.create(title: 'Create the project',
+                     content: "You can create project from each task.\n To create project, click to the \"Make Project\" button in edit mode",
                      kind: 'next',
                      prior: 2)
-        todos.create(title: 'Edit todos',
-                     content: "Click on todo header to edit todo content.\n Also you can create project from todo",
+        todos.create(title: 'Change the context of task',
+                     content: "Choose the appropriate context of task, and you'll can sort your tasks by your current context",
                      kind: 'next',
                      prior: 2)
-        todos.create(title: 'Edit todos',
+        todos.create(title: 'Change the prior of todo',
                      content: "Use arrow buttons on the right to change todo prior",
                      kind: 'next',
                      prior: 2)
+        todos.create(title: 'Cycled todo',
+                     content: "Some tasks need to be done many times, over and over again. Pay for the internet, for example.
+Set the cycled kind for those ones, and choose the interval. You will not have to create those tasks again, it'll recreate automatically",
+                     kind: 'next',
+                     prior: 1)
       end
     end
   end

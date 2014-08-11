@@ -8,12 +8,12 @@
       'click .change-prior label'       : 'changePrior'
 #      'mouseleave'                      : 'leaveElement'
 #      'focusout'                        : 'leaveElement'
-      'click a.save'                    : 'save'
-      'click a.cancel'                  : 'cancelEdit'
-      'click a.trash'                   : 'saveTrash'
-      'click a.complete'                : 'saveComplete'
-      'click a.activate'                : 'saveActivated'
-      'click a.makeProject'             : 'saveMakeProject'
+      'click .save'                    : 'save'
+      'click .cancel'                  : 'cancelEdit'
+      'click .trash'                   : 'saveTrash'
+      'click .complete'                : 'saveComplete'
+      'click .activate'                : 'saveActivated'
+      'click .makeProject'             : 'saveMakeProject'
       'click button.showConfirmDelete'  : 'showConfirmDelete'
       'click button.hideConfirmDelete'  : 'hideConfirmDelete'
       'click button.confirmDelete'      : 'destroy'
@@ -53,7 +53,6 @@
     saveMakeProject: () ->
       @model.makeProject = true
       @save()
-#      @model.on 'sync', redirectTo project id
 
     leaveElement: ->
       saveTodo =  (view) ->
@@ -75,9 +74,9 @@
       data = @model.toJSON()
       data.kinds =  App.request "todos:entity:kinds"
       data.priors = App.request "todos:entity:priors"
-      data.contexts = (App.request "contexts:loaded").models
+      data.contexts = (App.request "contexts:loaded").models  if App.contexts.length
       data.intervals = App.request "todos:entity:intervals"
-      data.projects = (App.request "projects:by_state", 'active').toArray()
+      data.projects = (App.request "projects:by_state", 'active').toArray() if App.projects.length
       data.errors = @model.validationError
       data.isNew = @model.isNew()
       data

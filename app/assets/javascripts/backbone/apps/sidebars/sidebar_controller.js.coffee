@@ -34,11 +34,13 @@
       @layout.kindsSidebarRegion.show collectionView
 
     showContexts: ->
+      return unless App.contexts.length
       collection = @getCollection 'context'
       collectionView = @getCollectionView(collection, 'Context')
       @layout.contextsSidebarRegion.show collectionView
 
     showProjects: ->
+      return unless App.projects.length
       collection = @getCollection 'project'
       collectionView = @getCollectionView(collection, 'Project', 'projects')
       @layout.projectsSidebarRegion.show collectionView

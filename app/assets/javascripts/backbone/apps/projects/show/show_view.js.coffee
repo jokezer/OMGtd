@@ -10,15 +10,30 @@
 
   class Show.Item extends Marionette.ItemView
     template: 'apps/projects/show/templates/item'
+    className: 'panel-project'
     events:
-      'click a.save'      : 'save'
+      'click .save'      : 'save'
 
     onRender: ->
-      $('textarea', @$el).autosize()
+      $('textarea', @$el).autosize().css(resize:'none')
 
-    save: ->
+    save: (el) ->
+      @listenTo @model, 'sync', (el) ->
+        @$el.removeClass "saving"
+      @listenTo @model, 'server:error', (el) ->
+        @render()
+      @$el.addClass "saving"
       @trigger('save')
 
+    serializeData: ->
+      data = @model.toJSON()
+      data.errors = {} unless data.errors
+      data.errorsLength = Object.keys(data.errors).length
+      data
+
+    cancel: () ->
+      @model.set @model.previousAttributes()
+      @render()
 
   class Show.NavItem extends Marionette.ItemView
     template: 'apps/projects/show/templates/nav_item'

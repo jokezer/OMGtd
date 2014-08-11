@@ -10,11 +10,10 @@ class Project < ActiveRecord::Base
             uniqueness: {:scope => :user_id, :case_sensitive => false}
             #length: {maximum: 20}
   before_validation do |c|
-    c.name = c.title if c.name.blank?
+    c.name = c.title
     c.name = c.name.tr(' ', '_')
     c.name = c.name.tr('.', '_')
     c.name = c.name[0..19]
-    c.title = c.title
   end
 
   def prefix

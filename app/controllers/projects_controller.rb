@@ -21,14 +21,6 @@ class ProjectsController < ApplicationController
   def edit
   end
 
-  def filter
-    @todos = @project.todos.filter(params[:type], params[:type_name])
-    redirect_to root_path and return unless @todos
-    @todos = @todos
-    # .paginate(:page => params[:page])
-    render 'todos/list'
-  end
-
   def update
     sleep(rand(0.5..2)) if Rails.env.development?
     @project.update_attributes(project_params)

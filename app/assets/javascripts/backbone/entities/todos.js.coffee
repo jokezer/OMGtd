@@ -181,6 +181,13 @@
             todo.trigger 'server:error'
             App.todos.remove(model) if action == 'new'
           else
+            if todo.get 'make_project'
+              App.todos.remove todo
+              #todo: refactor
+              projects = App.request "projects:entities"
+              App.execute "when:fetched", projects, =>
+                App.projects = projects
+                App.execute('left_sidebar:update')
             todo.trigger 'server:saved'
         error: (a, b) ->
           alert 'connection error'

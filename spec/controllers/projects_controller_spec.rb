@@ -51,16 +51,17 @@ describe ProjectsController do
         should_not change(@user.projects, :count)
         expect(json['title']).to eq('rspec title')
         expect(@project.reload.title).to eq('rspec title')
+        expect(response).to be_success
       end
     end
     context 'finish' do
-      subject { lambda { xhr :patch, :change_state,
+      subject { lambda { xhr :patch, :update,
                              id: @project.id,
                              :project => {state: 'finished'}
                              }}
       it do
         should change(@user.projects.with_state('finished'), :count).by(1)
-        expect(response).to redirect_to(projects_path)
+        expect(json['title']).to eq('rspec title')
       end
     end
   end
@@ -69,7 +70,7 @@ describe ProjectsController do
       @project_to_destroy = project
     end
     context 'if statuses trash' do
-      subject { lambda { xhr :delete, :destroy, :name => @project_to_destroy.name } }
+      subject { lambda { xhr :delete, :destroy, :id => @project_to_destroy.id } }
       it do
         should change(@user.projects, :count).by(-1)
         expect(response).to redirect_to(projects_path)
