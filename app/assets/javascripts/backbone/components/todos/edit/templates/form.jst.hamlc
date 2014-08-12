@@ -66,7 +66,7 @@
       .complete.btn.btn-info
         %span.glyphicon.glyphicon-ok-sign
         Complete
-    -if (@state == 'active' || @state == 'inbox') && !@project_id
+    -if (@state == 'active' || @state == 'inbox') && !@project_id && !@isNew
       .makeProject.btn.btn-link
         %span.glyphicon.glyphicon-share
         Make project
