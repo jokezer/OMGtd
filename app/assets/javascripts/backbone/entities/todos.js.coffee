@@ -183,11 +183,7 @@
           else
             if todo.get 'make_project'
               App.todos.remove todo
-              #todo: refactor
-              projects = App.request "projects:entities"
-              App.execute "when:fetched", projects, =>
-                App.projects = projects
-                App.execute('left_sidebar:update')
+              App.execute 'projects:reload'
             todo.trigger 'server:saved'
         error: (a, b) ->
           alert 'connection error'

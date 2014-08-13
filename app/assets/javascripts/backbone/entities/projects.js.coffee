@@ -89,6 +89,12 @@
             App.currentProject.todos.add el
       App.currentProject.todos
 
+    reloadProjects: ->
+      projects = App.request "projects:entities"
+      App.execute "when:fetched", projects, =>
+        App.projects = projects
+        App.execute('left_sidebar:update')
+
   App.reqres.setHandler "projects:entities", ->
     API.getProjects()
 
@@ -115,3 +121,6 @@
 
   App.reqres.setHandler "project:label", (id) ->
     API.getProjectLabel(id)
+
+  App.reqres.setHandler "projects:reload", ->
+    API.reloadProjects()
