@@ -22,7 +22,7 @@
       new Index.Layout()
 
     getIndexLayout: ->
-      App.request "todos:index"
+      App.request "components:todos:index"
 #
 #    getNewView: () ->
 #      App.request "todos:new", collection: @todos

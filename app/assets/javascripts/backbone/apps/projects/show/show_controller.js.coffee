@@ -47,7 +47,7 @@
       new Show.Layout
 
     getTodosIndex: ->
-      App.request "todos:index",
+      App.request "components:todos:index",
         todos: @todos
 
     getNewView: ->
@@ -63,7 +63,7 @@
         group: group,
         label: label,
         todos: @todos
-      App.request "todos:list", todos
+      App.request "components:todos:list", todos
 
 
     getNavs: ->

@@ -12,44 +12,12 @@
   .panel-body
     %textarea.edit{name:'content', placeholder:'Content of todo', cols:90}
       =@content
-    %span.layout Kind:
-    .btn-group{'data-toggle' => "buttons"}
-      - for item in @kinds
-        %label.kind.btn.btn-sm.btn-default
-          %input{name:"kind", value:item, type:"radio"}
-          =item
-    %span.interval
-      %span.layout Interval:
-      .btn-group{'data-toggle' => "buttons"}
-        - for item in @intervals
-          %label.btn.btn-sm.btn-default
-            %input{name:"interval", value:item, type:"radio"}
-            =item
-    %br
-    %span.layout Prior:
-    .btn-group.change-prior{'data-toggle' => "buttons"}
-      - for key, item of @priors
-        %label.btn.btn-sm.btn-default
-          %input{name:"prior", value:key, type:"radio"}
-          =item
-    -if @contexts
-      %span.layout Context:
-      .btn-group{'data-toggle' => "buttons"}
-        - for item in @contexts
-          %label.btn.btn-sm.btn-default
-            %input{name:"context_id", value:item.get('id'), type:"radio"}
-            =item.get('label')
-    -if @projects
-      %br
-        %span.layout Project:
-        .btn-group{'data-toggle' => "buttons"}
-          %label.btn.btn-sm.btn-default
-            %input{name:"project_id", value:null, type:"radio"}
-            none
-          - for item in @projects
-            %label.btn.btn-sm.btn-default
-              %input{name:"project_id", value:item.get('id'), type:"radio"}
-              =item.get('label')
+    #kindsGroup
+    #intervalsGroup
+    #priorsGroup
+    #contextsGroup
+    #projectsGroup
+
   .panel-body
     .pull-right
       .cancel.btn.btn-info

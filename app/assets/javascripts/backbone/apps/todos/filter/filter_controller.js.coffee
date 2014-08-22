@@ -28,7 +28,7 @@
       new Filter.Layout()
 
     getTodosView: ->
-      App.request "todos:list", @todos
+      App.request "components:todos:list", @todos
 
     getNewView: (data) ->
       preload = {}

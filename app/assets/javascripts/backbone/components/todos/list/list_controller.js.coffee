@@ -6,6 +6,6 @@
       new List.Collection
         collection: todos
 
-  App.reqres.setHandler "todos:list", (todos) ->
+  App.reqres.setHandler "components:todos:list", (todos) ->
     collection = new List.Controller
     collection.getCollectionView(todos)

@@ -32,6 +32,6 @@
       new Index.Collection
         collection: @makeCollection()
 
-  App.reqres.setHandler "todos:index", (data) ->
+  App.reqres.setHandler "components:todos:index", (data) ->
     collection = new Index.Controller(data)
     collection.getLayoutView()

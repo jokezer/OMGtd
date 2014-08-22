@@ -5,7 +5,7 @@
     tagName: 'form'
 
     events:
-      'click .change-prior label'       : 'changePrior'
+      'click #priorsGroup .btn-group label'         : 'changePrior'
 #      'mouseleave'                      : 'leaveElement'
 #      'focusout'                        : 'leaveElement'
       'click .save'                    : 'save'
@@ -17,16 +17,16 @@
       'click button.showConfirmDelete'  : 'showConfirmDelete'
       'click button.hideConfirmDelete'  : 'hideConfirmDelete'
       'click button.confirmDelete'      : 'destroy'
-      'click label.kind'                : 'toggleInterval'
+      'click #kindsGroup .btn-group label' : 'toggleInterval'
 
     initialize: (model) ->
       @model = model
 
     toggleInterval: (el) ->
       if el.target.children[0].value == 'cycled'
-        $('.interval', @$el).show()
+        $('#intervalsGroup', @$el).show()
       else
-        $('.interval', @$el).hide()
+        $('#intervalsGroup', @$el).hide()
 
     destroy: ->
       clearTimeout(@timer)
@@ -72,41 +72,62 @@
 
     serializeData: ->
       data = @model.toJSON()
-      data.kinds =  App.request "todos:entity:kinds"
-      data.priors = App.request "todos:entity:priors"
-      data.contexts = (App.request "contexts:loaded").models  if App.contexts.length
-      data.intervals = App.request "todos:entity:intervals"
-      data.projects = (App.request "projects:by_state", 'active').toArray() if App.projects.length
       data.errors = @model.validationError
       data.isNew = @model.isNew()
       data
 
     onRender: ->
       @setPriorClass @model.get('prior')
-      @selectRadio 'prior',       @model.get('prior'), true
-      @selectRadio 'kind',        @model.get('kind')
-      @selectRadio 'context_id',  @model.get('context_id')
-      intervalToSelect = @model.get('interval')
-      intervalToSelect = 'monthly' unless intervalToSelect
-      @selectRadio 'interval',    intervalToSelect
-      @selectRadio 'project_id',  @model.get('project_id'), true
-      $('.interval', @$el).hide() unless @model.get('kind')=='cycled'
+      @addAllButtonsGroups()
+      $('#intervalsGroup', @$el).hide() unless @model.get('kind')=='cycled'
       $('textarea', @$el).autosize()
       $('input.todo-due', @$el).datetimepicker({format: 'Y-m-d H:i', firstDay: 1})
       focusInput = ($el) ->
         $el.find('input.title').focus()
       @timer = _.delay(focusInput, 30, @$el)
 
-    selectRadio: (name, value, setFirst) ->
-      return if !value && !setFirst
-      if value
-        el = $("input[type='radio'][name='#{name}'][value=#{value}]", @$el)
-      else
-        el = $("input[type='radio'][name='#{name}']", @$el).eq(0)
-      el
-        .prop("checked", true)
-        .parent()
-        .addClass('active')
+    addAllButtonsGroups: ->
+
+      @addButtonGroup
+        label: 'kind',
+        group: App.request "todos:entity:kinds"
+        selected: @model.get('kind')
+
+      @addButtonGroup
+        label: 'prior',
+        group: App.request "todos:entity:priors"
+        selected: @model.get('prior')
+
+      @addButtonGroup
+        label: 'interval',
+        group: App.request "todos:entity:intervals"
+        selected: @model.get('interval') || 'monthly'
+
+      if App.contexts.length
+        contexts = @makeContextHash (App.request "contexts:loaded").models
+        @addButtonGroup
+          label: 'context',
+          name: 'context_id',
+          group: contexts
+          selected: @model.get('context_id')
+
+      if App.projects.length
+        projects = @makeContextHash (App.request "projects:by_state", 'active').toArray()
+        @addButtonGroup
+          label: 'project',
+          name: 'project_id',
+          group: projects
+          selected: @model.get('project_id')
+
+    addButtonGroup: (data) ->
+      view = App.request 'components:form:button_group', data
+      $("##{data.label}sGroup", @$el).html(view.render().el)
+
+    makeContextHash: (group) ->
+      obj = {}
+      for item in group
+        obj[item.get('id')] = item.get('label')
+      obj
 
     changePrior: (a) ->
       key = $("input", $(a.target)).val()

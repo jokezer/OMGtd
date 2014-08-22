@@ -1,0 +1,6 @@
+%span.layout #{@label}:
+.btn-group{'data-toggle' => "buttons"}
+  - for key, item of @group
+    %label.btn.btn-sm.btn-default
+      %input{name:@name, value:key, type:"radio"}
+      =item
