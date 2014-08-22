@@ -97,11 +97,13 @@
         label: 'prior',
         group: App.request "todos:entity:priors"
         selected: @model.get('prior')
+        setFirst: true
 
       @addButtonGroup
         label: 'interval',
         group: App.request "todos:entity:intervals"
-        selected: @model.get('interval') || 'monthly'
+        selected: @model.get('interval')
+        setFirst: true
 
       if App.contexts.length
         contexts = @makeContextHash (App.request "contexts:loaded").models
@@ -110,6 +112,7 @@
           name: 'context_id',
           group: contexts
           selected: @model.get('context_id')
+          setFirst: true
 
       if App.projects.length
         projects = @makeContextHash (App.request "projects:by_state", 'active').toArray()
@@ -118,13 +121,15 @@
           name: 'project_id',
           group: projects
           selected: @model.get('project_id')
+          setFirst: true
+
 
     addButtonGroup: (data) ->
-      view = App.request 'components:form:button_group', data
+      view = App.request 'components:form:select_button_group', data
       $("##{data.label}sGroup", @$el).html(view.render().el)
 
     makeContextHash: (group) ->
-      obj = {}
+      obj = {0: 'none'}
       for item in group
         obj[item.get('id')] = item.get('label')
       obj

@@ -12,11 +12,13 @@
   .panel-body
     %textarea.edit{name:'content', placeholder:'Content of todo', cols:90}
       =@content
-    #kindsGroup
-    #intervalsGroup
-    #priorsGroup
-    #contextsGroup
-    #projectsGroup
+    %span#kindsGroup
+    %span#intervalsGroup
+    %span#priorsGroup
+    %br
+    %span#contextsGroup
+    %br
+    %span#projectsGroup
 
   .panel-body
     .pull-right

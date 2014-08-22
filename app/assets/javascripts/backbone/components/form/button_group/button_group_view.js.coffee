@@ -1,22 +1,14 @@
 @OMGtd.module "Components.Form.ButtonGroup", (ButtonGroup, App, Backbone, Marionette, $, _) ->
 
-  class ButtonGroup.View extends Marionette.ItemView
+  class ButtonGroup.ButtonGroup extends Marionette.ItemView
     template: 'components/form/button_group/templates/button_group'
+    tagName: 'span'
 
     initialize: (data) ->
       @data = data
 
-    makeHash: (collection) ->
-      if Array.isArray(collection)
-        obj = {}
-        for item in collection
-          obj[item] = item
-        collection = obj
-      collection
-
     serializeData: ->
       data = @data
-      data.group = @makeHash @data.group
       data.name = data.name || data.label
       data.label = data.label.charAt(0).toUpperCase() + data.label.slice(1);
       data
@@ -34,3 +26,24 @@
         .prop("checked", true)
         .parent()
         .addClass('active')
+
+  class ButtonGroup.Select extends Marionette.ItemView
+    template: 'components/form/button_group/templates/select'
+    className: 'selectForm'
+    tagName: 'span'
+
+    initialize: (data) ->
+      @data = data
+
+    serializeData: ->
+      data = @data
+      data.name = data.name || data.label
+      data.label = data.label.charAt(0).toUpperCase() + data.label.slice(1);
+      data
+
+    onRender: ->
+      @selectOption()
+
+    selectOption: ->
+      return if !@data.selected
+      $("option[value=#{@data.selected}]", @$el).attr(selected:'selected')

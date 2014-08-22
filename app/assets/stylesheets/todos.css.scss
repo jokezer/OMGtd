@@ -44,6 +44,13 @@ $prior_marker_width: 8px;
     border-left: 8px solid #db705c;
   }
 }
+.panel{
+  .selectForm >*,
+  .btn-group{
+    margin: 5px 8px 5px 0;
+  }
+
+}
 .panel-todo {
   .panel-heading{
     height: 33px;
@@ -95,9 +102,6 @@ $prior_marker_width: 8px;
   }
   .btn-sm{
       padding: 4px 9px;
-  }
-  .btn-group{
-    margin: 5px 8px 5px 0;
   }
   .layout{
     display: inline-block;
