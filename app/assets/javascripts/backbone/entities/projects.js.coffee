@@ -122,5 +122,5 @@
   App.reqres.setHandler "project:label", (id) ->
     API.getProjectLabel(id)
 
-  App.reqres.setHandler "projects:reload", ->
+  App.commands.setHandler "projects:reload", ->
     API.reloadProjects()

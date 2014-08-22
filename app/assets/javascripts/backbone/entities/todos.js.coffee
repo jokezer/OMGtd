@@ -184,6 +184,7 @@
             if todo.get 'make_project'
               App.todos.remove todo
               App.execute 'projects:reload'
+
             todo.trigger 'server:saved'
         error: (a, b) ->
           alert 'connection error'
