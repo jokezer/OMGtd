@@ -1,0 +1,8 @@
+.btn-group.confirmGroup
+  %button.showConfirm.btn{class: "btn-#{@btnClass}", type:'button'}
+    -if @symbol
+      %span.glyphicon{class:"glyphicon-#{@symbol}"}
+    =@label
+%span.buttonsContainer{style:'display: none;'}
+  %button.confirm.confirmButtons.btn.btn-danger{class: "btn-#{@btnClass}", type:'button'} Yes
+  %button.hideConfirm.confirmButtons.btn.btn-danger{class: "btn-#{@btnClass}", type:'button'} No

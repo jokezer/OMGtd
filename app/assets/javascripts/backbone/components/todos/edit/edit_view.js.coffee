@@ -13,10 +13,6 @@
       'click .trash'                   : 'saveTrash'
       'click .complete'                : 'saveComplete'
       'click .activate'                : 'saveActivated'
-      'click .makeProject'             : 'saveMakeProject'
-      'click button.showConfirmDelete'  : 'showConfirmDelete'
-      'click button.hideConfirmDelete'  : 'hideConfirmDelete'
-      'click button.confirmDelete'      : 'destroy'
       'click #kindsGroup .btn-group label' : 'toggleInterval'
 
     initialize: (model) ->
@@ -31,12 +27,6 @@
     destroy: ->
       clearTimeout(@timer)
       @trigger('destroy')
-
-    showConfirmDelete: ->
-      @$el.find('button.delCon').appendTo('.deleteGroup', @$el)
-
-    hideConfirmDelete: ->
-      @$el.find('button.delCon').appendTo('.confirmButtons', @$el)
 
     saveActivated: () ->
       @model.moveTo = 'active'
@@ -73,12 +63,13 @@
     serializeData: ->
       data = @model.toJSON()
       data.errors = @model.validationError
-      data.isNew = @model.isNew()
       data
 
     onRender: ->
       @setPriorClass @model.get('prior')
       @addAllButtonsGroups()
+      @addDeleteButton()
+      @addMakeProjectButton()
       $('#intervalsGroup', @$el).hide() unless @model.get('kind')=='cycled'
       $('textarea', @$el).autosize()
       $('input.todo-due', @$el).datetimepicker({format: 'Y-m-d H:i', firstDay: 1})
@@ -86,25 +77,42 @@
         $el.find('input.title').focus()
       @timer = _.delay(focusInput, 30, @$el)
 
-    addAllButtonsGroups: ->
+    addDeleteButton: ->
+      state = @model.get('state')
+      if state == 'trash' || state == 'completed'
+        view = App.request 'components:form:confirm_button',
+          label: 'Delete',
+          symbol: 'fire'
+          btnClass: 'danger'
+        $("#deleteButton", @$el).html(view.render().el)
+        @listenTo view, 'confirm', @destroy
 
+    addMakeProjectButton: ->
+      state = @model.get('state')
+      if (state == 'active' || state == 'inbox') && !@model.get('project_id') && !@model.isNew()
+        console.log('make project')
+        view = App.request 'components:form:confirm_button',
+          label: 'Make Project',
+          symbol: 'share',
+          btnClass: 'link'
+        $("#makeProjectButton", @$el).html(view.render().el)
+        @listenTo view, 'confirm', @saveMakeProject
+
+    addAllButtonsGroups: ->
       @addButtonGroup
         label: 'kind',
         group: App.request "todos:entity:kinds"
         selected: @model.get('kind')
-
       @addButtonGroup
         label: 'prior',
         group: App.request "todos:entity:priors"
         selected: @model.get('prior')
         setFirst: true
-
       @addButtonGroup
         label: 'interval',
         group: App.request "todos:entity:intervals"
         selected: @model.get('interval')
         setFirst: true
-
       if App.contexts.length
         contexts = @makeContextHash (App.request "contexts:loaded").models
         @addButtonGroup
@@ -113,7 +121,6 @@
           group: contexts
           selected: @model.get('context_id')
           setFirst: true
-
       if App.projects.length
         projects = @makeContextHash (App.request "projects:by_state", 'active').toArray()
         @addButtonGroup

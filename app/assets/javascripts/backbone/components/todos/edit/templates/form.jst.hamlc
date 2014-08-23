@@ -36,19 +36,9 @@
       .complete.btn.btn-info
         %span.glyphicon.glyphicon-ok-sign
         Complete
-    -if (@state == 'active' || @state == 'inbox') && !@project_id && !@isNew
-      .makeProject.btn.btn-link
-        %span.glyphicon.glyphicon-share
-        Make project
+    %span#makeProjectButton
     -if @state == 'trash' || @state == 'completed'
       .activate.btn.btn-info
         %span.glyphicon.glyphicon-ok-sign
         Activate
-      .btn-group.deleteGroup
-        %button.showConfirmDelete.btn.btn-danger{type:'button'}
-          %span.glyphicon.glyphicon-fire
-          Delete
-      %span.confirmButtons{style:'display: none;'}
-        %button.confirmDelete.delCon.btn.btn-danger{type:'button'} Yes
-        %button.hideConfirmDelete.delCon.btn.btn-danger{type:'button'} No
-
+      %span#deleteButton
