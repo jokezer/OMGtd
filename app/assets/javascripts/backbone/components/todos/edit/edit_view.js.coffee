@@ -90,7 +90,6 @@
     addMakeProjectButton: ->
       state = @model.get('state')
       if (state == 'active' || state == 'inbox') && !@model.get('project_id') && !@model.isNew()
-        console.log('make project')
         view = App.request 'components:form:confirm_button',
           label: 'Make Project',
           symbol: 'share',
