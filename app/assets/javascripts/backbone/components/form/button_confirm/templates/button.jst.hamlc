@@ -4,5 +4,5 @@
       %span.glyphicon{class:"glyphicon-#{@symbol}"}
     =@label
 %span.buttonsContainer{style:'display: none;'}
-  %button.confirm.confirmButtons.btn.btn-danger{class: "btn-#{@btnClass}", type:'button'} Yes
-  %button.hideConfirm.confirmButtons.btn.btn-danger{class: "btn-#{@btnClass}", type:'button'} No
+  %button.confirm.confirmButtons.btn{class: "btn-#{@btnClass}", type:'button'} Yes
+  %button.hideConfirm.confirmButtons.btn{class: "btn-#{@btnClass}", type:'button'} No

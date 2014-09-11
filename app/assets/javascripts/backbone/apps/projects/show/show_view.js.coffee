@@ -16,6 +16,39 @@
 
     onRender: ->
       $('textarea', @$el).autosize().css(resize:'none')
+      #buttons
+      state = @model.get('state')
+      console.log state
+      if state=='active'
+        @addCompleteButton()
+        @addDeleteButton()
+      else
+        @addCompleteButton()
+
+    addCompleteButton: ->
+      view = App.request 'components:form:confirm_button',
+        label: 'Complete',
+        symbol: 'ok-sign'
+        btnClass: 'info'
+      $("#completeButton", @$el).html(view.render().el)
+      @listenTo view, 'confirm', @destroy
+
+    addDeleteButton: ->
+      view = App.request 'components:form:confirm_button',
+        label: 'Delete',
+        symbol: 'fire'
+        btnClass: 'danger'
+      $("#deleteButton", @$el).html(view.render().el)
+      @listenTo view, 'confirm', @destroy
+
+    addActivateButton: ->
+      view = App.request 'components:form:confirm_button',
+        label: 'Complete',
+        symbol: 'ok-sign'
+        btnClass: 'info'
+      $("#activateButton", @$el).html(view.render().el)
+      @listenTo view, 'confirm', @destroy
+
 
     save: (el) ->
       @listenTo @model, 'sync', (el) ->

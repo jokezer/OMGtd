@@ -19,8 +19,8 @@
       @trigger 'confirm'
 
     showConfirm: ->
-      buttons = $('button.confirmButtons', '.buttonsContainer')
-      if buttons.length then buttons.appendTo('.confirmGroup', @$el) else @hideConfirm()
+      buttons = $('.buttonsContainer>button.confirmButtons', @$el)
+      if buttons.length then buttons.appendTo($('.confirmGroup', @$el)) else @hideConfirm()
 
     hideConfirm: ->
-      @$el.find('button.confirmButtons').appendTo('.buttonsContainer', @$el)
+      @$el.find('button.confirmButtons').appendTo($('.buttonsContainer', @$el))

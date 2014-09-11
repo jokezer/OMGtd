@@ -68,8 +68,11 @@
     onRender: ->
       @setPriorClass @model.get('prior')
       @addAllButtonsGroups()
-      @addDeleteButton()
-      @addMakeProjectButton()
+      state = @model.get('state')
+      if state == 'trash' || state == 'completed'
+        @addDeleteButton()
+      if (state == 'active' || state == 'inbox') && !@model.get('project_id') && !@model.isNew()
+        @addMakeProjectButton()
       $('#intervalsGroup', @$el).hide() unless @model.get('kind')=='cycled'
       $('textarea', @$el).autosize()
       $('input.todo-due', @$el).datetimepicker({format: 'Y-m-d H:i', firstDay: 1})
@@ -78,24 +81,20 @@
       @timer = _.delay(focusInput, 30, @$el)
 
     addDeleteButton: ->
-      state = @model.get('state')
-      if state == 'trash' || state == 'completed'
-        view = App.request 'components:form:confirm_button',
-          label: 'Delete',
-          symbol: 'fire'
-          btnClass: 'danger'
-        $("#deleteButton", @$el).html(view.render().el)
-        @listenTo view, 'confirm', @destroy
+      view = App.request 'components:form:confirm_button',
+        label: 'Delete',
+        symbol: 'fire'
+        btnClass: 'danger'
+      $("#deleteButton", @$el).html(view.render().el)
+      @listenTo view, 'confirm', @destroy
 
     addMakeProjectButton: ->
-      state = @model.get('state')
-      if (state == 'active' || state == 'inbox') && !@model.get('project_id') && !@model.isNew()
-        view = App.request 'components:form:confirm_button',
-          label: 'Make Project',
-          symbol: 'share',
-          btnClass: 'link'
-        $("#makeProjectButton", @$el).html(view.render().el)
-        @listenTo view, 'confirm', @saveMakeProject
+      view = App.request 'components:form:confirm_button',
+        label: 'Make Project',
+        symbol: 'share',
+        btnClass: 'link'
+      $("#makeProjectButton", @$el).html(view.render().el)
+      @listenTo view, 'confirm', @saveMakeProject
 
     addAllButtonsGroups: ->
       @addButtonGroup
