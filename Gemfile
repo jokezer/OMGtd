@@ -8,6 +8,9 @@ gem 'devise'
 
 gem 'pg'
 
+# # memcache
+# gem 'dalli'
+
 # Use HAML
 gem 'haml'
 gem 'haml-rails'

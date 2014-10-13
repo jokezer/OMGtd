@@ -6,7 +6,7 @@ class CreateTodos < ActiveRecord::Migration
       t.integer :user_id, :null => false
       t.string :state, :null => false
       t.string :kind
-      t.integer :prior
+      t.integer :prior, :default => 0
       t.integer :context_id
       t.integer :project_id
       t.datetime :due

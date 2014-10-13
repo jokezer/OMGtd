@@ -14,9 +14,9 @@
         %span.glyphicon.glyphicon-pencil
         Edit
       .btn-group-vertical
-        %button.btn.btn-sm.inc-prior.btn-default{name: 'increase_prior', disabled: !@can_increase_prior}
+        %button.btn.btn-sm.inc-prior.btn-default{name: 'increase_prior', disabled: !@['can_increase_prior?']}
           %i.glyphicon.glyphicon-chevron-up
-        %button.btn.btn-sm.dec-prior.btn-default{name: 'decrease_prior', disabled: !@can_decrease_prior}
+        %button.btn.btn-sm.dec-prior.btn-default{name: 'decrease_prior', disabled: !@['can_decrease_prior?']}
           %i.glyphicon.glyphicon-chevron-down
     .textField
       .content.info

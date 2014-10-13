@@ -12,6 +12,7 @@
         @trigger "cancel"
       @listenTo @form, "destroy", @destroy
 
+
     destroy: ->
       App.todos.remove(@model)
       App.request "destroy:todos:entity",
@@ -43,6 +44,9 @@
       formData
 
     getFormView: () ->
+      #todo it automatically adds attributes to template, error because of '?' sign in model
+      delete @model.attributes['can_increase_prior?']
+      delete @model.attributes['can_decrease_prior?']
       new Edit.Form @model
 
   App.reqres.setHandler "todos:edit", (data) ->

@@ -19,20 +19,20 @@ describe "Todos collection", ->
       @todo6 = new OMGtd.Entities.Todo(title:'Sixth todo',  kind:'someday')
       @collection.reset([@todo1, @todo2, @todo3, @todo4, @todo5, @todo6])
 
-#    it "by state", ->
-#      todos = @collection.getGroup('inbox')
-#      expect(todos.at(0)).toBe(@todo1)
-#      expect(todos.length).toBe(1)
+    it "by state", ->
+      todos = @collection.getGroup('inbox')
+      expect(todos.at(0)).toBe(@todo1)
+      expect(todos.length).toBe(1)
 
-#    it "by calendar", ->
-#      todos = @collection.getGroup('active', 'calendar', 'today')
+    it "by calendar", ->
+      todos = @collection.getGroup('active', 'calendar', 'today')
 #      expect(todos.at(0)).toBe(@todo3)
 #      expect(todos.length).toBe(1)
-##
-#    it "by kind", ->
-#      todos = @collection.getGroup('active', 'kind', 'someday')
-#      expect(todos.at(0)).toBe(@todo5)
-#      expect(todos.length).toBe(2)
+
+    it "by kind", ->
+      todos = @collection.getGroup('active', 'kind', 'someday')
+      expect(todos.at(0)).toBe(@todo5)
+      expect(todos.length).toBe(2)
 
   describe "order", ->
     beforeEach ->

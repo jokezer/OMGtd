@@ -18,7 +18,6 @@
       $('textarea', @$el).autosize().css(resize:'none')
       #buttons
       state = @model.get('state')
-      console.log state
       if state=='active'
         @addCompleteButton()
         @addDeleteButton()
@@ -43,7 +42,7 @@
 
     addActivateButton: ->
       view = App.request 'components:form:confirm_button',
-        label: 'Complete',
+        label: 'Activate',
         symbol: 'ok-sign'
         btnClass: 'info'
       $("#activateButton", @$el).html(view.render().el)
