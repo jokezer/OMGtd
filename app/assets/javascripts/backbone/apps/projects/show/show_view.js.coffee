@@ -16,7 +16,7 @@
 
     onRender: ->
       $('textarea', @$el).autosize().css(resize:'none')
-      #buttons
+      #buttons todo: move this logic to model ala state machine
       state = @model.get('state')
       if state=='active'
         @addCompleteButton()
@@ -54,11 +54,13 @@
       @listenTo view, 'confirm', data.callback
 
     destroyl: ->
-      console.log 'attr'
+      console.log 'Do magic'
+      @save()
 
 
     save: (el) ->
       @listenTo @model, 'sync', (el) ->
+        @render()
         @$el.removeClass "saving"
       @listenTo @model, 'server:error', (el) ->
         @render()
