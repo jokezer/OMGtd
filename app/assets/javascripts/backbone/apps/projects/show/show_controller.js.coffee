@@ -5,18 +5,14 @@
       @data = data
       @model     = data.project
       @layout      = @getLayoutView()
-      @getTodos()
-      @listenTo @todos, 'change:project_id', (e, l) ->
-        @todos.remove(e) if l!=@model.id
+      @model.getTodos()
+      @listenTo @model.todos, 'change:project_id', (e, l) ->
+        @model.todos.remove(e) if l!=@model.id
       @projectView = @getProjectView()
       @listenTo @projectView, 'save', @save
       @show @layout
       @showAll()
       @highlightLink()
-
-    getTodos: ->
-      @todos = App.request "project:todos", @model.id
-
 
     highlightLink: () ->
       App.execute("left_sidebar:highlightLink", "/#/project/#{@data.project.id}")
@@ -48,7 +44,7 @@
 
     getTodosIndex: ->
       App.request "components:todos:index",
-        todos: @todos
+        todos: @model.todos
 
     getNewView: ->
       preload = project_id: @model.id
@@ -62,13 +58,13 @@
         state: state,
         group: group,
         label: label,
-        todos: @todos
+        todos: @model.todos
       App.request "components:todos:list", todos
 
 
     getNavs: ->
       new Show.Navs
-        todos:   @todos
+        todos:   @model.todos
         project: @model
         link:    @getLink()
 

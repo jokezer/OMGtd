@@ -18,6 +18,8 @@
       title:
         required: true
 
+    getTodos: ->
+      @todos = App.request "project:todos", @id
 
   class Entities.ProjectsCollection extends App.Entities.Collection
     model: Entities.Project
