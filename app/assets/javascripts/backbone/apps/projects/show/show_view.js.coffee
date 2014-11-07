@@ -25,28 +25,36 @@
         @addCompleteButton()
 
     addCompleteButton: ->
-      view = App.request 'components:form:confirm_button',
-        label: 'Complete',
-        symbol: 'ok-sign'
-        btnClass: 'info'
-      $("#completeButton", @$el).html(view.render().el)
-      @listenTo view, 'confirm', @destroy
+      @_addAbstractConfirmButton
+        label:    'Complete',
+        symbol:   'ok-sign',
+        btnClass: 'info',
+        id:       'completeButton',
+        callback: @destroyl
 
     addDeleteButton: ->
-      view = App.request 'components:form:confirm_button',
-        label: 'Delete',
-        symbol: 'fire'
-        btnClass: 'danger'
-      $("#deleteButton", @$el).html(view.render().el)
-      @listenTo view, 'confirm', @destroy
+      @_addAbstractConfirmButton
+        label:    'Delete',
+        symbol:   'fire',
+        btnClass: 'danger',
+        id:       'deleteButton',
+        callback: @destroyl
 
     addActivateButton: ->
-      view = App.request 'components:form:confirm_button',
-        label: 'Activate',
-        symbol: 'ok-sign'
-        btnClass: 'info'
-      $("#activateButton", @$el).html(view.render().el)
-      @listenTo view, 'confirm', @destroy
+      @_addAbstractConfirmButton
+        label:    'Activate',
+        symbol:   'ok-sign',
+        btnClass: 'info',
+        id:       'activateButton',
+        callback: @destroyl
+
+    _addAbstractConfirmButton: (data) ->
+      view = App.request 'components:form:confirm_button', data
+      $("##{data.id}", @$el).html(view.render().el)
+      @listenTo view, 'confirm', data.callback
+
+    destroyl: ->
+      console.log 'attr'
 
 
     save: (el) ->
