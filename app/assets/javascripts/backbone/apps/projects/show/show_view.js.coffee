@@ -13,6 +13,7 @@
     className: 'panel-project'
     events:
       'click .save'      : 'save'
+      'submit'           : 'save'
 
     onRender: ->
       $('textarea', @$el).autosize().css(resize:'none')
@@ -66,6 +67,7 @@
         @render()
       @$el.addClass "saving"
       @trigger('save')
+      false
 
     serializeData: ->
       data = @model.toJSON()

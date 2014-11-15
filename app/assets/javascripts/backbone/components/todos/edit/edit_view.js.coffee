@@ -8,12 +8,12 @@
       'click #priorsGroup .btn-group label'         : 'changePrior'
 #      'mouseleave'                      : 'leaveElement'
 #      'focusout'                        : 'leaveElement'
-      'click .save'                    : 'save'
-      'click .cancel'                  : 'cancelEdit'
-      'click .trash'                   : 'saveTrash'
-      'click .complete'                : 'saveComplete'
-      'click .activate'                : 'saveActivated'
-      'click #kindsGroup .btn-group label' : 'toggleInterval'
+      'click .save'                         : 'save'
+      'click .cancel'                       : 'cancelEdit'
+      'click .trash'                        : 'saveTrash'
+      'click .complete'                     : 'saveComplete'
+      'click .activate'                     : 'saveActivated'
+      'click #kindsGroup .btn-group label'  : 'toggleInterval'
 
     initialize: (model) ->
       @model = model

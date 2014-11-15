@@ -1,5 +1,4 @@
 describe "Project Model", ->
-
   it "should exist", ->
     expect(OMGtd.Entities.Project).toBeDefined()
 
@@ -12,6 +11,7 @@ describe "Project Model", ->
       expect(project.attributes.state).toBe('active')
 
   describe "todos", ->
+
 
     project = new OMGtd.Entities.Project
     project.id = 23
@@ -32,3 +32,12 @@ describe "Project Model", ->
       expect(project.todos.length).toBe(3)
 
   xdescribe "todos manipulation"
+
+describe "A spec (with setup and tear-down)", ->
+  beforeEach ->
+    foo = 0
+    foo += 1
+    console.log '000'
+
+  it "is just a function, so it can contain any code", ->
+    expect(foo).toEqual(1)
