@@ -14,6 +14,7 @@
       'click .complete'                     : 'saveComplete'
       'click .activate'                     : 'saveActivated'
       'click #kindsGroup .btn-group label'  : 'toggleInterval'
+      'submit'                              : 'save'
 
     initialize: (model) ->
       @model = model
@@ -59,6 +60,7 @@
 
     save: ->
       @trigger('save')
+      false
 
     serializeData: ->
       data = @model.toJSON()
