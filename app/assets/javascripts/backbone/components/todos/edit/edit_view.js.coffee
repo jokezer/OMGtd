@@ -55,7 +55,7 @@
       @timer = _.delay(saveTodo, 200, @)
 
     cancelEdit: ->
-      clearTimeout(@timer)
+#      clearTimeout(@timer)
       @trigger 'cancel'
 
     save: ->

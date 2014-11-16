@@ -10,6 +10,9 @@
       "click .inc-prior"      : "incPrior"
       "click .dec-prior"      : "decPrior"
 
+    descr: ->
+      console.log @model.attributes
+
     initialize: ->
       @listenTo @model, 'slideDown', @slideDown
       @listenTo @model, 'server:send', @successEdit
