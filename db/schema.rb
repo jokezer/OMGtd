@@ -40,12 +40,12 @@ ActiveRecord::Schema.define(version: 20140802070930) do
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
 
   create_table "todos", force: true do |t|
-    t.string   "title",      null: false
+    t.string   "title",                  null: false
     t.text     "content"
-    t.integer  "user_id",    null: false
-    t.string   "state",      null: false
+    t.integer  "user_id",                null: false
+    t.string   "state",                  null: false
     t.string   "kind"
-    t.integer  "prior"
+    t.integer  "prior",      default: 0
     t.integer  "context_id"
     t.integer  "project_id"
     t.datetime "due"

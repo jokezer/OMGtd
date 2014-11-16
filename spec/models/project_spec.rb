@@ -64,7 +64,7 @@ describe Project do
       project = FactoryGirl.create(:project, title: 'When name insert',
                                    name: 'with name', user: user)
       expect(project.title).to eq('When name insert')
-      expect(project.name).to eq('with_name')
+      expect(project.name).to eq('When_name_insert')
     end
     it 'when name is blank' do
       project = FactoryGirl.create(:project, title: 'When name insert',

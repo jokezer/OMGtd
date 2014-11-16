@@ -59,7 +59,7 @@ describe ProjectsController do
                              id: @project.id,
                              :project => {state: 'finished'}
                              }}
-      it do
+      xit do
         should change(@user.projects.with_state('finished'), :count).by(1)
         expect(json['title']).to eq('rspec title')
       end
