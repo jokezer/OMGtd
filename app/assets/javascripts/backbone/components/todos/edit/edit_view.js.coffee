@@ -68,6 +68,8 @@
       data
 
     onRender: ->
+      #FIXME: it rewrites element's attributes with model attributes
+      @$el.attr(autocomplete: 'off')
       @setPriorClass @model.get('prior')
       @addAllButtonsGroups()
       state = @model.get('state')

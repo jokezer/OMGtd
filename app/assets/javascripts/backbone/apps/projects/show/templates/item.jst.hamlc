@@ -1,7 +1,7 @@
 -if @errorsLength
   - for field, message of @errors
     #{field}: #{message}
-%form.panel.panel-default
+%form.panel.panel-default{autocomplete:'off'}
   .panel-heading
     %span.projectSym #
     %input.edit{name:'title', value:@title, type:'text',
