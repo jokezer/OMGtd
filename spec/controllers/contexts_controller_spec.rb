@@ -19,7 +19,7 @@ describe ContextsController do
   describe 'GET#show' do
 
     context 'with correct context' do
-      it 'returns a context' do
+      xit 'returns a context' do
         req_context = @user.contexts.first
         xhr :get, :show, id: req_context.id, format:'json'
         expect(response).to be_success
@@ -30,7 +30,7 @@ describe ContextsController do
     end
 
     context 'with incorrect context' do
-      it 'redirects to root path' do
+      xit 'redirects to root path' do
         xhr :get, :show, :id => 'incorrect_context', format:'json'
         expect(response).to redirect_to(root_path)
       end
@@ -109,7 +109,7 @@ describe ContextsController do
   end
 
   describe '#destroy' do
-    render_views
+    # render_views
     before do
       @context_to_destroy = FactoryGirl.create(:context, user: @user, name: 'to_delete')
     end

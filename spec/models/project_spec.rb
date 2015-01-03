@@ -97,27 +97,27 @@ describe Project do
       .to include(:active, :trash, :finished)
     end
     it 'can delete only trash and finished' do
-      expect(project.can_delete?).to be_false
+      expect(project.can_delete?).to be_falsey
       project.finish
-      expect(project.can_delete?).to be_true
+      expect(project.can_delete?).to be_truthy
       project.cancel
-      expect(project.can_delete?).to be_true
+      expect(project.can_delete?).to be_truthy
     end
     it 'transitions scope' do
       #actice
-      expect(project.can_activate?).to be_false
-      expect(project.can_cancel?).to be_true
-      expect(project.can_finish?).to be_true
+      expect(project.can_activate?).to be_falsey
+      expect(project.can_cancel?).to be_truthy
+      expect(project.can_finish?).to be_truthy
       #trash
       project.cancel
-      expect(project.can_activate?).to be_true
-      expect(project.can_cancel?).to be_false
-      expect(project.can_finish?).to be_false
+      expect(project.can_activate?).to be_truthy
+      expect(project.can_cancel?).to be_falsey
+      expect(project.can_finish?).to be_falsey
       #actice
       project.finish
-      expect(project.can_activate?).to be_true
-      expect(project.can_cancel?).to be_false
-      expect(project.can_finish?).to be_false
+      expect(project.can_activate?).to be_truthy
+      expect(project.can_cancel?).to be_falsey
+      expect(project.can_finish?).to be_falsey
     end
     it '@project active by default' do
       expect(@project.state).to eq('active')

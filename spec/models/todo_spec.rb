@@ -112,28 +112,6 @@ describe Todo do
       expect(active_todo.kind).to eq('next')
       expect(active_todo.state).to eq('active')
     end
-    it 'events test' do
-      todo = FactoryGirl.create(:next_todo, user: user)
-      todo.cancel
-      expect(todo.state).to eq('trash')
-      expect(todo.kind).to eq('next')
-      expect(todo.can_complete?).to be_false
-      expect(todo.can_cancel?).to be_false
-      expect(todo.can_activate?).to be_true
-      todo.activate
-      todo.complete
-      expect(todo.state).to eq('completed')
-      expect(todo.kind).to eq('next')
-      expect(todo.can_complete?).to be_false
-      expect(todo.can_cancel?).to be_false
-      expect(todo.can_activate?).to be_true
-      todo.activate
-      expect(todo.state).to eq('active')
-      expect(todo.kind).to eq('next')
-      expect(todo.can_complete?).to be_true
-      expect(todo.can_cancel?).to be_true
-      expect(todo.can_activate?).to be_false
-    end
     it 'make state active after update' do
       todo.update_attributes(title: 'Make active')
       expect(todo.state).to eq('inbox')
@@ -151,10 +129,55 @@ describe Todo do
       expect(todo.reload.kind).to eq('next')
       expect(todo.reload.state).to eq('active')
     end
-    # it 'incorrect filter test' do
-    #   expect(user.todos.filter(:state, :incorrect)).to be_false
-    #   expect(user.todos.filter(:incorrect, :incorrect)).to be_false
-    # end
+
+    describe 'events test' do
+      subject { FactoryGirl.create(:todo, user: user) }
+
+      context 'when inbox' do
+        it { expect(subject.state).to         eq('inbox') }
+        it { expect(subject.can_complete?).to be_truthy }
+        it { expect(subject.can_cancel?).to   be_truthy }
+        it { expect(subject.can_activate?).to be_falsey }
+      end
+
+      context 'when activated' do
+        before do
+          subject.update_attribute(:kind, 'next')
+        end
+
+        it { expect(subject.reload.state).to         eq('active') }
+        it { expect(subject.kind).to          eq('next') }
+        it { expect(subject.can_complete?).to be_truthy }
+        it { expect(subject.can_cancel?).to   be_truthy }
+        it { expect(subject.can_activate?).to be_falsey }
+      end
+
+      context 'when canceled' do
+        before do
+          subject.update_attribute(:kind, 'next')
+          subject.cancel
+        end
+
+        it { expect(subject.state).to         eq('trash') }
+        it { expect(subject.kind).to          eq('next') }
+        it { expect(subject.can_complete?).to be_falsey }
+        it { expect(subject.can_cancel?).to   be_falsey }
+        it { expect(subject.can_activate?).to be_truthy }
+      end
+
+      context 'when completed' do
+        before do
+          subject.update_attribute(:kind, 'next')
+          subject.complete
+        end
+
+        it { expect(subject.state).to         eq('completed') }
+        it { expect(subject.kind).to          eq('next') }
+        it { expect(subject.can_complete?).to be_falsey }
+        it { expect(subject.can_cancel?).to   be_falsey }
+        it { expect(subject.can_activate?).to be_truthy }
+      end
+    end
   end
 
   context 'user scopes' do
