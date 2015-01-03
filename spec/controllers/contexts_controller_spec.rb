@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe ContextsController do
-
+describe ContextsController, type: :controller do
   before do
     @user = FactoryGirl.create(:user)
+    @request.env["devise.mapping"] = Devise.mappings[:user]
     sign_in @user
   end
 
@@ -121,6 +121,4 @@ describe ContextsController do
       end
     end
   end
-
-
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe TodosController do
+describe TodosController, type: :controller do
   before do
     @user = FactoryGirl.create(:user)
   end
@@ -28,17 +28,18 @@ describe TodosController do
   end
 end
 
-describe TodosController do
+describe TodosController, type: :controller do
   let (:todo) { FactoryGirl.create(:todo, user: @user) }
   before do
     @user = FactoryGirl.create(:user)
+    @request.env["devise.mapping"] = Devise.mappings[:user]
     sign_in @user
   end
 
   describe 'GET#index' do
     it 'json request responds with array of todos' do
       FactoryGirl.create(:todo, user: @user)
-      xhr :get, :index, format: 'json'
+      get :index, format: 'json'
       todos = json
       expect(todos.count).to eq(@user.todos.count)
       expect(todos.first.keys).to include('id', 'title', 'content', 'state')
@@ -85,11 +86,11 @@ describe TodosController do
     end
     context 'with incorrect data' do
       it 'dont save todo to db' do
-        expect { xhr :post, :create, :todo => {title: ''} }
+        expect { post :create, todo: {title: ''}, format: :json }
         .not_to change(@user.todos, :count)
       end
       it 'responds with todo with errors array' do
-        xhr :post, :create, :todo => {title: ''}
+        post :create, todo: {title: ''}, format: :json
         errors = json['errors']
         expect(errors).to include('title')
         expect(errors.count).to eq(1)
@@ -152,7 +153,7 @@ describe TodosController do
         .not_to change(@user.todos, :count)
       end
       it 'responds with todo with errors array' do
-        xhr :post, :create, :todo => {title: ''}
+        post :create, todo: {title: ''}, format: :json
         errors = json['errors']
         expect(errors).to include('title')
         expect(errors.count).to eq(1)

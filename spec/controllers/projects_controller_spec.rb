@@ -1,14 +1,17 @@
 require 'spec_helper'
-describe ProjectsController do
+describe ProjectsController, type: :controller do
   let (:project) { FactoryGirl.create(:project, user: @user) }
   let (:todo_params) { {title: 'New Title'} }
+
   before do
     @user = FactoryGirl.create(:user)
+    @request.env["devise.mapping"] = Devise.mappings[:user]
     sign_in @user
     FactoryGirl.create_list(:project, 3, user: @user)
     FactoryGirl.create_list(:finished_project, 1, user: @user)
     FactoryGirl.create_list(:trash_project, 1, user: @user)
   end
+
   describe 'GET#index' do
     before { xhr :get, :index, format:'json' }
     it 'responds with user projects' do
@@ -19,7 +22,6 @@ describe ProjectsController do
   end
 
   describe 'GET#show' do
-
     context 'with correct id' do
       it 'returns a context' do
         req_project = @user.projects.first
@@ -43,6 +45,7 @@ describe ProjectsController do
     before do
       @project = project
     end
+
     context 'update the project' do
       subject { lambda { xhr :post, :update,
                              id: @project.id,
@@ -54,6 +57,7 @@ describe ProjectsController do
         expect(response).to be_success
       end
     end
+
     context 'finish' do
       subject { lambda { xhr :patch, :update,
                              id: @project.id,
@@ -65,10 +69,12 @@ describe ProjectsController do
       end
     end
   end
+
   describe '#destroy' do
     before do
       @project_to_destroy = project
     end
+
     context 'if statuses trash' do
       subject { lambda { xhr :delete, :destroy, :id => @project_to_destroy.id } }
       it do
@@ -77,6 +83,5 @@ describe ProjectsController do
       end
     end
   end
-
 end
 

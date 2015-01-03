@@ -12,7 +12,7 @@ class TodosController < ApplicationController
     @todos = current_user.todos
     respond_to do |format|
       # format.html
-      format.json   { render :json => @todos }
+      format.json   { render json: @todos }
     end
   end
 
@@ -23,14 +23,14 @@ class TodosController < ApplicationController
     sleep(rand(0.5..2)) if Rails.env.development?
     #dont use
     respond_to do |format|
-      format.json   { render :json => @todo }
+      format.json   { render json: @todo }
     end
   end
 
   # def new
   #   @todo = current_user.todos.new
   #   respond_to do |format|
-  #     format.json   { render :json => @todo }
+  #     format.json   { render json: @todo }
   #   end
   # end
 
@@ -38,7 +38,7 @@ class TodosController < ApplicationController
     sleep(rand(0.5..2)) if Rails.env.development?
     @todo = current_user.todos.create(todo_params)
     respond_to do |format|
-      format.json   { render :json => @todo }
+      format.json   { render json: @todo }
     end
   end
 
@@ -47,7 +47,7 @@ class TodosController < ApplicationController
     @todo.update_attributes(todo_params)
     Project.make_from_todo @todo if all_params[:make_project]
     respond_to do |format|
-      format.json   { render :json => @todo }
+      format.json   { render json: @todo }
     end
   end
 
@@ -60,7 +60,7 @@ class TodosController < ApplicationController
       response = 'false'
     end
     respond_to do |format|
-      format.json   { render :json => response }
+      format.json   { render json: response }
     end
   end
 
