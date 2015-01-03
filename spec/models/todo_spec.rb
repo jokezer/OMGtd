@@ -30,11 +30,13 @@ describe Todo do
   context 'with incorrect data' do
     it 'without title' do
       todo.title = nil
-      expect(todo).to have(1).errors_on(:title)
+      expect(todo.valid?).to be_falsey
+      expect(todo.errors[:title].count).to eq(1)
     end
     it 'with incorrect statuses' do
       todo.state = 'incorrect'
-      expect(todo).to have(1).errors_on(:state)
+      expect(todo.valid?).to be_falsey
+      expect(todo.errors[:state].count).to eq(1)
     end
     it 'without user on their own' do
       todo = Todo.new(title: 'Content of invalid todo')

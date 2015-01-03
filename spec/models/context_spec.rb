@@ -16,26 +16,43 @@ describe Context do
   context 'incorrect states' do
     it 'without user' do
       wrong_context = Context.new(name: '@Home')
-      expect(wrong_context).to have(1).errors_on(:user)
+      expect(wrong_context.valid?).to be_falsey
+      expect(wrong_context.errors[:user].count).to eq 1
     end
 
     it 'without name' do
       wrong_context = user.contexts.new(name: '')
-      expect(wrong_context).to have(1).errors_on(:name)
+      expect(wrong_context.valid?).to be_falsey
+      expect(wrong_context.errors[:name].count).to eq 1
     end
-    it 'uniqueness in user scope' do
-      user = FactoryGirl.create(:user)
-      context = FactoryGirl.create(:context, user: user, name: 'same')
-      expect(context).to be_valid #first time @same context is valid
-      expect(user.contexts.new(name: 'same')).to have(1).errors_on(:name)
-      expect(user.contexts.new(name: 'SAME')).to have(1).errors_on(:name)
-      user2 = FactoryGirl.create(:user)
-      context = FactoryGirl.create(:context, user: user2, name: 'same')
-      expect(context).to be_valid #uniqness works only in user scope
+
+    describe 'uniqueness in user scope' do
+      let!(:user) { FactoryGirl.create(:user) }
+      let!(:context) { FactoryGirl.create(:context, user: user, name: 'same') }
+
+      it 'first context is valid' do
+        expect(context).to be_valid
+      end
+
+      it 'second context with this name is invalid' do
+        expect(user.contexts.new(name: 'same').valid?).to be_falsey
+      end
+
+      it 'is register sensitive' do
+        expect(user.contexts.new(name: 'SAME').valid?).to be_falsey
+      end
+
+      it 'is works only in one user scope' do
+        user2 = FactoryGirl.create(:user)
+        context2 = FactoryGirl.create(:context, user: user2, name: context.name)
+        expect(context2).to be_valid
+      end
     end
+
     it 'check max length of todo' do
-      context = user.contexts.new(name: 'very very long context name')
-      expect(context).to have(1).errors_on(:name)
+      wrong_context = user.contexts.new(name: 'very very long context name')
+      expect(wrong_context.valid?).to be_falsey
+      expect(wrong_context.errors[:name].count).to eq 1
     end
   end
 

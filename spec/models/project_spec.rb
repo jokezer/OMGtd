@@ -20,24 +20,41 @@ describe Project do
     expect(project.name).to eq('Test_project')
     expect(project.label).to eq('#Test_project')
   end
+
   context 'incorrect states' do
     it 'without user' do
       wrong_project = Project.new(title: '@Home')
-      expect(wrong_project).to have(1).errors_on(:user)
+      expect(wrong_project.valid?).to be_falsey
+      expect(wrong_project.errors[:user].count).to eq(1)
     end
+
     it 'without title' do
-      wrong_context = user.projects.new(title: '')
-      expect(wrong_context).to have(1).errors_on(:title)
+      wrong_project = user.projects.new(title: '')
+      expect(wrong_project.valid?).to be_falsey
+      expect(wrong_project.errors[:title].count).to eq(1)
     end
-    it 'uniqueness in user scope' do
-      user = FactoryGirl.create(:user)
-      project = FactoryGirl.create(:project, user: user, title: 'same')
-      expect(project).to be_valid #first time @same context is valid
-      expect(user.projects.new(title: 'same')).to have(1).errors_on(:title)
-      expect(user.projects.new(title: 'SAME')).to have(1).errors_on(:title)
-      user2 = FactoryGirl.create(:user)
-      project = FactoryGirl.create(:project, user: user2, name: 'same')
-      expect(project).to be_valid #uniqness works only in user scope
+
+    describe 'uniqueness in user scope' do
+      let!(:user) { FactoryGirl.create(:user) }
+      let!(:project) { FactoryGirl.create(:project, user: user, title: 'same') }
+
+      it 'first context is valid' do
+        expect(project).to be_valid
+      end
+
+      it 'second context with this name is invalid' do
+        expect(user.projects.new(title: 'same').valid?).to be_falsey
+      end
+
+      it 'is register sensitive' do
+        expect(user.projects.new(title: 'SAME').valid?).to be_falsey
+      end
+
+      it 'is works only in one user scope' do
+        user2 = FactoryGirl.create(:user)
+        project2 = FactoryGirl.create(:project, user: user2, name: project.name)
+        expect(project2).to be_valid
+      end
     end
   end
 
